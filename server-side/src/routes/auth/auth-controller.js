@@ -29,10 +29,13 @@ return  res.status(409).json({message:"Account with this email already exist"})
 }
 
 
+
 // saving data in database
 const savedDocument = await companies.create({fullName:fullName,userName:userName,password:hashedPassword,workEmail:workEmail})
 
 console.log(savedDocument)
+
+// send email for verifying the account that was created(not implemented)
 
 res.status(201).json({message:"Account created successfully"})
 
