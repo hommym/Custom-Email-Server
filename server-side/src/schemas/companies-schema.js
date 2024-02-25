@@ -18,12 +18,7 @@ userName:{
 password:{
     type:String,
     required:true
-},
-creditCardNumber:{
-    type:String,
-    required:true
 }
-
 
 })
 
