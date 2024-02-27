@@ -2,12 +2,12 @@
 const mongoose=require("mongoose")
 
 
-const companiesAccountInfoSchema= new mongoose.Schema({
+const companyMembersSchema= new mongoose.Schema({
 fullName:{
     type:String,
     required:true
 },
-workEmail:{
+email:{
     type:String,
     required:true
 },
@@ -20,12 +20,18 @@ password:{
     required:true
 },
 
+status:{
+    type:String,
+    enum:["Admin","Employee"],
+    default:"Employee"
+},
+
 isVerified:{
     type:Boolean,
     default:false
-}
+},
 
 })
 
 
-module.exports=mongoose.model("accounts",companiesAccountInfoSchema)
+module.exports=mongoose.model("Company-Members",companyMembersSchema)
