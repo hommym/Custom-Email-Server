@@ -8,6 +8,13 @@ const signUpController=async (req,res)=>{
 
 const{fullName,userName,password,email}= req.body
 
+// checking all the needed data for creating account is present
+
+if(!fullName || !userName || !password || !email){
+
+  throw new Error("400")
+}
+
 // hashing password
 const hashedPassword= await bcrypt.hash(password,10)
 console.log(hashedPassword);

@@ -6,6 +6,12 @@ if(err.message.includes("401")){
 
     res.status(401).json({message:"Unauthorized Access"})
 }
+
+else if(err.message.includes("400")){
+
+    res.status(401).json({message:"Bad Request"})
+}
+
 else{
     res.status(500).json({message:"Server Error"})
 
