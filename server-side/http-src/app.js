@@ -14,7 +14,7 @@ app.use("/auth",authRouter)
 
 // error handling middleware
 app.use(errorHandler)
-const port= (process.env.PORT)?process.env.PORT:3000
+const port= (process.env.PORT)?process.env.PORT:8000
 
 
 
@@ -22,8 +22,8 @@ const startApplication=()=>{
     // connecting database
 conectToCompaniesAccountsDatabase(process.env.MongoDbConnectionUrl)
 
-app.listen(3000,()=>{
-    console.log(`Sever is listening on ${port} `);
+app.listen(port,()=>{
+    console.log(`Server is listening on ${port} `);
 })
 }
 

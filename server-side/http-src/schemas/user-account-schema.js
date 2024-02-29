@@ -2,7 +2,7 @@
 const mongoose=require("mongoose")
 
 // the users been used here refers to the companies having an account on the server
-const userAccountSchema= new mongoose.Schema({
+const userk AccountSchema= new mongoose.Schema({
 fullName:{
     type:String,
     required:true
