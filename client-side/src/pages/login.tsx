@@ -1,10 +1,10 @@
 import Link from "next/link";
+import { useState } from "react";
 
 import PrimaryInput from "@/components/atoms/PrimaryInput";
 import PrimaryButton from "@/components/atoms/PrimaryButton";
-import { useState } from "react";
 
-export default function Home() {
+export default function Login() {
 	const [loggedIn, setLoggedIn] = useState(false);
 	return (
 		<main className="w-full h-auto min-h-screen bg-bg">
@@ -39,7 +39,7 @@ export default function Home() {
 					<div className="w-full h-[1px] bg-[rgb(226,232,240)] my-8"></div>
 
 					<div className="flex items-center w-full justify-between gap-4">
-						<Link href={"/login"} className="text-sec hover:opacity-80">
+						<Link href={"/forgot-password"} className="text-sec hover:opacity-80">
 							I forgot my password
 						</Link>
 						<Link href={"/create-account"} className="text-sec hover:opacity-80">

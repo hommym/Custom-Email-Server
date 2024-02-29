@@ -4,7 +4,7 @@ import PrimaryInput from "@/components/atoms/PrimaryInput";
 import PrimaryButton from "@/components/atoms/PrimaryButton";
 import { useState } from "react";
 
-export default function Home() {
+export default function CreateAccount() {
 	const [tcsAccepted, setTcsAccepted] = useState(false);
 	return (
 		<main className="w-full h-auto min-h-screen bg-bg">

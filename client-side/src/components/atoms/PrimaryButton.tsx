@@ -10,7 +10,7 @@ interface IButton {
 }
 
 const PrimaryButton = ({ href, text, sx = "", disabled, isLoading }: IButton) => {
-	const style = `${sx} w-full ${disabled || isLoading ? "opacity-30 bg-sec" : "bg-sec text-white hover:opacity-70"}  h-12 rounded-[5px] text-white font-bold`;
+	const style = `${sx} w-full ${disabled || isLoading ? "opacity-30 bg-sec" : "bg-sec text-white hover:opacity-70"}  h-12 rounded-[5px] text-white font-light`;
 	return (
 		<>
 			{href && (
