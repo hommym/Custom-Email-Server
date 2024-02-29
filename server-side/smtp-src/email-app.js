@@ -5,8 +5,7 @@ const bcrypt= require("bcrypt")
 
 
 const server = new SMTPServer({
-logger:true ,
-secure:false,    
+logger:true ,    
 onConnect(session, callback) {
 
 console.log(`New user with ip ${session.remoteAddress} has being connected`);
