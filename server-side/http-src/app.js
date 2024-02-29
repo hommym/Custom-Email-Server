@@ -18,6 +18,7 @@ const port = process.env.PORT ? process.env.PORT : 8000;
 
 const startApplication = async () => {
 	// connecting database
+	console.log("Connecting to the database...");
 	await connectToCompaniesAccountsDatabase(process.env.MongoDbConnectionUrl);
 
 	app.listen(port, () => {
