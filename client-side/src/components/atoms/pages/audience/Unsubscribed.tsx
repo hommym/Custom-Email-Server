@@ -8,7 +8,7 @@ const Unsubscribed = () => {
 		<main className="pb-24">
 			{/* Unsubscribed reasons */}
 			<div>
-				<h3 className="text-4xl">Unsubscribe reasons</h3>
+				<h3 className="text-2xl">Unsubscribe reasons</h3>
 
 				<div className="mt-10 grid grid-cols-2 bg-white gap-x-16 rounded-[5px] py-12 px-6 pt-6">
 					<div className="w-full  p-4 border-b-[1px] flex items-center justify-between pb-6">
@@ -51,13 +51,13 @@ const Unsubscribed = () => {
 			</div>
 
 			<div className="mt-12">
-				<h3 className="text-4xl">Unsubscribe contacts</h3>
+				<h3 className="text-2xl">Unsubscribe contacts</h3>
 				<section className="mt-10  bg-white  rounded-[5px] py-12 px-6 pt-6">
 					<div className="w-full h-12  mb-4 flex items-center justify-between">
 						<div className="w-[250px] ">
-							<select name="" id="" className="w-full text-xl border-[1px] px-3 rounded-[5px] focus:outline-0 h-16">
-								<option value="7days">Last 7 days</option>
+							<select name="" id="" className="w-full cursor-pointer text-[16px] border-[1px] px-3 rounded-[5px] focus:outline-0 h-14">
 								<option value="14_days">Last 14 days</option>
+								<option value="7days">Last 7 days</option>
 								<option value="30_days">Last 30 days</option>
 								<option value="3_months">Last 3 months</option>
 								<option value="6_months">Last 6 months</option>
