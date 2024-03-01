@@ -13,7 +13,7 @@ interface IOrgData {
 }
 
 const organization = () => {
-	const [completed, setCompleted] = useState(true);
+	const [completed, setCompleted] = useState(false);
 	const [orgData, setOrgData] = useState<IOrgData>({
 		name: "",
 		employeesCount: 0,
@@ -167,7 +167,7 @@ const organization = () => {
 							</Link>
 						</p>
 
-						<PrimaryButton text="Let's Start" href="/" sx="!w-[120px] " />
+						<PrimaryButton text="Let's Start" href="/dashboard" sx="!w-[120px] " />
 					</>
 				)}
 			</section>
