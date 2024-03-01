@@ -59,7 +59,7 @@ const Mainpage = ({ children }: { children: React.ReactNode }) => {
 				</div>
 			</aside>
 			<section className="w-4/5 h-screen overflow-auto">
-				<div className="p-4 min-h-[90vh] bg-[#F3F5F8]">{children}</div>
+				<div className="p-6 px-10 min-h-[90vh] bg-[#F3F5F8]">{children}</div>
 			</section>
 		</div>
 	);
