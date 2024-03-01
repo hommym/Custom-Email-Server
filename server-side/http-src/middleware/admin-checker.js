@@ -15,7 +15,7 @@ throw new Error("401")
 // checking if member with the id in the body is an Admin
 const membersAccount= await companyMembers.findById(adminId)
 
-if(membersAccount && membersAccount.accountStatus==="Admin"){
+if(membersAccount && membersAccount.accountStatus==="admin"){
     next() 
 }
 else{
