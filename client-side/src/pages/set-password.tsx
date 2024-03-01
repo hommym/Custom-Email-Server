@@ -9,7 +9,7 @@ export default function Login() {
 			<section className="w-full max-w-[560px] flex flex-col items-center justify-center py-12 mx-auto">
 				<div className="w-[300px] h-[40px] flex items-center justify-center gap-3">
 					<div className="w-10 h-10 bg-[green]"></div>
-					<h3 className="text-deep-text font-bold text-[28px]">Email API</h3>
+					<h3 className="text-deep-text font-bold text-[28px]">Elastic Email</h3>
 				</div>
 				<form action="" className="w-full flex flex-col items-center justify-center min-h-[50vh] rounded-[20px] mt-12 p-12 px-16 shadow-md bg-white">
 					<h3 className="text-3xl mb-8 font-normal">Set your password</h3>

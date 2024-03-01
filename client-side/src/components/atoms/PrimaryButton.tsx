@@ -10,7 +10,7 @@ interface IButton {
 }
 
 const PrimaryButton = ({ href, text, sx = "", disabled, isLoading }: IButton) => {
-	const style = `${sx} w-full ${disabled || isLoading ? "opacity-30 bg-sec" : "bg-sec text-white hover:opacity-70"}  h-12 rounded-[5px] text-white font-light`;
+	const style = `${sx} w-full flex items-center justify-center ${disabled || isLoading ? "opacity-30 bg-sec" : "bg-sec text-white hover:opacity-70"}  h-12 rounded-[5px] text-white font-light`;
 	return (
 		<>
 			{href && (
@@ -19,9 +19,11 @@ const PrimaryButton = ({ href, text, sx = "", disabled, isLoading }: IButton) =>
 				</Link>
 			)}
 
-			<button className={style} disabled={disabled}>
-				{text}
-			</button>
+			{!href && (
+				<button className={style} disabled={disabled}>
+					{text}
+				</button>
+			)}
 		</>
 	);
 };
