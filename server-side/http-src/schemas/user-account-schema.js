@@ -37,6 +37,11 @@ const user = new mongoose.Schema({
 		default: false,
 	},
 
+	userOrgnisation:{
+		type:mongoose.Schema.Types.ObjectId,
+		ref:"Organisation"
+	}
+
 });
 
 module.exports = mongoose.model("User", user);

@@ -5,17 +5,17 @@ const companyMembers=require("../schemas/user-account-schema")
 
 const adminChecker= async (req,res,next)=>{
 
-const{adminId}=req.body
+const{id}=req.body
 
 
-if(!adminId){
+if(!id){
 throw new Error("401")
 }
 
 // checking if member with the id in the body is an Admin
-const membersAccount= await companyMembers.findById(adminId)
+const userAccount= await companyMembers.findById(id)
 
-if(membersAccount && membersAccount.accountStatus==="admin"){
+if(userAccount && (userAccount.role==="user" || userAccount==="admin")){
     next() 
 }
 else{

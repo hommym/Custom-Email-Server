@@ -1,15 +1,16 @@
 // importing required modules 
 const express= require("express")
 const expressAsynHandler=require("express-async-handler")
-const {signUpController,logInController,emailConfirmationController}=require("./auth-controller.js")
+const {userSignUpController,logInController,emailConfirmationController,employeeSignUpController}=require("./auth-controller.js")
 const adminChecker=require("../../middleware/admin-checker.js")
 
 
 const authRouter=express.Router()
 
 
-authRouter.post("/create-account",expressAsynHandler(adminChecker),expressAsynHandler(signUpController))
+authRouter.post("/user/sign-up",expressAsynHandler(adminChecker),expressAsynHandler(userSignUpController))
 
+authRouter.post("/employee/sign-up",expressAsynHandler(adminChecker),expressAsynHandler(employeeSignUpController))
 
 authRouter.get("/login",expressAsynHandler(logInController))
 

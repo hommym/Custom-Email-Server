@@ -9,14 +9,14 @@ const organisation = new mongoose.Schema({
         type:String,
         required:true
     },
-    orgOwner:{
-        type:mongoose.Schema.Types.ObjectId,
-        required:true,
-        ref:"User"
-    },
 
     customer:{
         type:Object
+    },
+
+    employeeCont:{
+        type:Number,
+        default:0
     }
 
 
