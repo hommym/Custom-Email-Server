@@ -15,6 +15,7 @@
 // passwor for gmail when using nodemailer=xcgf scrz anbg ofxu
 
 
+// testing smtp server
 
 const nodeMailer=require("nodemailer")
 

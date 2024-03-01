@@ -1,7 +1,7 @@
 // importing required module
 const bcrypt= require("bcrypt")
-const companies=require("../../schemas/members-of-company-schema.js")
-const unverifiedMembers=require("../../schemas/unverified-members-shema.js")
+const companies=require("../../schemas/user-account-schema.js")
+const unverifiedMembers=require("../../schemas/unverified-accounts-shema.js")
 const nodeMailer=require("nodemailer")
 
 

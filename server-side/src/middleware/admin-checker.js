@@ -1,5 +1,5 @@
 const mongoDb= require("mongodb")
-const companyMembers=require("../schemas/members-of-company-schema")
+const companyMembers=require("../schemas/user-account-schema")
 
 
 
@@ -15,7 +15,7 @@ throw new Error("401")
 // checking if member with the id in the body is an Admin
 const membersAccount= await companyMembers.findById(adminId)
 
-if(membersAccount && membersAccount.status==="Admin"){
+if(membersAccount && membersAccount.accountStatus==="Admin"){
     next() 
 }
 else{

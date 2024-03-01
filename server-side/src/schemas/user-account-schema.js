@@ -1,8 +1,8 @@
 // importing required modules
 const mongoose=require("mongoose")
 
-
-const companyMembersSchema= new mongoose.Schema({
+// the users been used here refers to the companies having an account on the server
+const userAccountSchema= new mongoose.Schema({
 fullName:{
     type:String,
     required:true
@@ -20,10 +20,9 @@ password:{
     required:true
 },
 
-status:{
-    type:String,
-    enum:["Admin","Employee"],
-    default:"Employee"
+accountStatus:{
+type:String,
+default:"user"
 },
 
 isVerified:{
@@ -34,4 +33,4 @@ isVerified:{
 })
 
 
-module.exports=mongoose.model("Company-Members",companyMembersSchema)
+module.exports=mongoose.model("user-accounts",userAccountSchema)

@@ -3,7 +3,12 @@ const mongoose=require("mongoose")
 
 
 const companiesEmailAdressesSchema= new mongoose.Schema({
-    emailAdresses:String,
+
+    accountId:ObjectId,
+    emailAdresses:{
+        type:Array,
+        default:[]
+    },
     category:{
         type:String,
         default:"None"
