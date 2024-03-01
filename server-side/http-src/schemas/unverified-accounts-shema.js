@@ -10,4 +10,4 @@ const unverfiedMembersSchema= new mongoose.Schema({
 
 
 
-module.exports=mongoose.model("Unverified-Members",unverfiedMembersSchema)
+module.exports=mongoose.model("Unverified-Account",unverfiedMembersSchema)
