@@ -27,3 +27,7 @@ const startApplication = async () => {
 };
 
 startApplication();
+
+module.exports={
+	port
+}

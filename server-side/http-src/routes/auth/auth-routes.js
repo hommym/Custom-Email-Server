@@ -3,7 +3,7 @@ const express= require("express")
 const expressAsynHandler=require("express-async-handler")
 const {userSignUpController,logInController,emailConfirmationController,employeeSignUpController}=require("./auth-controller.js")
 const adminChecker=require("../../middleware/admin-checker.js")
-
+const userChecker=require("../../middleware/userChecker.js")
 
 const authRouter=express.Router()
 
@@ -12,7 +12,7 @@ authRouter.post("/user/sign-up",expressAsynHandler(adminChecker),expressAsynHand
 
 authRouter.post("/employee/sign-up",expressAsynHandler(adminChecker),expressAsynHandler(employeeSignUpController))
 
-authRouter.get("/login",expressAsynHandler(logInController))
+authRouter.get("/login",expressAsynHandler(userChecker),expressAsynHandler(logInController))
 
 authRouter.get("/email-confirmation",expressAsynHandler(emailConfirmationController))
 

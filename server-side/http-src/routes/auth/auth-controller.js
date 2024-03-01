@@ -3,6 +3,7 @@ const bcrypt= require("bcrypt")
 const user=require("../../schemas/user-account-schema.js")
 const unverifiedMembers=require("../../schemas/unverified-accounts-shema.js")
 const nodeMailer=require("nodemailer")
+const {port}=require("../../app")
 
 
 function verificationNumberGenerator() {
@@ -53,7 +54,7 @@ const verificationCode=verificationNumberGenerator()
 const unverifiedMember= await unverifiedMembers.create({userName:userName,verificationCode:verificationCode})
 
 // send email for verifying the account that was created
-const linkForVerfication=`http://localhost:3000/auth/email-confirmation?userName=${userName},verfCode=${verificationCode}`
+const linkForVerfication=`http://localhost:${port}/auth/email-confirmation?userName=${userName}&verfCode=${verificationCode}`
 
 // the service , host and port below will be change during production, the ones below is for testing
 const transporter = nodeMailer.createTransport({
