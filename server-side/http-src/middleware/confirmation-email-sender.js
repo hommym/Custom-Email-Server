@@ -1,6 +1,6 @@
 const nodeMailer=require("nodemailer")
 const unverifiedMembers=require("../schemas/unverified-accounts-shema.js")
-
+require("dotenv").config()
 
 
 function verificationNumberGenerator() {
@@ -48,7 +48,7 @@ const transporter = nodeMailer.createTransport({
     secure: true,
     auth: {
       user: "herbertharthur80@gmail.com",
-      pass: "xcgf scrz anbg ofxu",
+      pass: process.env.SmtpSecret
     },
   })
   

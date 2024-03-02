@@ -179,6 +179,55 @@ next()
 
 }
 
+const changePasswordController= async (req,res,next)=>{
+
+   const {oldPassword, newPassword}= req.body
+
+   if(!oldPassword || !newPassword){
+
+     next(new Error(400))
+   }
+
+  if(req.user){
+
+   const isOldPasswordTheSameInDatabase = await bcrypt.compare(oldPassword,req.user.password)
+
+   if(isOldPasswordTheSameInDatabase){
+
+    // hashing password
+    const hashedPassword= await bcrypt.hash(newPassword,10)
+
+        await  user.updateOne({email:req.user.email},{$set:{password:hashedPassword}})
+         return res.status(200).json({message:"Password changed successfully"})
+
+   }
+
+
+
+
+   return   res.status(403).json({message:"Old password is incorrect. Unable to change password"})
+
+  }
+  else{
+    const isOldPasswordTheSameInDatabase = await bcrypt.compare(oldPassword,req.employee.password)
+
+    if(isOldPasswordTheSameInDatabase){
+ 
+     // hashing password
+     const hashedPassword= await bcrypt.hash(newPassword,10)
+          await employee.updateOne({email:req.employee.email},{$set:{password:hashedPassword}})
+          return res.status(200).json({message:"Password changed successfully"})
+ 
+    }
+ 
+ 
+ 
+ 
+    return   res.status(403).json({message:"Old password is incorrect. Unable to change password"})
+  }
+
+
+}
 
 module.exports={
 userSignUpController,
@@ -187,4 +236,5 @@ emailConfirmationController,
 employeeSignUpController,
 loggedInController,
 resetPasswordController,
+changePasswordController
 }
