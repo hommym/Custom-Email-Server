@@ -5,7 +5,7 @@ const unverifiedMembers=require("../../schemas/unverified-accounts-shema.js")
 const employee=require("../../schemas/employee-schema.js")
 const nodeMailer=require("nodemailer")
 const jwt= require("jsonwebtoken")
-
+require("dotenv").config()
 
 
 const userSignUpController=async (req,res,next)=>{
@@ -85,9 +85,62 @@ res.status(200).json({message:"Email has being successfully confirmed"})
 
 }
 
-const logInController= async (req,res)=>{
+const logInController= async (req,res,next)=>{
+ // hashing password
+ 
+ 
 
+  if(req.user){
+    const isPasswordsTheSame= await bcrypt.compare(req.body.password,req.user.password)
+    //  comparing hashed password in body to the one in the database(req.user.password)
+    if(isPasswordsTheSame){
+     // creating jwt using user's id
+     
+    jwt.sign({userId:req.user._id},process.env.JwtSecretKey,{expiresIn:"1h"},function(err, token) {
+        if(err){
+          return next(err)
+        }
 
+      console.log(token);
+       //  sending token back to client
+     return res.status(200).json({jwt:token,message:"Log in successful"})
+
+    })
+
+   
+   
+    }
+    else{
+         return next(new Error("401"))
+    }
+
+   
+
+  }
+  else{
+    const isPasswordsTheSame= await bcrypt.compare(req.body.password,res.employee.password)
+
+    if(isPasswordsTheSame){
+      // creating jwt using user's id
+       jwt.sign({userId:req.employee._id},process.env.JwtSecretKey,{expiresIn:"1h"},function(err, token) {
+        if(err){
+          return next(err)
+        }
+
+        console.log(token);
+         //  sending token back to client
+        res.status(200).json({jwt:token,message:"Log in successful"})
+      })
+    
+      
+
+     }
+     else{
+      return  next(new Error("401"))
+     }
+    
+
+  }
 
 
      
