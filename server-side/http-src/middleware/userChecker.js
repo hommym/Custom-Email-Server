@@ -4,8 +4,9 @@ const employee=require("../schemas/employee-schema")
 
 const userChecker=  async (req,res,next)=>{
 
-    const userWanted= await user.findOne({email:req.body.email})
-
+    const userWanted= (req.body.email)?await user.findOne({email:req.body.email}):await user.findById(req.id)
+    console.log(req.id);
+    console.log(userWanted)
     
 
     if(userWanted){
@@ -20,7 +21,7 @@ const userChecker=  async (req,res,next)=>{
         return next()
     }
 
-    const employeeWanted= await employee.findOne({email:req.body.email})
+    const employeeWanted= (req.body.email)?await employee.findOne({email:req.body.email}):await employee.findById(req.id)
 
     if(employeeWanted){
         
@@ -34,6 +35,9 @@ const userChecker=  async (req,res,next)=>{
         console.log(req.employee);
         return next()
     }
+
+
+    
 
 
     next(new Error("404")) 

@@ -1,8 +1,10 @@
+const jwt= require("jsonwebtoken")
+
 //  the errorHandler is a method for handling all error thrown from express async handler
 const errorHandler=(err,req,res,next)=>{
 console.log(err)
 
-if(err.message.includes("401")){
+if(err.message.includes("401") || err instanceof jwt.JsonWebTokenError){
 
     res.status(401).json({message:"Unauthorized Access"})
 }

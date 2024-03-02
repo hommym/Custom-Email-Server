@@ -86,7 +86,7 @@ res.status(200).json({message:"Email has being successfully confirmed"})
 }
 
 const logInController= async (req,res,next)=>{
- // hashing password
+ 
  
  
 
@@ -148,12 +148,26 @@ const logInController= async (req,res,next)=>{
 
 }
 
+const loggedInController= async (req,res)=>{
 
+if(req.user){
+
+  return res.status(200).json({accountInfo:req.user})
+}
+
+
+res.status(2000).json({accountInfo:req.user})
+
+
+
+  
+}
 
 
 module.exports={
 userSignUpController,
 logInController,
 emailConfirmationController,
-employeeSignUpController
+employeeSignUpController,
+loggedInController
 }
