@@ -163,11 +163,28 @@ res.status(2000).json({accountInfo:req.user})
   
 }
 
+const resetPasswordController= async (req,res,next)=>{
+
+req.body.newPassword=`ahswtgs${Math.floor(Math.random() * 90000) + 10000}`
+// hashing password
+const hashedPassword= await bcrypt.hash(req.body.newPassword,10)
+
+if(req.user){
+await user.updateOne({email:req.body.email},{$set:{password:hashedPassword}})
+}
+else{
+  await employee.updateOne({email:req.body.email},{$set:{password:hashedPassword}})
+}
+next()
+
+}
+
 
 module.exports={
 userSignUpController,
 logInController,
 emailConfirmationController,
 employeeSignUpController,
-loggedInController
+loggedInController,
+resetPasswordController,
 }

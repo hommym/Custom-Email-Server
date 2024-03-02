@@ -33,7 +33,7 @@ if(req.body.user || req.body.employee ){
 }
 else{
 emailTitle="OurBusinessName Password Reset"
-message=`This the new password for loging into your account ${req.body.newPassword}, remember to change password after loging in `
+message=`This the new password for logging into your account ${req.body.newPassword}, remember to change password after logging in `
     
 }
 
