@@ -1,21 +1,18 @@
 const mongoDb= require("mongodb")
-const companyMembers=require("../schemas/user-account-schema")
+const user=require("../schemas/user-account-schema")
 
 
 
 const adminChecker= async (req,res,next)=>{
 
-const{id}=req.body
 
 
-if(!adminId){
-throw new Error("401")
-}
 
 // checking if member with the id in the body is an Admin
-const userAccount= await companyMembers.findById(id)
+const userAccount= await user.findById(req.id)
 
 if(userAccount && (userAccount.role==="user" || userAccount==="admin")){
+    req.user=userAccount
     next() 
 }
 else{

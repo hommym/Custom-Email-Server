@@ -56,9 +56,16 @@ res.status(201).json({message:"Account created successfully, verify email to log
 const employeeSignUpController= async (req,res,next)=>{
 
 const employeeData= req.body
-if(!(employeeData.fullName || employeeData.email || employeeData.password || orgId)){
+if(!(employeeData.fullName || employeeData.email || employeeData.password )){
   throw new Error("400")
 }
+
+if(!req.user.userOrgnisation){
+  return res.status(402).json({message:"No Organisation present for employees to be added to"})
+}
+
+// setting up organisation id for employee
+employee.userOrganisation=req.user.userOrganisation
 
 await employee.create({employeeData})
 next()

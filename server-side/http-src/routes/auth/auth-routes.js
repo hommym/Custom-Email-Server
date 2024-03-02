@@ -13,7 +13,7 @@ const authRouter=express.Router()
 authRouter.post("/user/sign-up",expressAsynHandler(userSignUpController),expressAsynHandler(emailSender))
 authRouter.get("/user/send-confirmation-email",expressAsynHandler(emailSender))
 
-authRouter.post("/employee/sign-up",expressAsynHandler(adminChecker),expressAsynHandler(employeeSignUpController),expressAsynHandler(emailSender))
+authRouter.post("/employee/sign-up",expressAsynHandler(verifyJWT),expressAsynHandler(adminChecker),expressAsynHandler(employeeSignUpController),expressAsynHandler(emailSender))
 
 authRouter.get("/login",expressAsynHandler(userChecker),expressAsynHandler(logInController))
 authRouter.get("/logged-in",expressAsynHandler(verifyJWT),expressAsynHandler(userChecker),expressAsynHandler(loggedInController))
