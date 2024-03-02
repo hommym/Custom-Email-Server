@@ -9,7 +9,7 @@ if(err.message.includes("401")){
 
 else if(err.message.includes("400")){
 
-    res.status(401).json({message:"Bad Request"})
+    res.status(400).json({message:"Bad Request"})
 }
 
 else if(err.message.includes("404")){

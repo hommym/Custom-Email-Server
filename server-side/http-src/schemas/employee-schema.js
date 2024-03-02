@@ -3,7 +3,7 @@ const mongoose = require("mongoose");
 
 const employees = new mongoose.Schema({
 
-    name:{
+    fullName:{
         type:String,
         required:true
     },
@@ -18,7 +18,7 @@ const employees = new mongoose.Schema({
     password:{
         type:String,
         require:true,
-        default:"Company_Name123"
+        default:"ktx#trt5123"
     },
 
     role:{
@@ -30,8 +30,12 @@ const employees = new mongoose.Schema({
         type:String,
         required:true,
         enum:["active","inactive"],
-        default:"inactive"
-    }
+        default:"active"
+    },
+    orgId:{
+        type:mongoose.Schema.Types.ObjectId,
+        ref:"Organisation"
+    } 
 
 
 })

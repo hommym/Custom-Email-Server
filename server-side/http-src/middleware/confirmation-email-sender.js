@@ -1,6 +1,6 @@
 const nodeMailer=require("nodemailer")
-const unverifiedMembers=require("../../schemas/unverified-accounts-shema.js")
-const port=require("../app")
+const unverifiedMembers=require("../schemas/unverified-accounts-shema.js")
+
 
 
 function verificationNumberGenerator() {
@@ -17,15 +17,15 @@ let emailTitle=null
 if(req.body.user || req.body.employee ){
   // adding newly created users to unverified members
   const verificationCode=verificationNumberGenerator()
-  const unverifiedMember= await unverifiedMembers.create({email:emailAdress,verificationCode:verificationCode})
+  await unverifiedMembers.create({email:emailAdress,verificationCode:verificationCode})
   emailTitle="OurBusinessName Email Confirmation"
 
   if(req.body.user){
 
-    message=`${req.body.name} ,your account has being created successfully, to confirm email click on this link http://localhost:${port}/auth/email-confirmation?emailAdress=${email}&verfCode=${verificationCode}`
+    message=`${req.body.name} ,your account has being created successfully, to confirm email click on this link http://localhost:8000/auth/email-confirmation?emailAdress=${emailAdress}&verfCode=${verificationCode}`
   }
   else{
-    message=`${req.body.name} your account has being successfully, to confirm email click this link http://localhost:${port}/auth/email-confirmation?emailAdress=${email}&verfCode=${verificationCode} . /n this is the default password for loging into your account password:ktx#trt5123 . Remember to change your password from the default password after log in `
+    message=`${req.body.name} your account has being successfully, to confirm email click this link http://localhost:8000/auth/email-confirmation?emailAdress=${emailAdress}&verfCode=${verificationCode} . /n this is the default password for loging into your account password:ktx#trt5123 . Remember to change your password from the default password after log in `
 
   }
   

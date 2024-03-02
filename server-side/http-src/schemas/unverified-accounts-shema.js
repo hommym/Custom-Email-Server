@@ -3,7 +3,7 @@ const mongoose=require("mongoose")
 
 
 const unverfiedMembersSchema= new mongoose.Schema({
-    userName:String,
+    email:String,
     verificationCode:Number
 })
 

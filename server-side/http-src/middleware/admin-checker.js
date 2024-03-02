@@ -8,7 +8,7 @@ const adminChecker= async (req,res,next)=>{
 const{id}=req.body
 
 
-if(!id){
+if(!adminId){
 throw new Error("401")
 }
 
