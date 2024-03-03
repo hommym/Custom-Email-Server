@@ -20,9 +20,9 @@ jwt.verify(token,process.env.JwtSecretKey,(err,data)=>{
 if(err){
     return next(err)
 }
-// console.log(data);
-req.id=data.userId
 
+req.id=data.userId
+console.log("Token verified")
 next()
 
 })

@@ -18,7 +18,6 @@ const employees = new mongoose.Schema({
     password:{
         type:String,
         require:true,
-        default:"ktx#trt5123"
     },
 
     role:{
@@ -32,10 +31,17 @@ const employees = new mongoose.Schema({
         enum:["active","inactive"],
         default:"active"
     },
+    isVerified: {
+		type: Boolean,
+		default: false,
+	}
+     ,
+
     orgId:{
         type:mongoose.Schema.Types.ObjectId,
         ref:"Organisation"
-    } 
+    },
+
 
 
 })

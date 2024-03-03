@@ -13,9 +13,11 @@ const userAccount= await user.findById(req.id)
 
 if(userAccount && (userAccount.role==="user" || userAccount==="admin")){
     req.user=userAccount
+    console.log("account belongs to orgOwner or Admin")
     next() 
 }
 else{
+    console.log("account do not belong orgOwner or Admin")
     throw new Error("401")
 }
 

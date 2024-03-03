@@ -17,7 +17,9 @@ const organisation = new mongoose.Schema({
     employeeCont:{
         type:Number,
         default:0
-    }
+    },
+
+  
 
 
 })

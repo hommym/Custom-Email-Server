@@ -22,10 +22,10 @@ if(req.body.user || req.body.employee ){
 
   if(req.body.user){
 
-    message=`${req.body.name} ,your account has being created successfully, to confirm email click on this link http://localhost:8000/auth/email-confirmation?emailAdress=${emailAdress}&verfCode=${verificationCode}`
+    message=`${req.body.fullName} ,your account has being created successfully, to confirm email click on this link http://localhost:8000/auth/email-confirmation?emailAdress=${emailAdress}&verfCode=${verificationCode}`
   }
   else{
-    message=`${req.body.name} your account has being successfully, to confirm email click this link http://localhost:8000/auth/email-confirmation?emailAdress=${emailAdress}&verfCode=${verificationCode} . /n this is the default password for loging into your account password:ktx#trt5123 . Remember to change your password from the default password after log in `
+    message=`${req.body.fullName} your account has being successfully created, to confirm email click this link http://localhost:8000/auth/email-confirmation?emailAdress=${emailAdress}&verfCode=${verificationCode} . this is the default password for loging into your account password:ktx#trt5123 .Remember to change your password from the default password after logging in `
 
   }
   

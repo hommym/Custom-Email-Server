@@ -5,12 +5,11 @@ const employee=require("../schemas/employee-schema")
 const userChecker=  async (req,res,next)=>{
 
     const userWanted= (req.body.email)?await user.findOne({email:req.body.email}):await user.findById(req.id)
-    console.log(req.id);
-    console.log(userWanted)
+    // console.log(req.id);
+    // console.log(userWanted)
     
 
     if(userWanted){
-
         if(!userWanted.isVerified){
 
             return res.status(401).json({message:"Email has not been verified"})
@@ -32,7 +31,6 @@ const userChecker=  async (req,res,next)=>{
             }
 
         req.employee=employeeWanted
-        console.log(req.employee);
         return next()
     }
 
