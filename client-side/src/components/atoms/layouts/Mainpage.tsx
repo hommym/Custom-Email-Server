@@ -6,6 +6,7 @@ import { VscSettingsGear } from "react-icons/vsc";
 import { HiMiniHomeModern } from "react-icons/hi2";
 import { LuActivity } from "react-icons/lu";
 import { IoPeopleSharp } from "react-icons/io5";
+import { GiTeamIdea } from "react-icons/gi";
 
 const Mainpage = ({ children }: { children: React.ReactNode }) => {
 	const { pathname } = useRouter();
@@ -20,37 +21,45 @@ const Mainpage = ({ children }: { children: React.ReactNode }) => {
 					</Link>
 				</div>
 				<nav className="w-full h-[70%] pl-8  overflow-y-auto">
-					<Link href="/dashboard" className={`"w-full mb-5 flex items-center gap-4 ${pathname === "/dashboard" ? "bg-sec active" : "bg-slate-100"} p-4 rounded-l-full`}>
+					<Link href="/dashboard" className={`"w-full mb-5 flex items-center gap-2 ${pathname === "/dashboard" ? "bg-sec active" : "bg-slate-100"} px-4 py-2 rounded-l-full`}>
 						<span className="w-8 h-8 flex items-center justify-center">
-							<HiMiniHomeModern className="text-2xl" />
+							<HiMiniHomeModern className="text-lg" />
 						</span>
-						<p>Start</p>
+						<p className="text-[15px]">Start </p>
+					</Link>
+					<Link
+						href="/dashboard/team"
+						className={`"w-full mb-5 flex items-center gap-2 ${pathname.startsWith("/dashboard/team") ? "bg-sec active" : "bg-slate-100"} px-4 py-2 rounded-l-full`}>
+						<span className="w-8 h-8 flex items-center justify-center">
+							<GiTeamIdea className="text-lg" />
+						</span>
+						<p className="text-[15px]">My Team </p>
 					</Link>
 					<Link
 						href="/dashboard/activity"
-						className={`"w-full mb-5 flex items-center gap-4 ${pathname.startsWith("/dashboard/activity") ? "bg-sec active" : "bg-slate-100"} p-4 rounded-l-full`}>
-						<span className="w-reen] flex items-center justify-center">
-							<LuActivity className="text-2xl" />
+						className={`"w-full mb-5 flex items-center gap-2 ${pathname.startsWith("/dashboard/activity") ? "bg-sec active" : "bg-slate-100"} px-4 py-2 rounded-l-full`}>
+						<span className="h-8 w-8 flex items-center justify-center">
+							<LuActivity className="text-lg" />
 						</span>
-						<p>Activity</p>
+						<p className="text-[15px]">Activity</p>
 					</Link>
 
 					<Link
 						href="/dashboard/audience"
-						className={`"w-full mb-5 flex items-center gap-4 ${pathname.startsWith("/dashboard/audience") ? "bg-sec active" : "bg-slate-100"} p-4 rounded-l-full`}>
-						<span className="w-reen] flex items-center justify-center">
-							<IoPeopleSharp className="text-2xl" />
+						className={`"w-full mb-5 flex items-center gap-2 ${pathname.startsWith("/dashboard/audience") ? "bg-sec active" : "bg-slate-100"} px-4 py-2 rounded-l-full`}>
+						<span className="h-8 w-8 flex items-center justify-center">
+							<IoPeopleSharp className="text-lg" />
 						</span>
-						<p>Audience</p>
+						<p className="text-[15px]">Audience</p>
 					</Link>
 
 					<Link
 						href="/dashboard/settings"
-						className={`"w-full mb-5 flex items-center gap-4 ${pathname.startsWith("/dashboard/settings") ? "bg-sec active" : "bg-slate-100"} p-4 rounded-l-full`}>
+						className={`"w-full mb-5 flex items-center gap-2 ${pathname.startsWith("/dashboard/settings") ? "bg-sec active" : "bg-slate-100"} px-4 py-2 rounded-l-full`}>
 						<span className="w-8 h-8 flex items-center justify-center">
-							<VscSettingsGear className="text-2xl" />
+							<VscSettingsGear className="text-lg" />
 						</span>
-						<p>Settings</p>
+						<p className="text-[15px]">Settings</p>
 					</Link>
 				</nav>
 				<div className="w-full flex items-center justify-start pl-6 gap-6 h-[15%] bg-[#F3F5FF]">
