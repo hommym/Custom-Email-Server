@@ -14,9 +14,6 @@ const index = () => {
 				<div className="flex gap-4">
 					{tab === "overview" && (
 						<>
-							<Link href="/dashboard/audience/add" className="w-auto px-4 py-3 bg-[#32325c] rounded-[3px] flex items-center justify-center font-medium text-white ">
-								Add A Contact
-							</Link>
 							<Link
 								href="/dashboard/audience/import"
 								className="w-auto px-4 py-3 border-[1px] text-[#32325c] border-[#32325c] rounded-[3px] flex items-center justify-center font-medium">

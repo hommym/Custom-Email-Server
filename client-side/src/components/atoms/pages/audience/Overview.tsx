@@ -78,7 +78,7 @@ const Overview = () => {
 				</section>
 
 				<section className="w-full mt-6 rounded-[5px] border-[1px] gap-2 bg-white h-auto">
-					<div className="px-8 bg-[#EAECFB] py-8 flex items-stretch justify-between">
+					<div className="px-8 bg-[#EAECFB] py-8 gap-3 flex items-stretch justify-between">
 						<div className="w-3/5">
 							<h3 className="text-xl mb-2 font-medium">Account storage</h3>
 							<p className="text-[16px]">
