@@ -21,7 +21,7 @@ const userChecker=  async (req,res,next)=>{
     }
 
     const employeeWanted= (req.body.email)?await employee.findOne({email:req.body.email}):await employee.findById(req.id)
-
+     
     if(employeeWanted){
         
         if(!employeeWanted.isVerified){

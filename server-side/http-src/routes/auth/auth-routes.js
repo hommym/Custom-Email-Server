@@ -1,7 +1,7 @@
 // importing required modules 
 const express= require("express")
 const expressAsyncHandler=require("express-async-handler")
-const {userSignUpController,logInController,emailConfirmationController,employeeSignUpController,loggedInController,resetPasswordController,changePasswordController}=require("./auth-controller.js")
+const {userSignUpController,logInController,emailConfirmationController,employeeSignUpController,loggedInController,resetPasswordController,changePasswordController,smtpAuthController}=require("./auth-controller.js")
 const adminChecker=require("../../middleware/admin-checker.js")
 const userChecker=require("../../middleware/userChecker.js")
 const emailSender=require("../../middleware/confirmation-email-sender.js")
@@ -24,6 +24,7 @@ authRouter.put("/change-password",expressAsyncHandler(verifyJWT),expressAsyncHan
 authRouter.get("/email-confirmation",expressAsyncHandler(emailConfirmationController))
 
 
-
+// route to hit when authenticating people on the smtp server
+authRouter.get("/smtp-auth",expressAsyncHandler(userChecker),expressAsyncHandler(smtpAuthController))
 
 module.exports=authRouter

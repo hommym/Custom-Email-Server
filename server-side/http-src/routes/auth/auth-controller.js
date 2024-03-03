@@ -114,7 +114,7 @@ const logInController= async (req,res,next)=>{
  
  
  
-
+ // if smtp server is being access by orgOwner
   if(req.user){
     
     const isPasswordsTheSame= await bcrypt.compare(req.body.password,req.user.password)
@@ -129,25 +129,24 @@ const logInController= async (req,res,next)=>{
 
       console.log("token created");
        //  sending token back to client
-     return res.status(200).json({jwt:token,message:"Log in successful"})
+     res.status(200).json({jwt:token,message:"Log in successful"})
 
     })
 
-   
+    return 0
    
     }
-    else{
-         return next(new Error("401"))
-    }
+    
+     next(new Error("401"))
+    
 
    
 
   }
-  else{
+  
     
-    
+    // if smtp server is being access by an employee
     const isPasswordsTheSame= await bcrypt.compare(req.body.password,req.employee.password)
-
     if(isPasswordsTheSame){
       // creating jwt using user's id
        jwt.sign({userId:req.employee._id},process.env.JwtSecretKey,{expiresIn:"1h"},function(err, token) {
@@ -161,14 +160,14 @@ const logInController= async (req,res,next)=>{
       })
     
       
-
-     }
-     else{
-      return  next(new Error("401"))
+      return 0
      }
     
+      next(new Error("401"))
+     
+    
 
-  }
+  
 
 
      
@@ -258,6 +257,45 @@ const changePasswordController= async (req,res,next)=>{
   }
 
 
+
+
+
+
+
+
+
+}
+
+
+
+
+const smtpAuthController= async (req,res,next)=>{
+
+  console.log("Authenticating a user hiting smtp server...");
+  // if smtp server is being access by orgOwner
+  if(req.user){
+    const isPasswordsTheSame= await bcrypt.compare(req.body.password,req.user.password)
+    //  comparing hashed password in body to the one in the database(req.user.password)
+    if(isPasswordsTheSame){
+      console.log("User authenticated");
+      return res.status(200).json({message:"Account present on server"})
+    }
+    
+    return next(new Error("401"))
+    
+  }
+
+// if smtp server is being access by an employee
+  const isPasswordsTheSame= await bcrypt.compare(req.body.password,req.employee.password)
+
+    if(isPasswordsTheSame){
+      console.log("User authenticated");
+      return res.status(200).json({message:"Account present on server"})
+    }
+
+    next(new Error("401"))
+
+
 }
 
 module.exports={
@@ -267,5 +305,6 @@ emailConfirmationController,
 employeeSignUpController,
 loggedInController,
 resetPasswordController,
-changePasswordController
+changePasswordController,
+smtpAuthController
 }
