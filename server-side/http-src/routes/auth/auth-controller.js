@@ -122,7 +122,7 @@ const logInController= async (req,res,next)=>{
     if(isPasswordsTheSame){
      // creating jwt using user's id
      
-    jwt.sign({userId:req.user._id},process.env.JwtSecretKey,{expiresIn:"1h"},function(err, token) {
+    jwt.sign({userId:req.user._id},process.env.JwtSecretKey,{expiresIn:"5h"},function(err, token) {
         if(err){
           return next(err)
         }
