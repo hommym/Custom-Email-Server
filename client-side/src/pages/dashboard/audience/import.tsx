@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import Link from "next/link";
 
-import Mainpage from "@/components/atoms/layouts/Mainpage";
+import Mainpage from "@/components/layouts/Mainpage";
 import UploadFile from "@/components/atoms/pages/audience/upload/UploadFile";
 import PasteEmails from "@/components/atoms/pages/audience/upload/PasteEmails";
 

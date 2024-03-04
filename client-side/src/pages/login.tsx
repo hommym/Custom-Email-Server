@@ -4,6 +4,8 @@ import { useState } from "react";
 import PrimaryInput from "@/components/atoms/PrimaryInput";
 import PrimaryButton from "@/components/atoms/PrimaryButton";
 
+import { FcGoogle } from "react-icons/fc";
+
 export default function Login() {
 	const [loggedIn, setLoggedIn] = useState(false);
 	return (
@@ -16,7 +18,9 @@ export default function Login() {
 				<form action="" className="w-full flex flex-col items-center justify-center min-h-[50vh] rounded-[20px] mt-12 p-12 px-16 shadow-md bg-white">
 					<h3 className="text-3xl font-normal">Log in</h3>
 					<button className="w-[180px] flex items-center gap-2 mt-8 h-10 p-[3px] bg-[#1a73e8] rounded-[3px] overflow-hidden">
-						<div className="w-9 rounded-l-[3px] h-full bg-white flex items-center justify-center"></div>
+						<div className="w-9 rounded-l-[3px] h-full bg-white flex items-center justify-center">
+							<FcGoogle className="text-2xl" />
+						</div>
 						<p className="text-sm text-white font-medium">Sign in with Google</p>
 					</button>
 

@@ -1,8 +1,11 @@
 import Link from "next/link";
+import { useState } from "react";
 
 import PrimaryInput from "@/components/atoms/PrimaryInput";
 import PrimaryButton from "@/components/atoms/PrimaryButton";
-import { useState } from "react";
+
+import { FcGoogle } from "react-icons/fc";
+import { RxLoop } from "react-icons/rx";
 
 export default function CreateAccount() {
 	const [tcsAccepted, setTcsAccepted] = useState(false);
@@ -10,13 +13,17 @@ export default function CreateAccount() {
 		<main className="w-full h-auto min-h-screen bg-bg">
 			<section className="w-full max-w-[560px] flex flex-col items-center justify-center py-12 mx-auto">
 				<div className="w-[300px] h-[40px] flex items-center justify-center gap-3">
-					<div className="w-10 h-10 bg-[green]"></div>
+					<div className="w-10 h-10 flex items-center justify-center">
+						<RxLoop className="text-3xl text-deep-text" />
+					</div>
 					<h3 className="text-deep-text font-bold text-[28px]">Elastic Email</h3>
 				</div>
 				<form action="" className="w-full flex flex-col items-center justify-center min-h-[50vh] rounded-[20px] mt-12 p-12 px-16 shadow-md bg-white">
 					<h3 className="text-2xl font-medium">Sign up</h3>
 					<button className="w-[180px] flex items-center gap-2 mt-5 h-10 p-[3px] bg-[#1a73e8] rounded-[3px] overflow-hidden">
-						<div className="w-9 rounded-l-[3px] h-full bg-white flex items-center justify-center"></div>
+						<div className="w-9 rounded-l-[3px] h-full bg-white flex items-center justify-center">
+							<FcGoogle className="text-2xl" />
+						</div>
 						<p className="text-sm text-white font-medium">Sign in with Google</p>
 					</button>
 

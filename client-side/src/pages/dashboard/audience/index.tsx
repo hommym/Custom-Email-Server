@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 
-import Mainpage from "@/components/atoms/layouts/Mainpage";
+import Mainpage from "@/components/layouts/Mainpage";
 import Overview from "@/components/atoms/pages/audience/Overview";
 import Unsubscribed from "@/components/atoms/pages/audience/Unsubscribed";
 import Link from "next/link";

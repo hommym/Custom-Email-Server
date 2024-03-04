@@ -1,7 +1,7 @@
 import React from "react";
 import Link from "next/link";
 
-import Mainpage from "@/components/atoms/layouts/Mainpage";
+import Mainpage from "@/components/layouts/Mainpage";
 import PrimaryInput from "@/components/atoms/PrimaryInput";
 import PrimaryButton from "@/components/atoms/PrimaryButton";
 
