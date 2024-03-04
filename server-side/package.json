@@ -19,6 +19,7 @@
 		"jsonwebtoken": "^9.0.2",
 		"mongodb": "^6.3.0",
 		"mongoose": "^8.0.2",
+		"multer": "^1.4.5-lts.1",
 		"nodemailer": "^6.9.10",
 		"smtp-server": "^3.13.2"
 	},
