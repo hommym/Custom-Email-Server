@@ -1,7 +1,9 @@
+// importing neccesary modules
+const outBox= require("../../schemas/outbox-schema")
 const nodeMailer=require("nodemailer")
+const mongoose=require("mongoose")
 
-
-const sendController=(req,res,next)=>{
+const sendController= async (req,res,next) =>{
 
     //  setting up nodemailer
     const transporter = nodeMailer.createTransport({
@@ -23,6 +25,7 @@ const sendController=(req,res,next)=>{
       const originalHtml=req.body.mailObject.html
       req.body.mailObject.html=originalHtml.replace(pattern,newText)
       console.log("Finished setting email tracker");
+      console.log(req.body.mailObject.html);
       
 
     //   sending email to my server
@@ -38,10 +41,20 @@ const sendController=(req,res,next)=>{
 
 }
 
+const emailTrackerController= async (req,res,next)=>{
 
+const {emailId}=req.params
+// updating number people opening the email
+const oldDocument= await outBox.findById(emailId)
+await outBox.updateOne({_id:new mongoose.Types.ObjectId(emailId)},{$set:{viewCount:(oldDocument.viewCount+1)}})
+res.end("Email tracked")
+
+
+}
 
 
 
 module.exports={
-    sendController
+    sendController,
+    emailTrackerController
 }
