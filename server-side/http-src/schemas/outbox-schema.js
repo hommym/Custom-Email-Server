@@ -5,15 +5,10 @@ const mongoose=require("mongoose")
 const outBoxSchema= new mongoose.Schema({
 
 
-// the ref is to help us know where sender's id is coming from (wheather from User or Employee schema)
- ref:{
-    type:String,
-    required:true
+composedEmail:Object,
 
- },  
 senderId:{
     type:mongoose.Schema.Types.ObjectId,
-    refPath:"ref"
 },
 
 organisation:{
@@ -29,7 +24,14 @@ viewCount:{
 sendProgress:{
     type:Number,
     deafault:0
+},
+
+state:{
+    type:String,
+    enum:["draft","in-progress","sent"],
+    default:"draft"
 }
+
 
 
 })
