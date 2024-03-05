@@ -1,6 +1,8 @@
 import React from "react";
 import Link from "next/link";
 
+import { GiProgression } from "react-icons/gi";
+
 const Overview = () => {
 	return (
 		<main className="flex pb-12  w-full justify-between gap-8 items-stretch ">
@@ -14,11 +16,11 @@ const Overview = () => {
 					<div className="py-6 px-8 border-b-[1px] flex items-end justify-between gap-4">
 						<div className="w-1/2 ">
 							<h3 className="text-xl font-medium mb-2">0</h3>
-							<p className="text-[18px] text-sec">All contacts</p>
+							<p className="text-[16px] text-sec">All contacts</p>
 						</div>
 						<div className="w-1/2">
 							<h3 className="text-xl font-medium mb-2">0</h3>
-							<p className="text-[18px]">Subscribed</p>
+							<p className="text-sm">Subscribed</p>
 						</div>
 					</div>
 					<div className="py-6 px-8 border-b-[1px] flex items-end justify-between gap-4">
@@ -31,7 +33,7 @@ const Overview = () => {
 				<section className="w-full mt-8 bg-white rounded-[5px] h-auto border-[1px]">
 					<div className="py-6 px-8 border-b-[1px]">
 						<h3 className="font-medium text-xl">Recent growth</h3>
-						<p>Changes in audience in the last 30 days.</p>
+						<p className="text-sm opacity-90">Changes in audience in the last 30 days.</p>
 					</div>
 
 					<div className="py-6 px-8 border-b-[1px] flex items-end justify-between gap-4">
@@ -48,19 +50,19 @@ const Overview = () => {
 				<section className="w-full mt-8 bg-white rounded-[5px] h-auto border-[1px]">
 					<div className="py-6 px-8 border-b-[1px]">
 						<h3 className="font-medium text-xl">Audience performance</h3>
-						<p>Last 6 months.</p>
+						<p className="text-sm opacity-90">Last 6 months.</p>
 					</div>
 
 					<div className="py-6 px-8 border-b-[1px] flex items-end justify-between gap-4">
 						<p>Avg. open rate</p>
 						<p className="text-[18px]">
-							<span>0.00</span> %
+							<span className="text-[16px]">0.00</span> %
 						</p>
 					</div>
 					<div className="py-6 px-8 border-b-[1px] flex items-end justify-between gap-4">
 						<p>Avg. click rate</p>
 						<p className="text-[18px]">
-							<span>0.00</span>%
+							<span className="text-[16px]">0.00</span> %
 						</p>
 					</div>
 				</section>
@@ -89,7 +91,9 @@ const Overview = () => {
 								your current plan to increase the limit.
 							</p>
 						</div>
-						<div className="w-2/5 bg-[green] h-auto"></div>
+						<div className="w-2/5 flex items-center justify-center h-auto">
+							<GiProgression className="text-7xl opacity-80" />
+						</div>
 					</div>
 					<div className="w-full p-8">
 						<div className="flex mb-3 items-stretch justify-between">

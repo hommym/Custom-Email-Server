@@ -18,7 +18,7 @@ const index = () => {
 					<div className="w-[10%] text-sm font-bold h-12 flex items-center justify-center border-l-[1px]">Status</div>
 					<div className="w-[40%] text-sm font-bold  h-12 flex items-center justify-center border-l-[1px]">Email</div>
 					<div className="w-[35%] text-sm font-bold h-12 flex items-center justify-center border-l-[1px]">Fullname</div>
-					<div className="w-[25%] text-sm font-bold h-12 flex items-center justify-center border-x-[1px]"></div>
+					<div className="w-[25%] text-sm font-bold h-12 flex items-center justify-center border-x-[1px]">Change Status</div>
 				</div>
 
 				<>
@@ -27,9 +27,7 @@ const index = () => {
 							<div className="w-[10%] text-sm h-12 flex items-center justify-center border-l-[1px]">Status</div>
 							<div className="w-[40%] text-sm h-12 flex items-center justify-center border-l-[1px]">Email</div>
 							<div className="w-[35%] text-sm h-12 flex items-center justify-center border-l-[1px]">Fullname</div>
-							<Link href="/dashboard/team/:memberId/status" className="text-sec hover:underline w-[25%] text-sm h-12 flex items-center justify-center border-x-[1px]">
-								Change status
-							</Link>
+							<button className="text-sec hover:underline w-[25%] text-sm h-12 flex items-center justify-center border-x-[1px]">{true ? "Disable" : "Enable"}</button>
 						</div>
 					))}
 				</>
