@@ -7,9 +7,10 @@ interface IButton {
 	sx?: string;
 	isLoading?: boolean;
 	disabled?: boolean;
+	type?: "button" | "submit";
 }
 
-const PrimaryButton = ({ href, text, sx = "", disabled, isLoading }: IButton) => {
+const PrimaryButton = ({ href, text, sx = "", disabled, isLoading, type = "button" }: IButton) => {
 	const style = `${sx} w-full flex items-center justify-center ${disabled || isLoading ? "opacity-30 bg-sec" : "bg-sec text-white hover:opacity-70"}  h-12 rounded-[5px] text-white font-light`;
 	return (
 		<>
@@ -20,7 +21,7 @@ const PrimaryButton = ({ href, text, sx = "", disabled, isLoading }: IButton) =>
 			)}
 
 			{!href && (
-				<button className={style} disabled={disabled}>
+				<button className={style} disabled={disabled} type={type}>
 					{text}
 				</button>
 			)}

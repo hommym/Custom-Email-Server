@@ -1,31 +1,27 @@
 import Link from "next/link";
 import { useState } from "react";
 
+import useSelectedPropertiesFromHookForm from "@/hooks/useSelectedValuesFromHooks";
+import { registerSchema } from "@/libs/hookform";
+
 import PrimaryInput from "@/components/atoms/PrimaryInput";
 import PrimaryButton from "@/components/atoms/PrimaryButton";
-
-import { FcGoogle } from "react-icons/fc";
-import { RxLoop } from "react-icons/rx";
+import Logo from "@/components/atoms/Logo";
 
 export default function CreateAccount() {
 	const [tcsAccepted, setTcsAccepted] = useState(false);
+	const { register, handleSubmit } = useSelectedPropertiesFromHookForm(registerSchema);
+
+	const registerUser = (data: any) => {
+		const { firstname, lastname, email, password } = data;
+		console.log({ firstname, lastname, email, password });
+	};
 	return (
 		<main className="w-full h-auto min-h-screen bg-bg">
 			<section className="w-full max-w-[560px] flex flex-col items-center justify-center py-12 mx-auto">
-				<div className="w-[300px] h-[40px] flex items-center justify-center gap-3">
-					<div className="w-10 h-10 flex items-center justify-center">
-						<RxLoop className="text-3xl text-deep-text" />
-					</div>
-					<h3 className="text-deep-text font-bold text-[28px]">Elastic Email</h3>
-				</div>
-				<form action="" className="w-full flex flex-col items-center justify-center min-h-[50vh] rounded-[20px] mt-12 p-12 px-16 shadow-md bg-white">
+				<Logo />
+				<form action="" className="w-full flex flex-col items-center justify-center min-h-[50vh] rounded-[20px] mt-12 p-12 px-16 shadow-md bg-white" onSubmit={handleSubmit(registerUser)}>
 					<h3 className="text-2xl font-medium">Sign up</h3>
-					<button className="w-[180px] flex items-center gap-2 mt-5 h-10 p-[3px] bg-[#1a73e8] rounded-[3px] overflow-hidden">
-						<div className="w-9 rounded-l-[3px] h-full bg-white flex items-center justify-center">
-							<FcGoogle className="text-2xl" />
-						</div>
-						<p className="text-sm text-white font-medium">Sign in with Google</p>
-					</button>
 
 					<div className="w-full gap-3 mt-8  flex items-center justify-between">
 						<div className="w-1/2 block h-[1px] bg-[rgb(226,232,240)]"></div>
@@ -33,12 +29,12 @@ export default function CreateAccount() {
 						<div className="w-1/2 block h-[1px] bg-[rgb(226,232,240)]"></div>
 					</div>
 
-					<PrimaryInput name="email" label="Email" id="email" />
-					<PrimaryInput name="password" label="Password" id="password" type="password" />
+					<PrimaryInput name="email" label="Email" register={register} />
+					<PrimaryInput name="password" label="Password" type="password" register={register} />
 
 					<div className="w-full flex items-center justify-between gap-4">
-						<PrimaryInput name="firstname" label="First name" id="firstname" />
-						<PrimaryInput name="lastname" label="Last name" id="lastname" />
+						<PrimaryInput name="firstname" label="First name" register={register} />
+						<PrimaryInput name="lastname" label="Last name" register={register} />
 					</div>
 
 					<div className="w-full mb-6 flex items-center gap-2">
@@ -48,7 +44,7 @@ export default function CreateAccount() {
 						</label>
 					</div>
 
-					<PrimaryButton text="Sign Up" disabled={!tcsAccepted} />
+					<PrimaryButton text="Sign Up" disabled={!tcsAccepted} type="submit" />
 
 					<div className="w-full h-[1px] bg-[rgb(226,232,240)] my-8"></div>
 

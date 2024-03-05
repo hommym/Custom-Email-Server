@@ -14,12 +14,9 @@ export const registerSchema = z.object({
 });
 
 export const forgotPasswordSchema = z.object({
-	userData: z.string().min(1, { message: "Please enter your email address" }),
+	email: z.string().min(1, { message: "Please enter your email address" }),
 });
 
-export const resetPasswordSchema = z.object({
-	email: z.string().min(1, { message: "Please enter your email address" }).email({ message: "Please enter a valid email address" }),
-});
 
 export const setPasswordSchema = z.object({
 	password: z.string().min(1, { message: "Please enter your password" }).min(8, { message: 'Password must be at least 8 characters in length' }),

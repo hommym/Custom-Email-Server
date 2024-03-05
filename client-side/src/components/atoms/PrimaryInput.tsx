@@ -5,13 +5,12 @@ import { FaRegEyeSlash, FaRegEye } from "react-icons/fa";
 interface IInput {
 	name: string;
 	label: string;
-	// register: any;
 	type?: string;
-	id: string;
 	errorMsg?: boolean;
+	register?: any;
 }
 
-const PrimaryInput = ({ id, name, label, type = "text", errorMsg }: IInput) => {
+const PrimaryInput = ({ name, label, type = "text", errorMsg, register = {} }: IInput) => {
 	const [actualType, setActualType] = useState(type);
 
 	const toggleType = () => {
@@ -19,11 +18,11 @@ const PrimaryInput = ({ id, name, label, type = "text", errorMsg }: IInput) => {
 	};
 	return (
 		<div className="w-full mb-6">
-			<label htmlFor={id} className="block font-medium">
+			<label htmlFor={name} className="block font-medium">
 				{label}
 			</label>
-			<div className="w-full bg-[red] rounded-full flex items-center relative justify-between">
-				<input type={actualType} className="w-full rounded-[5px] relative  h-12 border-[1px] px-2"></input>
+			<div className="w-full bg-[red] rounded-full flex items-center relative justify-between" id={name}>
+				<input type={actualType} className="w-full rounded-[5px] relative  h-12 border-[1px] px-2" {...register(name)}></input>
 				{type === "password" && (
 					<button
 						type="button"
