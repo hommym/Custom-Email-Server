@@ -16,9 +16,9 @@ const Mainpage = ({ children }: { children: React.ReactNode }) => {
 		<div className="w-full h-screen flex items-start justify-start">
 			{/* Navbar */}
 			<aside className="w-1/5 h-screen border-r-[1px] pt-4 pr-0">
-				<Link href="/" className="w-full h-[15%] pl-8  flex items-center justify-start  gap-3">
+				<div className="w-full h-[15%] pl-8  flex items-center justify-start  gap-3">
 					<Logo sx="w-auto !text-sm" textSx="!text-lg" />
-				</Link>
+				</div>
 				<nav className="w-full h-[70%] pl-8  overflow-y-auto">
 					<Link href="/dashboard" className={`"w-full mb-5 flex items-center gap-2 ${pathname === "/dashboard" ? "bg-sec active" : "bg-slate-100"} px-4 py-2 rounded-l-full`}>
 						<span className="w-8 h-8 flex items-center justify-center">

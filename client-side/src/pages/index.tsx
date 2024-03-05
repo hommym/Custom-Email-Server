@@ -8,6 +8,7 @@ import PrimaryButton from "@/components/atoms/PrimaryButton";
 import ProductMarketingImage from "@/assets/product-marketing.webp";
 import EmailMarketingLogo from "@/assets/email-marketing-logo.svg";
 import SupportImage from "@/assets/support.webp";
+import HeroImage from "@/assets/main-graphic-woman.webp";
 
 import { LuSend } from "react-icons/lu";
 import { RiUserReceived2Line } from "react-icons/ri";
@@ -20,7 +21,13 @@ export default function Home() {
 			<main className="w-full h-auto min-h-screen bg-[#F7F7FC]  mx-auto">
 				<div className="w-full">
 					{/* Hero section */}
-					<section className="w-full h-screen mt-4 bg-slate-200"></section>
+					<section className="w-full h-auto py-24  bg-slate-200">
+						<div className="w-full max-w-6xl mx-auto ">
+							<h1 className="text-6xl text-center text-deep-text font-black mb-12 leading-[70px]">
+								Achieve goals with the most <br /> <span className="text-[#5457FF]">affordable</span> email delivery service
+							</h1>
+						</div>
+					</section>
 
 					<Benefits />
 

@@ -7,6 +7,7 @@ import { registerSchema } from "@/libs/hookform";
 import PrimaryInput from "@/components/atoms/PrimaryInput";
 import PrimaryButton from "@/components/atoms/PrimaryButton";
 import Logo from "@/components/atoms/Logo";
+import LogInWithGoogle from "@/components/atoms/LogInWithGoogle";
 
 export default function CreateAccount() {
 	const [tcsAccepted, setTcsAccepted] = useState(false);
@@ -22,7 +23,7 @@ export default function CreateAccount() {
 				<Logo />
 				<form action="" className="w-full flex flex-col items-center justify-center min-h-[50vh] rounded-[20px] mt-12 p-12 px-16 shadow-md bg-white" onSubmit={handleSubmit(registerUser)}>
 					<h3 className="text-2xl font-medium">Sign up</h3>
-
+					<LogInWithGoogle />
 					<div className="w-full gap-3 mt-8  flex items-center justify-between">
 						<div className="w-1/2 block h-[1px] bg-[rgb(226,232,240)]"></div>
 						<p className="text-[#32325c] text-lg font-medium">or</p>
