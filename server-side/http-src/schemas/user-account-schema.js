@@ -2,7 +2,7 @@
 const mongoose = require("mongoose");
 
 // the users been used here refers to the companies having an account on the server
-const userAccountSchema = new mongoose.Schema({
+const user = new mongoose.Schema({
 	fullName: {
 		type: String,
 		required: true,
@@ -20,15 +20,28 @@ const userAccountSchema = new mongoose.Schema({
 		required: true,
 	},
 
-	accountStatus: {
+	role: {
 		type: String,
+        enum:["admin","user"],
 		default: "user",
 	},
 
+	provider:{
+		type:String,
+		enum:["google","local"],
+		default:"local"
+	}
+	,
 	isVerified: {
 		type: Boolean,
 		default: false,
 	},
+
+	userOrgnisation:{
+		type:mongoose.Schema.Types.ObjectId,
+		ref:"Organisation"
+	}
+
 });
 
-module.exports = mongoose.model("user-accounts", userAccountSchema);
+module.exports = mongoose.model("User", user);
