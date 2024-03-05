@@ -13,13 +13,18 @@ export const registerSchema = z.object({
 	password: z.string().min(1, { message: "Please enter your password" }).min(8, { message: 'Passwords must be at least 8 characters in length' }),
 });
 
-export const forgotPasswordSchema = z.object({
-	userData: z.string().min(1, { message: "Please enter your email address" }),
+
+export const registerTeamMemberSchema = z.object({
+	firstname: z.string().min(1, { message: "Please enter your firstname" }).min(3, { message: 'First name should not be less than 3 characters' }),
+	lastname: z.string().min(1, { message: "Please enter your lastname" }).min(3, { message: 'Last name should not be less than 3 characters' }),
+	email: z.string().min(1, { message: "Please enter your email address" }).email({ message: "Please enter a valid email address" }),
+	role: z.string().min(1, { message: "Please select user's role" })
 });
 
-export const resetPasswordSchema = z.object({
-	email: z.string().min(1, { message: "Please enter your email address" }).email({ message: "Please enter a valid email address" }),
+export const forgotPasswordSchema = z.object({
+	email: z.string().min(1, { message: "Please enter your email address" }),
 });
+
 
 export const setPasswordSchema = z.object({
 	password: z.string().min(1, { message: "Please enter your password" }).min(8, { message: 'Password must be at least 8 characters in length' }),

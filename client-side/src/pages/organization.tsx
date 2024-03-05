@@ -1,7 +1,11 @@
 import React, { useState } from "react";
 import Link from "next/link";
+import Image from "next/image";
 
 import PrimaryButton from "@/components/atoms/PrimaryButton";
+import Logo from "@/components/atoms/Logo";
+
+import SetupLogo from "@/assets/setup.svg";
 
 import { IoMdCheckmark } from "react-icons/io";
 
@@ -23,15 +27,12 @@ const organization = () => {
 	return (
 		<div className="bg-bg w-full h-auto">
 			<section className="w-full max-w-5xl p-12 flex items-center flex-col h-auto mx-auto">
-				<div className="flex mb-6 items-center gap-3">
-					<div className="w-10 h-10 bg-[green]"></div>
-					<h3 className="font-medium text-3xl">Elastic Email</h3>
-				</div>
+				<Logo />
 
 				{!completed && (
 					<>
 						<div className="flex mb-16 items-center gap-3">
-							<h3 className="font-medium text-2xl">Organization Setup</h3>
+							<h3 className="font-medium text-2xl mt-8">Organization Setup</h3>
 						</div>
 
 						<div className="w-full h-auto p-6 bg-[#F3F5FF] mt-8 border-[1px] flex items-center justify-between">
@@ -39,7 +40,10 @@ const organization = () => {
 								<h3 className="text-xl font-medium mb-2">Hello Ty</h3>
 								<p>Let's set up your account. We know your time is valuable, but please fill these up , to continue.</p>
 							</div>
-							<div className="w-1/5 bg-[red] h-24"></div>
+							<div className="w-1/5 h-24 relative flex items-center">
+								{/* <Image src={SetupLogo} alt="Logo" /> */}
+								<SetupLogo className="w-full h-full" />
+							</div>
 						</div>
 						{/* Form */}
 						<form className="w-full h-auto p-12 bg-white mt-8 border-[1px] ">
@@ -159,7 +163,7 @@ const organization = () => {
 						<div className="w-48 flex items-center justify-center h-48 rounded-full border-[2px] border-[#32325c] my-16">
 							<IoMdCheckmark className="text-5xl" />
 						</div>
-						<h3 className="text-3xl font-medium mb-5">Welcome to Elastic Email, Ty!</h3>
+						<h3 className="text-3xl font-medium mb-5">Welcome to Company Name, Ty!</h3>
 						<p className="w-3/5 opacity-80 mb-8 text-center">
 							We appreciate your input and look forward to working with you. If you have any questions or suggestions, please do not hesitate to{" "}
 							<Link href="/contact-us" className="text-sec hover:underline">

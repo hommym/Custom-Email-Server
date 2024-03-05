@@ -2,6 +2,8 @@ import React from "react";
 import Link from "next/link";
 import { useRouter } from "next/router";
 
+import Logo from "../atoms/Logo";
+
 import { VscSettingsGear } from "react-icons/vsc";
 import { HiMiniHomeModern } from "react-icons/hi2";
 import { LuActivity } from "react-icons/lu";
@@ -15,10 +17,7 @@ const Mainpage = ({ children }: { children: React.ReactNode }) => {
 			{/* Navbar */}
 			<aside className="w-1/5 h-screen border-r-[1px] pt-4 pr-0">
 				<div className="w-full h-[15%] pl-8  flex items-center justify-start  gap-3">
-					<button className="w-8 h-8 bg-[red]"></button>
-					<Link href="/" className="text-[18px] font-medium">
-						Elastic Email
-					</Link>
+					<Logo sx="w-auto !text-sm" textSx="!text-lg" />
 				</div>
 				<nav className="w-full h-[70%] pl-8  overflow-y-auto">
 					<Link href="/dashboard" className={`"w-full mb-5 flex items-center gap-2 ${pathname === "/dashboard" ? "bg-sec active" : "bg-slate-100"} px-4 py-2 rounded-l-full`}>
