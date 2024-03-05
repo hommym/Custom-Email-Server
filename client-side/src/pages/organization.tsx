@@ -163,7 +163,7 @@ const organization = () => {
 						<div className="w-48 flex items-center justify-center h-48 rounded-full border-[2px] border-[#32325c] my-16">
 							<IoMdCheckmark className="text-5xl" />
 						</div>
-						<h3 className="text-3xl font-medium mb-5">Welcome to Elastic Email, Ty!</h3>
+						<h3 className="text-3xl font-medium mb-5">Welcome to Company Name, Ty!</h3>
 						<p className="w-3/5 opacity-80 mb-8 text-center">
 							We appreciate your input and look forward to working with you. If you have any questions or suggestions, please do not hesitate to{" "}
 							<Link href="/contact-us" className="text-sec hover:underline">

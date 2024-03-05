@@ -17,3 +17,11 @@ a.active p,
 a.active svg {
 	@apply text-white;
 }
+.bg-gradient {
+	background: rgb(66, 70, 179);
+	background: linear-gradient(110deg, rgba(66, 70, 179, 1) 14%, rgba(45, 47, 122, 1) 100%);
+}
+.bg-gradient2 {
+	background: rgb(66, 100, 213);
+	background: linear-gradient(110deg, rgba(66, 100, 213, 1) 24%, rgba(79, 209, 197, 1) 95%);
+}

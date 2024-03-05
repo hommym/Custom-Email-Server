@@ -22,7 +22,7 @@ export default function VerifyAccount() {
 				<Logo />
 				<form action="" className="w-full flex flex-col items-center justify-center min-h-[50vh] rounded-[20px] mt-12 p-12 px-16 shadow-md bg-white">
 					<h3 className="text-3xl mb-8 font-normal">Verify Your Account</h3>
-					<p className="mb-8 opacity-90">Please click on the button below to show your consent and proceed to verify your account on Elastic Email .</p>
+					<p className="mb-8 opacity-90">Please click on the button below to show your consent and proceed to verify your account on Company Name .</p>
 
 					<PrimaryButton text="Verify Account" handleClick={verifyAccount} />
 				</form>
