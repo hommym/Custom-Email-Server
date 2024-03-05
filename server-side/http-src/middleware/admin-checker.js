@@ -1,29 +1,21 @@
-const mongoDb= require("mongodb")
-const companyMembers=require("../schemas/user-account-schema")
+const mongoDb = require("mongodb");
+const companyMembers = require("../schemas/user-account-schema");
 
+const adminChecker = async (req, res, next) => {
+	const { adminId } = req.body;
 
+	if (!adminId) {
+		throw new Error("401");
+	}
 
-const adminChecker= async (req,res,next)=>{
+	// checking if member with the id in the body is an Admin
+	const membersAccount = await companyMembers.findById(adminId);
 
-const{adminId}=req.body
+	if (membersAccount && membersAccount.accountStatus === "admin") {
+		next();
+	} else {
+		throw new Error("401");
+	}
+};
 
-
-if(!adminId){
-throw new Error("401")
-}
-
-// checking if member with the id in the body is an Admin
-const membersAccount= await companyMembers.findById(adminId)
-
-if(membersAccount && membersAccount.accountStatus==="admin"){
-    next() 
-}
-else{
-    throw new Error("401")
-}
-
-
-
-}
-
-module.exports=adminChecker
+module.exports = adminChecker;
