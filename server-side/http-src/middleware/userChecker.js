@@ -1,47 +1,36 @@
 // importing required modules
-const user=require("../schemas/user-account-schema")
-const employee=require("../schemas/employee-schema")
+const user = require("../schemas/userSchema");
+const employee = require("../schemas/employeeSchema");
+const asyncHandler = require("express-async-handler");
 
-const userChecker=  async (req,res,next)=>{
+const userChecker = asyncHandler(async (req, res, next) => {
+  const userWanted = req.body.email ? await user.findOne({ email: req.body.email }) : await user.findById(req.id);
+  // console.log(req.id);
+  // console.log(userWanted)
 
-    const userWanted= (req.body.email)?await user.findOne({email:req.body.email}):await user.findById(req.id)
-    // console.log(req.id);
-    // console.log(userWanted)
-    
-
-    if(userWanted){
-        if(!userWanted.isVerified){
-
-            return res.status(401).json({message:"Email has not been verified"})
-            
-            }
-
-        req.user=userWanted
-        return next()
+  if (userWanted) {
+    if (!userWanted.isVerified) {
+      return res.status(401).json({ message: "Email has not been verified" });
     }
 
-    const employeeWanted= (req.body.email)?await employee.findOne({email:req.body.email}):await employee.findById(req.id)
-     
-    if(employeeWanted){
-        
-        if(!employeeWanted.isVerified){
+    req.user = userWanted;
+    console.log("Account exist");
+    return next();
+  }
 
-            return res.status(401).json({message:"Email has not been verified"})
+  const employeeWanted = req.body.email ? await employee.findOne({ email: req.body.email }) : await employee.findById(req.id);
 
-            }
-
-        req.employee=employeeWanted
-        return next()
+  if (employeeWanted) {
+    if (!employeeWanted.isVerified) {
+      return res.status(401).json({ message: "Email has not been verified" });
     }
 
+    req.employee = employeeWanted;
+    console.log("Account exist");
+    return next();
+  }
 
-    
+  throw new Error("Account does not exist");
+});
 
-
-    next(new Error("404")) 
-
-}
-
-
-
-module.exports=userChecker
+module.exports = userChecker;

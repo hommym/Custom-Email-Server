@@ -21,8 +21,8 @@ const nodeMailer=require("nodemailer")
 
 
 const transporter = nodeMailer.createTransport({
-    host: "localhost",
-    port: 45,
+    host: "192.168.72.30",
+    port: 587,
     tls: {
         rejectUnauthorized: false
     },
@@ -34,10 +34,10 @@ const transporter = nodeMailer.createTransport({
 
 
   const mailOptions = {
-    from: "herbertharthur80@gmail.com",
-    to: "herebrthh@gmail",
-    subject: "Company Name:Email Confirmation",
-    text: `To confirm email click on this link`,
+    from: "herberth80@hommy.com",
+    to: "herbertharthur80@gmail.com",
+    subject: "Test Mail",
+    text: `Test Mail`,
   }
 
 
