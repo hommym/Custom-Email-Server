@@ -46,7 +46,7 @@ const emailSender = async (req, res) => {
 		mailOptions.text = `To reset the password please click this link ${process.env.FrontEndBaseUrl}/set-password?token=${await jwtForSignUp(updDoc._id, verificationCode)}`;
 		console.log(updDoc);
 		sendConfirmationMail(mailOptions);
-		return res.status(201).json({ message: "Account reset successfully" });
+		return res.status(201).json({ message: "An email has been sent to proceed with password reset" });
 	}
 
 	// the service , host and port below will be change during production, the ones below is for testing

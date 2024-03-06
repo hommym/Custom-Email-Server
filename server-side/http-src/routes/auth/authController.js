@@ -50,7 +50,7 @@ const employeeSignUpController = asyncHandler(async (req, res, next) => {
 		throw new Error("Account already exist");
 	}
 
-	if (!req.User.orgId) {
+	if (!req.user.orgId) {
 		return res.status(402).json({ message: "No Organisation present for employees to be added to" });
 	}
 
@@ -58,12 +58,12 @@ const employeeSignUpController = asyncHandler(async (req, res, next) => {
 	const hashedPassword = await bcrypt.hash(process.env.DefaultPasswordEmployee, 10);
 
 	// saving employee data in database
-	const newEmployee = await employee.create({ fullName: employeeData.fullName, email: employeeData.email, password: hashedPassword, orgId: req.User.orgId });
+	const newEmployee = await employee.create({ fullName: employeeData.fullName, email: employeeData.email, password: hashedPassword, orgId: req.user.orgId });
 	console.log("New employee saved in database");
 	// updating number of employees
-	const userWithOrgDocumentAvailable = await req.User.populate("orgId");
+	const userWithOrgDocumentAvailable = await req.user.populate("orgId");
 
-	await organisation.updateOne({ _id: req.User.orgId }, { $set: { employeeCont: userWithOrgDocumentAvailable.orgId.employeeCont + 1 } });
+	await organisation.updateOne({ _id: req.user.orgId }, { $set: { employeeCont: userWithOrgDocumentAvailable.orgId.employeeCont + 1 } });
 	req.body.employee = newEmployee;
 	console.log("Orgnisation employeeCont Updated");
 
@@ -86,13 +86,13 @@ const emailConfirmationController = asyncHandler(async (req, res) => {
 const logInController = asyncHandler(async (req, res, next) => {
 	// if smtp server is being access by orgOwner
 	if (req.user) {
-		const isPasswordsTheSame = await bcrypt.compare(req.body.password, req.User.password);
-		//  comparing hashed password in body to the one in the database(req.User.password)
+		const isPasswordsTheSame = await bcrypt.compare(req.body.password, req.user.password);
+		//  comparing hashed password in body to the one in the database(req.user.password)
 
 		if (isPasswordsTheSame) {
 			// creating jwtForLogIn using user's id
 
-			const token = await jwtForLogIn(req.User._id);
+			const token = await jwtForLogIn(req.user._id);
 			console.log("token created");
 
 			//  sending token back to client
@@ -149,13 +149,13 @@ const changePasswordController = asyncHandler(async (req, res, next) => {
 	}
 
 	if (req.user) {
-		const isOldPasswordTheSameInDatabase = await bcrypt.compare(oldPassword, req.User.password);
+		const isOldPasswordTheSameInDatabase = await bcrypt.compare(oldPassword, req.user.password);
 
 		if (isOldPasswordTheSameInDatabase) {
 			// hashing password
 			const hashedPassword = await bcrypt.hash(newPassword, 10);
 
-			await User.updateOne({ email: req.User.email }, { $set: { password: hashedPassword } });
+			await User.updateOne({ email: req.user.email }, { $set: { password: hashedPassword } });
 			console.log("Password Updated");
 			return res.status(200).json({ message: "Password changed successfully" });
 		}
@@ -182,8 +182,8 @@ const smtpAuthController = asyncHandler(async (req, res, next) => {
 	console.log("Authenticating a user hiting smtp server...");
 	// if smtp server is being access by orgOwner
 	if (req.user) {
-		const isPasswordsTheSame = await bcrypt.compare(req.body.password, req.User.password);
-		//  comparing hashed password in body to the one in the database(req.User.password)
+		const isPasswordsTheSame = await bcrypt.compare(req.body.password, req.user.password);
+		//  comparing hashed password in body to the one in the database(req.user.password)
 		if (isPasswordsTheSame) {
 			console.log("User authenticated");
 			return res.status(200).json({ message: "Account present on server" });
