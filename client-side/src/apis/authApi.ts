@@ -21,7 +21,7 @@ const authApi = createApi({
     verifyUserEmailRequest: builder.mutation<{ success: boolean, message: string }, { token: string }>({
       query: ({ token }) => ({
         method: 'PUT',
-        url: '/verify-account',
+        url: '/verify-email',
         body: { token }
       }),
 

@@ -14,7 +14,7 @@ import useCreateErrorFromApiRequest from "@/hooks/useCreateErrorFromApiRequest";
 
 export default function CreateAccount() {
 	const [tcsAccepted, setTcsAccepted] = useState(false);
-	const { register, handleSubmit } = useSelectedPropertiesFromHookForm(registerSchema);
+	const { register, handleSubmit, reset } = useSelectedPropertiesFromHookForm(registerSchema);
 	const [registerUserRequest, { data, error, isLoading }] = useRegisterUserRequestMutation();
 
 	const registerUser = (data: any) => {
@@ -25,6 +25,7 @@ export default function CreateAccount() {
 	useEffect(() => {
 		if (!data) return;
 		toast.success(data.message, { autoClose: 1500 });
+		reset();
 	}, [data]);
 
 	useCreateErrorFromApiRequest(error);
