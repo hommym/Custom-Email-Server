@@ -13,7 +13,7 @@ const authApi = createApi({
     registerUserRequest: builder.mutation<{ success: boolean; message: string }, { email: string; password: string; firstname: string; lastname: string; }>({
       query: ({ email, password, firstname, lastname }) => ({
         method: 'POST',
-        url: '/register',
+        url: '/user/sign-up',
         body: { email, password, firstname, lastname }
       }),
 

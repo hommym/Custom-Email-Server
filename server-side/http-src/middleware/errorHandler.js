@@ -2,9 +2,11 @@ const jwt = require("jsonwebtoken");
 
 //  the errorHandler is a method for handling all error thrown from express async handler
 const errorHandler = (err, req, res, next) => {
-  console.log(err.message);
+	if (res.statusCode === 200) {
+		res.status(500);
+	}
 
-  res.json({ message: err.message });
+	res.json({ error: err.message });
 };
 
 module.exports = errorHandler;
