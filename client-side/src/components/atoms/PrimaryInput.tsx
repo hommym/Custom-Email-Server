@@ -21,7 +21,7 @@ const PrimaryInput = ({ name, label, type = "text", errorMsg, register = {} }: I
 			<label htmlFor={name} className="block font-medium">
 				{label}
 			</label>
-			<div className="w-full bg-[red] rounded-full flex items-center relative justify-between" id={name}>
+			<div className="w-full rounded-full flex items-center relative justify-between" id={name}>
 				<input type={actualType} className="w-full rounded-[5px] relative  h-12 border-[1px] px-2" {...register(name)}></input>
 				{type === "password" && (
 					<button

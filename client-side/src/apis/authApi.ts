@@ -55,11 +55,11 @@ const authApi = createApi({
         body: { email }
       })
     }),
-    setPasswordRequest: builder.mutation<{ success: boolean, message: string }, { token: string; newPassword: string }>({
-      query: ({ token, newPassword }) => ({
+    setPasswordRequest: builder.mutation<{ success: boolean, message: string }, { token: string; password: string }>({
+      query: ({ token, password }) => ({
         method: 'PUT',
         url: '/set-password',
-        body: { token, newPassword }
+        body: { token, password }
       })
     }),
     updateUserPasswordRequest: builder.mutation<{ message: string, success: boolean }, { newpassword: string; oldpassword: string }>({
