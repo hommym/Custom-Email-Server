@@ -13,7 +13,7 @@ return res.status(400).json({error:"No data passed for the query orgId"})
 
 }
 
-const employees = await Employee.find({ orgId:tObjectId(req.query.orgId) });
+const employees = await Employee.find({ orgId: tObjectId(req.query.orgId) }).select("-provider -verfCode -password -__v -isVerified");
 
 if(employees.length===0){
 

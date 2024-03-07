@@ -120,11 +120,11 @@ const logInController = asyncHandler(async (req, res, next) => {
 const loggedInController = asyncHandler(async (req, res) => {
   if (req.user) {
     console.log("account info sent");
-    return res.status(200).json({ accountInfo: req.user });
+    return res.status(200).json({ accountInfo: await user.findOne({ _id: req.id }).select("-provider -verfCode -password -__v -isVerified") });
   }
 
   console.log("account info sent");
-  res.status(200).json({ accountInfo: req.employee });
+  res.status(200).json({ accountInfo: await employee.findOne({ _id: req.id }).select("-provider -verfCode -password -__v -isVerified") });
 });
 
 const setPasswordController = asyncHandler(async (req, res, next) => {

@@ -20,7 +20,7 @@ authRouter.post("/user/sign-up", userSignUpController, sendConfirmation);
 
 authRouter.post("/employee/sign-up", verifyJWT, adminChecker, employeeSignUpController, sendConfirmation);
 
-authRouter.get("/login", userChecker, logInController);
+authRouter.post("/login", userChecker, logInController);
 authRouter.get("/logged-in", verifyJWT, userChecker, loggedInController);
 
 authRouter.put("/reset-password", userChecker, sendConfirmation);

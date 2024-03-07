@@ -6,7 +6,7 @@ const jwtForLogIn = async (id) => {
 };
 
 const jwtForSignUp = async (id, verfCode) => {
-  return await jwt.sign({ userId: id, code: verfCode }, process.env.JwtSecretKey, { expiresIn: "1h" });
+  return await jwt.sign({ userId: id, code: verfCode }, process.env.JwtSecretKey, { expiresIn: "1hr" });
 };
 
 const verifyToken = async (token) => {
