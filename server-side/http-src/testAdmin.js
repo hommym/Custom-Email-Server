@@ -21,8 +21,8 @@ const nodeMailer=require("nodemailer")
 
 
 const transporter = nodeMailer.createTransport({
-    host: "192.168.72.30",
-    port: 587,
+    host: "localhost",
+    port: 25,
     tls: {
         rejectUnauthorized: false
     },
@@ -34,8 +34,8 @@ const transporter = nodeMailer.createTransport({
 
 
   const mailOptions = {
-    from: "herberth80@hommy.com",
-    to: "herbertharthur80@gmail.com",
+    from: "herbertharthur80@gmail.com",
+    to: "kendrickarthur9@gmail.com",
     subject: "Test Mail",
     text: `Test Mail`,
   }

@@ -1,10 +1,10 @@
 // imorting  needed modules
 const SMTPServer = require("smtp-server").SMTPServer;
-const bcrypt = require("bcrypt");
 const nodeMailer = require("nodemailer");
-require("dotenv").config()
+const { parseMail } = require("./libs/mailParser.js");
+require("dotenv").config();
 
-const port= (process.env.PORT)?process.env.PORT:587
+const port = process.env.PORT ? process.env.PORT : 25;
 
 //  setting up nodemailer
 const transporter = nodeMailer.createTransport({
@@ -12,11 +12,8 @@ const transporter = nodeMailer.createTransport({
   port: port,
   tls: {
     rejectUnauthorized: false,
-  }
-  // auth: {
-  //   user: "hommykendrick@gmail.com",
-  //   pass: "Herberth1624",
-  // },
+  },
+  
 });
 
 const server = new SMTPServer({
@@ -42,7 +39,7 @@ const server = new SMTPServer({
       const axios = require("axios");
       const response = await axios({
         method: "get",
-        url: `${process.env.BackEndBaseUrl}/auth/smtp-auth`,
+        url: `http://localhost:8000/api/auth/smtp-auth`,
         data: {
           email: username,
           password: password,
@@ -52,7 +49,7 @@ const server = new SMTPServer({
       if (response.status === 200) {
         console.log("Account present on server");
         console.log("User authorized..");
-        transporter.auth={user:email,pass:password}
+        transporter.auth = { user: username, pass: password };
         return callback(null, { user: username });
       }
     } catch (error) {
@@ -61,17 +58,29 @@ const server = new SMTPServer({
     }
   },
   onData(stream, session, callback) {
-    let message = null;
+    let message = Buffer.alloc(0);
+
     stream.on("data", (data) => {
-      console.log(data);
+      message = Buffer.concat([message, data]);
+
       // message=data
     });
 
-    stream.on("end", () => {
+    stream.on("end", async () => {
       console.log("Message has been fully recieved");
-      // console.log(session);
 
-      // use nodemailer to send message (not yet implemented)
+      // const messageObject = await parseMail(message);
+      // console.log(messageObject.to);
+
+      // sending email to the reciepeint
+       transporter.sendMail(message.toString(), (error, info) => {
+         if (error) {
+           console.error("Error sending email: ", error);
+         } else {
+           console.log("Email sent: ", info.response);
+         }
+       });
+
 
       callback();
     });
