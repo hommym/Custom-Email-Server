@@ -13,7 +13,7 @@ const authApi = createApi({
     registerUserRequest: builder.mutation<{ success: boolean; message: string }, { email: string; password: string; firstname: string; lastname: string; }>({
       query: ({ email, password, firstname, lastname }) => ({
         method: 'POST',
-        url: '/register',
+        url: '/user/sign-up',
         body: { email, password, firstname, lastname }
       }),
 
@@ -21,7 +21,7 @@ const authApi = createApi({
     verifyUserEmailRequest: builder.mutation<{ success: boolean, message: string }, { token: string }>({
       query: ({ token }) => ({
         method: 'PUT',
-        url: '/verify-account',
+        url: '/verify-email',
         body: { token }
       }),
 
@@ -50,16 +50,16 @@ const authApi = createApi({
     }),
     requestPasswordResetRequest: builder.mutation<{ success: boolean, message: string }, { email: string }>({
       query: ({ email }) => ({
-        method: 'POST',
+        method: 'PUT',
         url: '/reset-password',
         body: { email }
       })
     }),
-    setPasswordRequest: builder.mutation<{ success: boolean, message: string }, { token: string; newPassword: string }>({
-      query: ({ token, newPassword }) => ({
+    setPasswordRequest: builder.mutation<{ success: boolean, message: string }, { token: string; password: string }>({
+      query: ({ token, password }) => ({
         method: 'PUT',
         url: '/set-password',
-        body: { token, newPassword }
+        body: { token, password }
       })
     }),
     updateUserPasswordRequest: builder.mutation<{ message: string, success: boolean }, { newpassword: string; oldpassword: string }>({

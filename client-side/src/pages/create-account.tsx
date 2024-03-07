@@ -1,5 +1,6 @@
 import Link from "next/link";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { toast } from "react-toastify";
 
 import useSelectedPropertiesFromHookForm from "@/hooks/useSelectedValuesFromHooks";
 import { registerSchema } from "@/libs/hookform";
@@ -8,15 +9,26 @@ import PrimaryInput from "@/components/atoms/PrimaryInput";
 import PrimaryButton from "@/components/atoms/PrimaryButton";
 import Logo from "@/components/atoms/Logo";
 import LogInWithGoogle from "@/components/atoms/LogInWithGoogle";
+import { useRegisterUserRequestMutation } from "@/apis/authApi";
+import useCreateErrorFromApiRequest from "@/hooks/useCreateErrorFromApiRequest";
 
 export default function CreateAccount() {
 	const [tcsAccepted, setTcsAccepted] = useState(false);
-	const { register, handleSubmit } = useSelectedPropertiesFromHookForm(registerSchema);
+	const { register, handleSubmit, reset } = useSelectedPropertiesFromHookForm(registerSchema);
+	const [registerUserRequest, { data, error, isLoading }] = useRegisterUserRequestMutation();
 
 	const registerUser = (data: any) => {
 		const { firstname, lastname, email, password } = data;
-		console.log({ firstname, lastname, email, password });
+		registerUserRequest({ firstname, lastname, email, password });
 	};
+
+	useEffect(() => {
+		if (!data) return;
+		toast.success(data.message, { autoClose: 1500 });
+		reset();
+	}, [data]);
+
+	useCreateErrorFromApiRequest(error);
 	return (
 		<main className="w-full h-auto min-h-screen bg-bg">
 			<section className="w-full max-w-[560px] flex flex-col items-center justify-center py-12 mx-auto">
@@ -45,7 +57,7 @@ export default function CreateAccount() {
 						</label>
 					</div>
 
-					<PrimaryButton text="Sign Up" disabled={!tcsAccepted} type="submit" />
+					<PrimaryButton text="Sign Up" disabled={!tcsAccepted} type="submit" isLoading={isLoading} />
 
 					<div className="w-full h-[1px] bg-[rgb(226,232,240)] my-8"></div>
 

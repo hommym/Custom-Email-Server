@@ -1,14 +1,14 @@
 // importing required modules
 const express = require("express");
 const {
-  userSignUpController,
-  logInController,
-  emailConfirmationController,
-  employeeSignUpController,
-  loggedInController,
-  setPasswordController,
-  changePasswordController,
-  smtpAuthController,
+	userSignUpController,
+	logInController,
+	emailConfirmationController,
+	employeeSignUpController,
+	loggedInController,
+	setPasswordController,
+	changePasswordController,
+	smtpAuthController,
 } = require("./authController.js");
 const adminChecker = require("../../middleware/adminChecker.js");
 const userChecker = require("../../middleware/userChecker.js");
@@ -20,7 +20,7 @@ authRouter.post("/user/sign-up", userSignUpController, sendConfirmation);
 
 authRouter.post("/employee/sign-up", verifyJWT, adminChecker, employeeSignUpController, sendConfirmation);
 
-authRouter.get("/login", userChecker, logInController);
+authRouter.post("/login", userChecker, logInController);
 authRouter.get("/logged-in", verifyJWT, userChecker, loggedInController);
 
 authRouter.put("/reset-password", userChecker, sendConfirmation);
@@ -28,7 +28,7 @@ authRouter.put("/set-password", verifyJWT, userChecker, setPasswordController);
 
 authRouter.put("/change-password", verifyJWT, userChecker, changePasswordController);
 
-authRouter.get("/verify-email", verifyJWT, emailConfirmationController);
+authRouter.put("/verify-email", verifyJWT, emailConfirmationController);
 
 // route to hit when authenticating people on the smtp server
 authRouter.get("/smtp-auth", userChecker, smtpAuthController);

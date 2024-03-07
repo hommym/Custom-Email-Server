@@ -23,7 +23,7 @@ const PrimaryButton = ({ href, text, sx = "", disabled, isLoading, type = "butto
 			)}
 
 			{!href && (
-				<button className={style} disabled={disabled || isLoading} type={type} onClick={() => (handleClick ? handleClick() : console.log(""))}>
+				<button className={style} disabled={disabled || isLoading} type={type} onClick={() => (handleClick ? handleClick() : "")}>
 					{isLoading ? <Loading sx="h-7 w-7" stroke="#fff" /> : text}
 				</button>
 			)}
