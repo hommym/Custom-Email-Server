@@ -12,7 +12,7 @@ const Benefits = () => {
 		<section className=" max-w-6xl  mx-auto w-full h-auto py-24 flex items-stretch  justify-between gap-6">
 			<article className="w-1/5">
 				{["Send Email", "Grow your audience"].map((benefit, index) => (
-					<button className="w-full rounded-[5px] h-16 overflow-hidden gap-4 bg-white shadow-2xl mb-4 flex items-center justify-start" onClick={() => setActive(index)}>
+					<button key={index} className="w-full rounded-[5px] h-16 overflow-hidden gap-4 bg-white shadow-2xl mb-4 flex items-center justify-start" onClick={() => setActive(index)}>
 						<div className={`w-3 h-full ${active === index ? "bg-sec" : "bg-transparent"}`}></div>
 						<p className={`${active === index ? "font-black text-deep-text text-[18px]" : ""}`}>{benefit}</p>
 					</button>

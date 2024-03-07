@@ -93,7 +93,7 @@ export default function Home() {
 										{ name: "Free", price: 0 },
 										{ name: "Premium", price: 200 },
 									].map((plan, index, arr) => (
-										<div className={`w-1/2 ${index !== arr?.length - 1 ? "border-r-[1px]" : ""}`}>
+										<div className={`w-1/2 ${index !== arr?.length - 1 ? "border-r-[1px]" : ""}`} key={index}>
 											<h3 className="text-xl font-light mb-6">{plan?.name}</h3>
 											<p className="text-[12px] opacity-80">Starting from</p>
 											<p className="text-xl">
