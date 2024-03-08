@@ -9,7 +9,7 @@ const { parseSingleFileFormData } = require("../../libs/multer.js");
 const userRouter = express.Router();
 
 
-userRouter.post("/create-org", parseSingleFileFormData("companyLogo"), verifyJWT, orgCreationController);
+userRouter.post("/create-org", verifyJWT, parseSingleFileFormData("companyLogo"), orgCreationController);
 
 userRouter.post("/upload-contacts/", verifyJWT, parseSingleFileFormData("contacts"), emailUploadController);
 

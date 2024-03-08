@@ -12,6 +12,10 @@ const organisation = new mongoose.Schema({
     type: Object,
   },
 
+  maxEmployeeCount:{
+      type:Number,
+  },
+
   employeeCont: {
     type: Number,
     default: 0,
