@@ -12,11 +12,13 @@ const organisation = new mongoose.Schema({
     type: Object,
   },
 
-  maxEmployeeCount:{
-      type:Number,
+  maxEmployeeCount: {
+    type: Number,
   },
 
-  employeeCont: {
+  businessType: String,
+
+  employeeCount: {
     type: Number,
     default: 0,
   },

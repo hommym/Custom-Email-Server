@@ -55,16 +55,24 @@ const employeeSignUpController = asyncHandler(async (req, res, next) => {
     return res.status(402).json({ message: "No Organisation present for employees to be added to" });
   }
 
+  const userWithOrgDocumentAvailable = await req.user.populate("orgId");
+  const { employeeCount, maxEmployeeCount } = userWithOrgDocumentAvailable.orgId;
+
+  if (maxEmployeeCount) {
+    if (employeeCount === maxEmployeeCount) {
+      return res.status(402).json({ message: "You can't add anymore employees you limit has been reached" });
+    }
+  }
+
   // hashing password
   const hashedPassword = await bcrypt.hash(process.env.DefaultPasswordEmployee, 10);
 
   // saving employee data in database
   const newEmployee = await employee.create({ fullName: employeeData.fullName, email: employeeData.email, password: hashedPassword, orgId: req.user.orgId });
   console.log("New employee saved in database");
-  // updating number of employees
-  const userWithOrgDocumentAvailable = await req.user.populate("orgId");
 
-  await organisation.updateOne({ _id: req.user.orgId }, { $set: { employeeCont: userWithOrgDocumentAvailable.orgId.employeeCont + 1 } });
+  // updating number of employees
+  await organisation.updateOne({ _id: req.user.orgId }, { $set: { employeeCount: userWithOrgDocumentAvailable.orgId.employeeCount + 1 } });
   req.body.employee = newEmployee;
   console.log("Orgnisation employeeCont Updated");
 
@@ -116,7 +124,6 @@ const logInController = asyncHandler(async (req, res, next) => {
   res.status(401);
   throw new Error("Password incorrect");
 });
-
 
 const setPasswordController = asyncHandler(async (req, res, next) => {
   // hashing password
