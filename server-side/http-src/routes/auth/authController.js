@@ -117,15 +117,6 @@ const logInController = asyncHandler(async (req, res, next) => {
   throw new Error("Password incorrect");
 });
 
-const loggedInController = asyncHandler(async (req, res) => {
-  if (req.user) {
-    console.log("account info sent");
-    return res.status(200).json({ accountInfo: await user.findOne({ _id: req.id }).select("-provider -verfCode -password -__v -isVerified") });
-  }
-
-  console.log("account info sent");
-  res.status(200).json({ accountInfo: await employee.findOne({ _id: req.id }).select("-provider -verfCode -password -__v -isVerified") });
-});
 
 const setPasswordController = asyncHandler(async (req, res, next) => {
   // hashing password
@@ -210,7 +201,6 @@ module.exports = {
   logInController,
   emailConfirmationController,
   employeeSignUpController,
-  loggedInController,
   setPasswordController,
   changePasswordController,
   smtpAuthController,

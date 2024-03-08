@@ -50,7 +50,18 @@ const emailUploadController = asyncHandler(async (req, res, next) => {
    res.status(400).json({ error: "No file uploaded" });
 });
 
+const loggedInController = asyncHandler(async (req, res) => {
+  if (req.user) {
+    console.log("account info sent");
+    return res.status(200).json({ accountInfo: await user.findOne({ _id: req.id }).select("-provider -verfCode -password -__v -isVerified") });
+  }
+
+  console.log("account info sent");
+  res.status(200).json({ accountInfo: await employee.findOne({ _id: req.id }).select("-provider -verfCode -password -__v -isVerified") });
+});
+
 module.exports = {
   orgCreationController,
   emailUploadController,
+  loggedInController,
 };
