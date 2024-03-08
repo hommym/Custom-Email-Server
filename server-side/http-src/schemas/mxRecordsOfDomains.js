@@ -19,7 +19,10 @@ const mxRecordOfDomain = new mongoose.Schema({
   port:{
     type:Array,
     default:[25,465,587]
-  }
+  },
+
+  preference:Number
+
 });
 
 
