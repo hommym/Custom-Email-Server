@@ -2,6 +2,7 @@ import { configureStore, Middleware } from "@reduxjs/toolkit";
 
 import authApi from "./apis/authApi";
 import userApi from "./apis/usersApi";
+import employeesApi from "./apis/employeesApi";
 
 import UserReducer from '@/slices/user.slice'
 
@@ -9,6 +10,7 @@ import UserReducer from '@/slices/user.slice'
 const middlewares: Array<Middleware> = [
   authApi.middleware,
   userApi.middleware,
+  employeesApi.middleware,
 ]
 
 const makeStore = () => (
@@ -16,6 +18,7 @@ const makeStore = () => (
     reducer: {
       [authApi.reducerPath]: authApi.reducer,
       [userApi.reducerPath]: userApi.reducer,
+      [employeesApi.reducerPath]: userApi.reducer,
       user: UserReducer
     },
 

@@ -41,6 +41,8 @@ const userApi = createApi({
     }),
 
 
+
+
   })
 })
 
@@ -48,6 +50,6 @@ export const {
   useFetchLoggedInUserRequestQuery,
   useUpdateUserProfileRequestMutation,
   useFetchAllUsersNoPagesRequestQuery,
-  useCreateOrganizationMutation
+  useCreateOrganizationMutation,
 } = userApi
 export default userApi

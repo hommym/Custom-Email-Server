@@ -32,7 +32,7 @@ const ProtectedRoute = ({ children, loginRequired = false, isAdmin = false, auth
 			router.replace("/organization");
 		}
 
-		if (loginRequired && user?._id && user?.orgId) {
+		if (loginRequired && user?._id && user?.orgId && orgPage) {
 			router.replace("/dashboard");
 		}
 		// Protected page for admin
