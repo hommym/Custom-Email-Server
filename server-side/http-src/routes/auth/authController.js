@@ -39,13 +39,13 @@ const userSignUpController = asyncHandler(async (req, res, next) => {
 });
 
 const employeeSignUpController = asyncHandler(async (req, res, next) => {
-	const { employeeData } = req.body;
-	if (!(employeeData.fullName || employeeData.email || employeeData.password)) {
+	const { firstName,lastName,email,password } = req.body;
+	if (!(firstName || email || password || lastName)) {
 		throw new Error("Some fields in the body are empty");
 	}
 
 	// checking if account already exist
-	if (await employee.findOne({ email: employeeData.email })) {
+	if (await employee.findOne({ email: email })) {
 		res.status(200);
 		throw new Error("Account already exist");
 	}
@@ -67,7 +67,7 @@ const employeeSignUpController = asyncHandler(async (req, res, next) => {
 	const hashedPassword = await bcrypt.hash(process.env.DefaultPasswordEmployee, 10);
 
   // saving employee data in database
-  const newEmployee = await employee.create({ fullName: employeeData.fullName, email: employeeData.email, password: hashedPassword, orgId: req.user.orgId });
+  const newEmployee = await employee.create({ firstName,lastName ,email, password: hashedPassword, orgId: req.user.orgId });
   console.log("New employee saved in database");
 
   // updating number of employees
