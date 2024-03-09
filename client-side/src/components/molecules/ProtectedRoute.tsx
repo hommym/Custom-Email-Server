@@ -26,13 +26,22 @@ const ProtectedRoute = ({ children, loginRequired = false, isAdmin = false, auth
 		if (loginRequired && !user?._id) {
 			router.replace("/");
 		}
+
+		if (loginRequired && user?._id && !user?.orgId) {
+			router.replace("/organization");
+		}
 		// Protected page for admin
 		if (isAdmin && (!user?._id || !user?.isAdmin)) {
 			router.replace("/");
 		}
 	}, [user?._id, auth, loginRequired, isAdmin]);
 
-	return <>{(user?._id || !loginRequired) && <>{children}</>}</>;
+	return (
+		<>
+			{user?._id && <>{user?.orgId && { children }}</>}
+			{!loginRequired && <>{children}</>}
+		</>
+	);
 };
 
 export default ProtectedRoute;

@@ -11,7 +11,7 @@ import { LuActivity } from "react-icons/lu";
 import { IoPeopleSharp } from "react-icons/io5";
 import { GiTeamIdea } from "react-icons/gi";
 
-const Component = ({ children, isAdmin = false }: { children: React.ReactNode; isAdmin?: boolean }) => {
+const Component = ({ children }: { children: React.ReactNode; isAdmin?: boolean }) => {
 	const { pathname } = useRouter();
 	return (
 		<div className="w-full h-screen flex items-start justify-start">
