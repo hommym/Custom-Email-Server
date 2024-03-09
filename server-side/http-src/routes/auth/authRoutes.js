@@ -4,7 +4,6 @@ const {
   userSignUpController,
   logInController,
   emailConfirmationController,
-  employeeSignUpController,
   setPasswordController,
   changePasswordController,
   smtpAuthController,

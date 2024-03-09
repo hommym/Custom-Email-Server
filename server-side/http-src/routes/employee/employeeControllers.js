@@ -1,6 +1,7 @@
 const asyncHandler=require("express-async-handler")
 const Employee= require("../../schemas/employeeSchema")
 const Organisation = require("../../schemas/organisationSchema");
+const bcrypt = require("bcrypt");
 const{tObjectId}=require("../../libs/mongoose.js")
 
 const employeeCountController = asyncHandler( async (req, res, next) => {
