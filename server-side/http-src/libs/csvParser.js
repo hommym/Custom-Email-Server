@@ -8,10 +8,10 @@ const csvToArray = async (fileBuffer, res) => {
 	stream
 		.pipe(csvParser())
 		.on("data", (data) => {
-			results.push(data);
+			results.push({ ...data, category: category ? category : "" });
 		})
 		.on("end", () => {
-			res.status(200).json({ emailAdresses: results, adressCount: results.length });
+			res.status(200).json({ emailAddresses: results, addressCount: results.length });
 		});
 };
 
