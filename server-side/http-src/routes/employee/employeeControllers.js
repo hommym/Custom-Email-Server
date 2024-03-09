@@ -63,22 +63,19 @@ const changeStatusController = asyncHandler(async (req, res, next) => {
   const { status } = req.body;
   if(!status){
 
-      res.status(400).json({message:"No data in status"})
+   return res.status(400).json({message:"No data in status"})
   }
   const { employeeId } = req.params;
-  const newEmployeeDoc = await Employee.updateOne({ _id: tObjectId(employeeId) }, { $set: { status } });
+  const newEmployeeDoc = await Employee.findOneAndUpdate({ _id:tObjectId(employeeId) }, { $set: { status:status } });
+ 
 
-  res.status(200).json({ message: "Status changed sucessfully", status });
+  res.status(200).json({ message: "Status changed sucessfully",status:status });
 });
 
-const loggedInController = asyncHandler(async (req, res) => {
-  console.log("Account info sent");
-  res.status(200).json({ accountInfo: await Employee.findOne({ _id: req.id }).select("-provider -verfCode -password -__v -isVerified") });
-});
+
 
 module.exports = {
   employeeCountController,
   employeeSignUpController,
   changeStatusController,
-  loggedInController
 };
