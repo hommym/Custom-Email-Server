@@ -1,6 +1,7 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react'
 
 import { createAuthorizationHeader } from '@/utils/cookies';
+import { IContact } from '@/pages/dashboard/audience/import';
 
 const userApi = createApi({
   reducerPath: 'userApi',
@@ -40,9 +41,18 @@ const userApi = createApi({
       }),
     }),
 
-
-
-
+    uploadContacts: builder.mutation<{ emailAddresses: IContact[], addressCount: number }, { file: any }>({
+      query: ({ file }) => {
+        const body = new FormData();
+        body.append('Content-Type', file.type);
+        body.append('contacts', file);
+        return {
+          url: `/upload-contacts`,
+          method: 'POST',
+          body
+        }
+      }
+    })
   })
 })
 
@@ -51,5 +61,6 @@ export const {
   useUpdateUserProfileRequestMutation,
   useFetchAllUsersNoPagesRequestQuery,
   useCreateOrganizationMutation,
+  useUploadContactsMutation
 } = userApi
 export default userApi

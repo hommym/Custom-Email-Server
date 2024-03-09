@@ -1,22 +1,20 @@
 const csvParser = require("csv-parser");
 const fileSys = require("fs");
-const {Readable} = require("stream");
+const { Readable } = require("stream");
 
-const csvToArray = async (fileBuffer,res) => {
-  let results = [];
- const stream = new Readable.from([fileBuffer.toString()])
-    stream.pipe(csvParser());
-    stream.on("data", (data) => results.push(data))
-    stream.on("end", () => {
-      
-      results= results[0].split(",")
-      console.log("Array of contacts formed");
-      res.status(200).json({emailAdresses:results,adressCount:results.length})
-    });
+const csvToArray = async (fileBuffer, res) => {
+	let results = [];
+	const stream = new Readable.from(fileBuffer.toString("utf-8"));
+	stream
+		.pipe(csvParser())
+		.on("data", (data) => {
+			results.push(data);
+		})
+		.on("end", () => {
+			res.status(200).json({ emailAdresses: results, adressCount: results.length });
+		});
+};
 
-  
-}
-
-module.exports={
-    csvToArray
-}
+module.exports = {
+	csvToArray,
+};
