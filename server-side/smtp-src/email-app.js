@@ -1,20 +1,12 @@
 // imorting  needed modules
 const SMTPServer = require("smtp-server").SMTPServer;
-const nodeMailer = require("nodemailer");
 const { parseMail } = require("./libs/mailParser.js");
+const { getMxRecordsOfDomain } = require("../smtp-src/libs/dns.js");
+const MxrecordsOfDomains = require("../../server-side/http-src/schemas/mxRecordsOfDomains");
+const { sendMail } = require("./libs/net.js");
 require("dotenv").config();
 
 const port = process.env.PORT ? process.env.PORT : 25;
-
-//  setting up nodemailer
-const transporter = nodeMailer.createTransport({
-  host: process.env.SmtpServerAdress,
-  port: port,
-  tls: {
-    rejectUnauthorized: false,
-  },
-  
-});
 
 const server = new SMTPServer({
   logger: true,
@@ -49,7 +41,6 @@ const server = new SMTPServer({
       if (response.status === 200) {
         console.log("Account present on server");
         console.log("User authorized..");
-        transporter.auth = { user: username, pass: password };
         return callback(null, { user: username });
       }
     } catch (error) {
@@ -69,18 +60,28 @@ const server = new SMTPServer({
     stream.on("end", async () => {
       console.log("Message has been fully recieved");
 
-      // const messageObject = await parseMail(message);
-      // console.log(messageObject.to);
+      const messageObject = await parseMail(message);
+      // console.log(messageObject);
 
       // sending email to the reciepeint
-       transporter.sendMail(message.toString(), (error, info) => {
-         if (error) {
-           console.error("Error sending email: ", error);
-         } else {
-           console.log("Email sent: ", info.response);
-         }
-       });
+      // let listOfMxRecords = await MxrecordsOfDomains.find({ domainName: messageObject.to.text.split("@")[1] });
+      // if (listOfMxRecords.length === 0) {
+      //   listOfMxRecords = await getMxRecordsOfDomain(messageObject.to.text);
+      // }
 
+      let listOfMxRecords = await getMxRecordsOfDomain(messageObject.to.text);
+
+      const mailObjectForSend = {
+        subject: messageObject.subject,
+        to: messageObject.to.text,
+        from: messageObject.from.text,
+        emailMessage: messageObject.text,
+        mxRecord: listOfMxRecords[0],
+      };
+
+      sendMail(mailObjectForSend);
+
+      console.log("Message Delivered");
 
       callback();
     });
