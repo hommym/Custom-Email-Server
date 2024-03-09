@@ -1,6 +1,5 @@
 // const bcrypt= require("bcrypt")
 
-
 // const main=async (p)=>{
 
 //     const hashedPassword= await bcrypt.hash(p,10)
@@ -14,39 +13,33 @@
 
 // passwor for gmail when using nodemailer=xcgf scrz anbg ofxu
 
-
 // testing smtp server
 
-const nodeMailer=require("nodemailer")
-
+const nodeMailer = require("nodemailer");
 
 const transporter = nodeMailer.createTransport({
-    host: "localhost",
-    port: 25,
-    tls: {
-        rejectUnauthorized: false
-    },
-    auth: {
-        user: "hommykendrick@gmail.com",
-        pass: "Herberth1624",
-      }
-  })
+  host: "10.232.105.113",
+  port: 25,
+  tls: {
+    rejectUnauthorized: false,
+  },
+  auth: {
+    user: "hommykendrick@gmail.com",
+    pass: "Herberth1624",
+  },
+});
 
+const mailOptions = {
+  from: "herbertharthur80@continuumpayout.com",
+  to: "herbertharthur80@yahoo.com",
+  subject: "Test Mail",
+  text: `This is just a test to show it is working`,
+};
 
-  const mailOptions = {
-    from: "herbertharthur80@gmail.com",
-    to: "kendrickarthur9@gmail.com",
-    subject: "Test Mail",
-    text: `Test Mail`,
+transporter.sendMail(mailOptions, (error, info) => {
+  if (error) {
+    console.error("Error sending email: ", error);
+  } else {
+    console.log("Email sent: ", info.response);
   }
-
-
-
-
-  transporter.sendMail(mailOptions, (error, info) => {
-    if (error) {
-      console.error("Error sending email: ", error);
-    } else {
-      console.log("Email sent: ", info.response);
-    }
-  })
+});

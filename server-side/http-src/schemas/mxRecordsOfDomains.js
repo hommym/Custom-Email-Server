@@ -26,4 +26,4 @@ const mxRecordOfDomain = new mongoose.Schema({
 });
 
 
-module.exports=mongoose.model("MxRecordsOfDomain")
+module.exports = mongoose.model("MxRecordsOfDomain", mxRecordOfDomain);
