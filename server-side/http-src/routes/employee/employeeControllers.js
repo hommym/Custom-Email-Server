@@ -1,5 +1,6 @@
 const asyncHandler=require("express-async-handler")
 const Employee= require("../../schemas/employeeSchema")
+const Organisation = require("../../schemas/organisationSchema");
 const{tObjectId}=require("../../libs/mongoose.js")
 
 const employeeCountController = asyncHandler( async (req, res, next) => {
@@ -17,7 +18,7 @@ const employees = await Employee.find({ orgId: tObjectId(req.query.orgId) }).sel
 
 if(employees.length===0){
 
-   return  res.status(200).json({message:"You haven't not added any employees yet"})
+   return  res.status(200).json({employees:[]})
 }
 
 res.status(200).json({employees,employeeCount:employees.length})
@@ -25,9 +26,49 @@ res.status(200).json({employees,employeeCount:employees.length})
 
 });
 
+const employeeSignUpController = asyncHandler(async (req, res, next) => {
+  const { firstName, lastName, email, password ,role } = req.body;
+  if (!(firstName || email || password || lastName || role)) {
+    throw new Error("Some fields in the body are empty");
+  }
+
+  // checking if account already exist
+  if (await Employee.findOne({ email: email })) {
+    res.status(200);
+    throw new Error("Account already exist");
+  }
+
+  if (!req.user.orgId) {
+    return res.status(402).json({ message: "No Organisation present for employees to be added to" });
+  }
+
+  const userWithOrgDocumentAvailable = await req.user.populate("orgId");
+  const { employeeCount, maxEmployeeCount } = userWithOrgDocumentAvailable.orgId;
+
+  if (maxEmployeeCount) {
+    if (employeeCount === maxEmployeeCount) {
+      return res.status(402).json({ message: "You can't add anymore employees you limit has been reached" });
+    }
+  }
+
+  // hashing password
+  const hashedPassword = await bcrypt.hash(process.env.DefaultPasswordEmployee, 10);
+
+  // saving employee data in database
+  const newEmployee = await Employeemployee.create({ firstName, lastName, email,role, password: hashedPassword, orgId: req.user.orgId });
+  console.log("New employee saved in database");
+
+  // updating number of employees
+  await Organisation.updateOne({ _id: req.user.orgId }, { $set: { employeeCount: userWithOrgDocumentAvailable.orgId.employeeCount + 1 } });
+  req.body.employee = newEmployee;
+  console.log("Orgnisation employeeCont Updated");
+
+  next();
+});
 
 
 
-module.exports={
-    employeeCountController
-}
+module.exports = {
+  employeeCountController,
+  employeeSignUpController,
+};
