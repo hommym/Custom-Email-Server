@@ -71,7 +71,7 @@ const importContacts = () => {
 								<div className="flex items-center gap-3 mb-3">
 									<input type="radio" className="w-4 h-4" name="upload_format" id="file" checked={format === "file"} onChange={changeFormat} />
 									<label htmlFor="file" className="" id="file">
-										Upload contacts from file (zip, csv, json, xml)
+										Upload contacts from file (csv, json)
 									</label>
 								</div>
 								<div className="flex items-center gap-3">
@@ -104,7 +104,7 @@ const importContacts = () => {
 							<h3 className="text-lg mb-10 mt-2 font-bold">Add contacts</h3>
 							<div>
 								{/* For uploading a file  */}
-								{format === "file" && <UploadFile setStep={setStep} />}
+								{format === "file" && <UploadFile setStep={setStep} setContacts={setContacts} />}
 
 								{/* For pasting contacts */}
 								{format === "text" && <PasteEmails setStep={setStep} setContacts={setContacts} />}

@@ -1,33 +1,55 @@
-import { useEffect, ReactNode, Fragment } from "react";
-import { useRouter } from "next/router";
-import { useSelector } from "react-redux";
-import { useAuthSlice } from "@/slices/auth.slice";
+"use client";
 
-import Loading from "@/components/atoms/Loading";
+import { useEffect, ReactNode, useState } from "react";
+import { useRouter } from "next/navigation";
+
+import { useSelector } from "react-redux";
+import { useUserSlice } from "@/slices/user.slice";
+
+// import Loading from "./atom/Loading";
 
 interface ProtectedRouteProps {
 	children: ReactNode;
-	registerRequired?: Boolean;
+	loginRequired?: Boolean;
+	isAdmin?: boolean;
+	auth?: boolean;
+	orgPage?: boolean;
 }
 
-const ProtectedRoute = ({ children, registerRequired = false }: ProtectedRouteProps) => {
+const ProtectedRoute = ({ children, loginRequired = false, isAdmin = false, auth = false, orgPage = false }: ProtectedRouteProps) => {
 	const router = useRouter();
-	const { isLoading, user, error } = useSelector(useAuthSlice);
+	const user = useSelector(useUserSlice);
 
 	useEffect(() => {
-		if (!isLoading && !registerRequired && !error && user._id) {
-			router.replace("/app");
+		if (!loginRequired && user?._id && auth) {
+			router.replace("/");
 		}
-		if (!isLoading && registerRequired && (!user._id || error)) {
-			router.replace("/auth/login");
+		if (loginRequired && !user?._id) {
+			router.replace("/");
 		}
-	}, [router, isLoading, error, user._id]);
+
+		if (loginRequired && user?._id && !user?.orgId && !orgPage) {
+			router.replace("/organization");
+		}
+
+		if (loginRequired && user?._id && user?.orgId && orgPage) {
+			router.replace("/dashboard");
+		}
+		// Protected page for admin
+		if (isAdmin && (!user?._id || !user?.isAdmin)) {
+			router.replace("/");
+		}
+	}, [user?._id, auth, loginRequired, isAdmin]);
+
 	return (
 		<>
-			{isLoading && <Loading />}
-			{!isLoading && registerRequired && !error && user._id && <>{children}</>}
-
-			{!isLoading && !registerRequired && !user._id && <>{children}</>}
+			{user?._id && (
+				<>
+					{!orgPage && user?.orgId && <>{children}</>}
+					{orgPage && !user?.orgId && <>{children}</>}
+				</>
+			)}
+			{!loginRequired && <>{children}</>}
 		</>
 	);
 };

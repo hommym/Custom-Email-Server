@@ -1,9 +1,20 @@
 import React from "react";
+import Link from "next/link";
+import { useSelector } from "react-redux";
+
+import { useFetchAllEmployeesQuery } from "@/apis/employeesApi";
+import useCreateErrorFromApiRequest from "@/hooks/useCreateErrorFromApiRequest";
+import { useUserSlice } from "@/slices/user.slice";
 
 import Mainpage from "@/components/layouts/Mainpage";
-import Link from "next/link";
 
 const index = () => {
+	const { orgId } = useSelector(useUserSlice);
+	const { data: teamMembers, error, isLoading } = useFetchAllEmployeesQuery({ orgId });
+
+	console.log(teamMembers);
+
+	useCreateErrorFromApiRequest(error);
 	return (
 		<Mainpage>
 			<main className="py-6 min-h-[92vh]">
@@ -23,7 +34,7 @@ const index = () => {
 
 				<>
 					{[1, 2, 3, 4, 5].map((_it, index) => (
-						<div className={`flex items-center border-y-[1px] justify-between`}>
+						<div className={`flex items-center border-y-[1px] justify-between`} key={index}>
 							<div className="w-[10%] text-sm h-12 flex items-center justify-center border-l-[1px]">Status</div>
 							<div className="w-[40%] text-sm h-12 flex items-center justify-center border-l-[1px]">Email</div>
 							<div className="w-[35%] text-sm h-12 flex items-center justify-center border-l-[1px]">Fullname</div>
