@@ -1,23 +1,12 @@
 // imorting  needed modules
 const SMTPServer = require("smtp-server").SMTPServer;
-const bcrypt = require("bcrypt");
-const nodeMailer = require("nodemailer");
-require("dotenv").config()
+const { parseMail } = require("./libs/mailParser.js");
+const { getMxRecordsOfDomain } = require("../smtp-src/libs/dns.js");
+const MxrecordsOfDomains = require("../../server-side/http-src/schemas/mxRecordsOfDomains");
+const { sendMail } = require("./libs/net.js");
+require("dotenv").config();
 
-const port= (process.env.PORT)?process.env.PORT:587
-
-//  setting up nodemailer
-const transporter = nodeMailer.createTransport({
-  host: process.env.SmtpServerAdress,
-  port: port,
-  tls: {
-    rejectUnauthorized: false,
-  }
-  // auth: {
-  //   user: "hommykendrick@gmail.com",
-  //   pass: "Herberth1624",
-  // },
-});
+const port = process.env.PORT ? process.env.PORT : 25;
 
 const server = new SMTPServer({
   logger: true,
@@ -42,7 +31,7 @@ const server = new SMTPServer({
       const axios = require("axios");
       const response = await axios({
         method: "get",
-        url: `${process.env.BackEndBaseUrl}/auth/smtp-auth`,
+        url: `http://localhost:8000/api/auth/smtp-auth`,
         data: {
           email: username,
           password: password,
@@ -52,7 +41,6 @@ const server = new SMTPServer({
       if (response.status === 200) {
         console.log("Account present on server");
         console.log("User authorized..");
-        transporter.auth={user:email,pass:password}
         return callback(null, { user: username });
       }
     } catch (error) {
@@ -61,17 +49,39 @@ const server = new SMTPServer({
     }
   },
   onData(stream, session, callback) {
-    let message = null;
+    let message = Buffer.alloc(0);
+
     stream.on("data", (data) => {
-      console.log(data);
+      message = Buffer.concat([message, data]);
+
       // message=data
     });
 
-    stream.on("end", () => {
+    stream.on("end", async () => {
       console.log("Message has been fully recieved");
-      // console.log(session);
 
-      // use nodemailer to send message (not yet implemented)
+      const messageObject = await parseMail(message);
+      // console.log(messageObject);
+
+      // sending email to the reciepeint
+      // let listOfMxRecords = await MxrecordsOfDomains.find({ domainName: messageObject.to.text.split("@")[1] });
+      // if (listOfMxRecords.length === 0) {
+      //   listOfMxRecords = await getMxRecordsOfDomain(messageObject.to.text);
+      // }
+
+      let listOfMxRecords = await getMxRecordsOfDomain(messageObject.to.text);
+
+      const mailObjectForSend = {
+        subject: messageObject.subject,
+        to: messageObject.to.text,
+        from: messageObject.from.text,
+        emailMessage: messageObject.text,
+        mxRecord: listOfMxRecords[0],
+      };
+
+      sendMail(mailObjectForSend);
+
+      console.log("Message Delivered");
 
       callback();
     });

@@ -11,7 +11,7 @@ const jwtForSignUp = async (id, verfCode) => {
 
 const verifyToken = async (token) => {
   try {
-    return jwt.verify(token, process.env.JwtSecretKey);
+    return await jwt.verify(token, process.env.JwtSecretKey);
   } catch (error) {
     return error;
   }

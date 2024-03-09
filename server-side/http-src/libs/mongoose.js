@@ -13,4 +13,8 @@ const connectToAccountInfoDatabase = async (connectionUrl) => {
   await mongoose.connect(connectionUrl);
 };
 
-module.exports = connectToAccountInfoDatabase;
+const tObjectId= (id) => {
+  return new mongoose.Types.ObjectId(id);
+};
+
+module.exports = {connectToAccountInfoDatabase,tObjectId}
