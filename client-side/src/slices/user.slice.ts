@@ -27,10 +27,13 @@ const userSlice = createSlice({
     logout: () => {
       return initialState
     },
+    addOrgId: (state, action) => {
+      state.orgId = action.payload.orgId
+    }
   }
 })
 
 export const useUserSlice = (state: any) => state.user
-export const { setData, logout, } = userSlice.actions
+export const { setData, logout, addOrgId } = userSlice.actions
 
 export default userSlice.reducer

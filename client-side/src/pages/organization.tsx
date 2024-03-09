@@ -1,13 +1,18 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Link from "next/link";
 import { toast } from "react-toastify";
+import { useDispatch } from "react-redux";
+import { IoMdCheckmark } from "react-icons/io";
 
+import { useCreateOrganizationMutation } from "@/apis/usersApi";
+import useCreateErrorFromApiRequest from "@/hooks/useCreateErrorFromApiRequest";
+import { addOrgId } from "@/slices/user.slice";
+
+import Mainpage from "@/components/layouts/Mainpage";
 import PrimaryButton from "@/components/atoms/PrimaryButton";
 import Logo from "@/components/atoms/Logo";
 
 import SetupLogo from "@/assets/setup.svg";
-
-import { IoMdCheckmark } from "react-icons/io";
 
 interface IOrgData {
 	name: string;
@@ -19,6 +24,8 @@ interface IOrgData {
 const organization = () => {
 	const [completed, setCompleted] = useState(false);
 	const [showOtherTypeForm, setShowOtherTypeForm] = useState(false);
+	const [createOrganization, { data, error, isLoading }] = useCreateOrganizationMutation();
+	const dispatch = useDispatch();
 
 	const [orgData, setOrgData] = useState<IOrgData>({
 		name: "",
@@ -33,185 +40,191 @@ const organization = () => {
 
 	const saveOrg = (e: any) => {
 		e.preventDefault();
-		if (!orgData?.name) {
+		const { name, employeesCount, businessType, logo } = orgData;
+		if (!name) {
 			toast.error("Please provide a name for your organization", { autoClose: 1500 });
 			return;
 		}
-		if (!orgData?.employeesCount) {
+		if (!employeesCount) {
 			toast.error("Please provide a employee's count for your organization", { autoClose: 1500 });
 			return;
 		}
-		if (!orgData?.businessType) {
+		if (!businessType) {
 			toast.error("Please select the type of business", { autoClose: 1500 });
 			return;
 		}
 
-		console.log(orgData);
+		createOrganization({ orgName: name, employeeRange: employeesCount, businessType, logo });
 	};
+
+	useEffect(() => {
+		if (!data) return;
+		dispatch(addOrgId({ id: data.orgId }));
+
+		// Show completed page
+		setCompleted(true);
+	}, [data]);
+
+	useCreateErrorFromApiRequest(error);
 	return (
-		<div className="bg-bg w-full h-auto">
-			<section className="w-full max-w-5xl p-12 flex items-center flex-col h-auto mx-auto">
-				<Logo />
+		<Mainpage orgPage={true}>
+			<div className="bg-bg w-full h-auto">
+				<section className="w-full max-w-5xl p-12 flex items-center flex-col h-auto mx-auto">
+					<Logo />
 
-				{!completed && (
-					<>
-						<div className="flex mb-16 items-center gap-3">
-							<h3 className="font-medium text-2xl mt-8">Organization Setup</h3>
-						</div>
-
-						<div className="w-full h-auto p-6 bg-[#F3F5FF] mt-8 border-[1px] flex items-center justify-between">
-							<div className="w-4/5 px-6 h-auto">
-								<h3 className="text-xl font-medium mb-2">Hello Ty</h3>
-								<p>Let's set up your account. We know your time is valuable, but please fill these up , to continue.</p>
-							</div>
-							<div className="w-1/5 h-24 relative flex items-center">
-								{/* <Image src={SetupLogo} alt="Logo" /> */}
-								<SetupLogo className="w-full h-full" />
-							</div>
-						</div>
-						{/* Form */}
-						<form className="w-full h-auto p-12 bg-white mt-8 border-[1px] ">
-							<div className="relative mb-6">
-								<label className="font-medium text-[17px]">Enter Organization's name</label>
-								<input
-									type="text"
-									className="w-full h-12 px-2 focus:outline-0 border-[1px] text-sm rounded-[5px]"
-									placeholder="Please enter your company's name"
-									onChange={(e) => storeData("name", e.target.value)}
-								/>
+					{!completed && (
+						<>
+							<div className="flex mb-16 items-center gap-3">
+								<h3 className="font-medium text-2xl mt-8">Organization Setup</h3>
 							</div>
 
-							<div className="">
-								<p className="mb-4 text-[17px] font-medium">How many employees work at your organization?</p>
-								<div className="flex items-center gap-2 mb-4">
-									<input type="radio" className="h-4 w-4" name="employees-count" onChange={() => storeData("employeesCount", "self_employeed")} />
-									<label htmlFor="" className="text-[15px] font-light">
-										I'm self-employed
-									</label>
+							<div className="w-full h-auto p-6 bg-[#F3F5FF] mt-8 border-[1px] flex items-center justify-between">
+								<div className="w-4/5 px-6 h-auto">
+									<h3 className="text-xl font-medium mb-2">Hello Ty</h3>
+									<p>Let's set up your account. We know your time is valuable, but please fill these up , to continue.</p>
 								</div>
-								<div className="flex items-center gap-2 mb-4">
-									<input type="radio" className="h-4 w-4" name="employees-count" onChange={() => storeData("employeesCount", "1-5")} />
-									<label htmlFor="" className="text-[15px] font-light">
-										2 - 5 people
-									</label>
-								</div>
-								<div className="flex items-center gap-2 mb-4">
-									<input type="radio" className="h-4 w-4" name="employees-count" onChange={() => storeData("employeesCount", "6-10")} />
-									<label htmlFor="" className="text-[15px] font-light">
-										6 - 10 people
-									</label>
-								</div>
-								<div className="flex items-center gap-2 mb-4">
-									<input type="radio" className="h-4 w-4" name="employees-count" onChange={() => storeData("employeesCount", "11-20")} />
-									<label htmlFor="" className="text-[15px] font-light">
-										11 - 20 people
-									</label>
-								</div>
-								<div className="flex items-center gap-2 mb-4">
-									<input type="radio" className="h-4 w-4" name="employees-count" onChange={() => storeData("employeesCount", "more than 21")} />
-									<label htmlFor="" className="text-[15px] font-light">
-										more than 21 people
-									</label>
+								<div className="w-1/5 h-24 relative flex items-center">
+									{/* <Image src={SetupLogo} alt="Logo" /> */}
+									<SetupLogo className="w-full h-full" />
 								</div>
 							</div>
-
-							{/* Kind of busniess */}
-							<div className="mt-8">
-								<p className="mb-4 text-[17px] font-medium">What kind of business best describes your company?</p>
-								<div className="flex items-center gap-2 mb-4">
-									<input type="radio" className="h-4 w-4" name="business_type" onChange={() => storeData("businessType", "blogger_or_influencer")} />
-									<label htmlFor="" className="text-[15px] font-light">
-										Blogger or influencer
-									</label>
+							{/* Form */}
+							<form className="w-full h-auto p-12 bg-white mt-8 border-[1px] ">
+								<div className="relative mb-6">
+									<label className="font-medium text-[17px]">Enter Organization's name</label>
+									<input
+										type="text"
+										className="w-full h-12 px-2 focus:outline-0 border-[1px] text-sm rounded-[5px]"
+										placeholder="Please enter your company's name"
+										onChange={(e) => storeData("name", e.target.value)}
+									/>
 								</div>
-								<div className="flex items-center gap-2 mb-4">
-									<input type="radio" className="h-4 w-4" name="business_type" onChange={() => storeData("businessType", "ecommerce_business")} />
-									<label htmlFor="" className="text-[15px] font-light">
-										E-commerce business
-									</label>
-								</div>
-								<div className="flex items-center gap-2 mb-4">
-									<input type="radio" className="h-4 w-4" name="business_type" onChange={() => storeData("businessType", "sass_company")} />
-									<label htmlFor="" className="text-[15px] font-light">
-										Saas Company
-									</label>
-								</div>
-								<div className="flex items-center gap-2 mb-4">
-									<input type="radio" className="h-4 w-4" name="business_type" onChange={() => storeData("businessType", "educational_institute")} />
-									<label htmlFor="" className="text-[15px] font-light">
-										Educational Institution
-									</label>
-								</div>
-								<div className="flex items-center gap-2 mb-4">
-									<input type="radio" className="h-4 w-4" name="business_type" onChange={() => storeData("businessType", "start_up")} />
-									<label htmlFor="" className="text-[15px] font-light">
-										Start-up
-									</label>
-								</div>
-								<div className="flex items-center gap-2 mb-4">
-									<input type="radio" className="h-4 w-4" name="business_type" onChange={() => storeData("businessType", "marketing_agency")} />
-									<label htmlFor="" className="text-[15px] font-light">
-										Marketing agency
-									</label>
-								</div>
-								<div className="flex items-center gap-2 mb-4">
-									<input type="radio" className="h-4 w-4" name="business_type" onChange={() => storeData("businessType", "non_profit_organization")} />
-									<label htmlFor="" className="text-[15px] font-light">
-										Non-profit organization
-									</label>
-								</div>
-								<div className="flex items-center gap-2 mb-4">
-									<input type="radio" className="h-4 w-4" name="business_type" onChange={() => setShowOtherTypeForm(true)} />
-									<label htmlFor="" className="text-[15px] font-light">
-										Other
-									</label>
-								</div>
-								{showOtherTypeForm && (
-									<div className="relative">
-										<p className="absolute right-0 -top-6 opacity-50 text-sm">optional</p>
-										<input
-											type="text"
-											className="w-full h-12 px-2 focus:outline-0 border-[1px] text-sm rounded-[5px]"
-											placeholder="Please share your company description"
-											onChange={(e) => storeData("businessType", e.target.value)}
-										/>
+								<div className="">
+									<p className="mb-4 text-[17px] font-medium">How many employees work at your organization?</p>
+									<div className="flex items-center gap-2 mb-4">
+										<input type="radio" className="h-4 w-4" name="employees-count" onChange={() => storeData("employeesCount", "self_employeed")} />
+										<label htmlFor="" className="text-[15px] font-light">
+											I'm self-employed
+										</label>
 									</div>
-								)}
+									<div className="flex items-center gap-2 mb-4">
+										<input type="radio" className="h-4 w-4" name="employees-count" onChange={() => storeData("employeesCount", "1-5")} />
+										<label htmlFor="" className="text-[15px] font-light">
+											2 - 5 people
+										</label>
+									</div>
+									<div className="flex items-center gap-2 mb-4">
+										<input type="radio" className="h-4 w-4" name="employees-count" onChange={() => storeData("employeesCount", "6-10")} />
+										<label htmlFor="" className="text-[15px] font-light">
+											6 - 10 people
+										</label>
+									</div>
+									<div className="flex items-center gap-2 mb-4">
+										<input type="radio" className="h-4 w-4" name="employees-count" onChange={() => storeData("employeesCount", "11-20")} />
+										<label htmlFor="" className="text-[15px] font-light">
+											11 - 20 people
+										</label>
+									</div>
+									<div className="flex items-center gap-2 mb-4">
+										<input type="radio" className="h-4 w-4" name="employees-count" onChange={() => storeData("employeesCount", "more than 21")} />
+										<label htmlFor="" className="text-[15px] font-light">
+											more than 21 people
+										</label>
+									</div>
+								</div>
+								{/* Kind of busniess */}
+								<div className="mt-8">
+									<p className="mb-4 text-[17px] font-medium">What kind of business best describes your company?</p>
+									<div className="flex items-center gap-2 mb-4">
+										<input type="radio" className="h-4 w-4" name="business_type" onChange={() => storeData("businessType", "blogger_or_influencer")} />
+										<label htmlFor="" className="text-[15px] font-light">
+											Blogger or influencer
+										</label>
+									</div>
+									<div className="flex items-center gap-2 mb-4">
+										<input type="radio" className="h-4 w-4" name="business_type" onChange={() => storeData("businessType", "ecommerce_business")} />
+										<label htmlFor="" className="text-[15px] font-light">
+											E-commerce business
+										</label>
+									</div>
+									<div className="flex items-center gap-2 mb-4">
+										<input type="radio" className="h-4 w-4" name="business_type" onChange={() => storeData("businessType", "sass_company")} />
+										<label htmlFor="" className="text-[15px] font-light">
+											Saas Company
+										</label>
+									</div>
+									<div className="flex items-center gap-2 mb-4">
+										<input type="radio" className="h-4 w-4" name="business_type" onChange={() => storeData("businessType", "educational_institute")} />
+										<label htmlFor="" className="text-[15px] font-light">
+											Educational Institution
+										</label>
+									</div>
+									<div className="flex items-center gap-2 mb-4">
+										<input type="radio" className="h-4 w-4" name="business_type" onChange={() => storeData("businessType", "start_up")} />
+										<label htmlFor="" className="text-[15px] font-light">
+											Start-up
+										</label>
+									</div>
+									<div className="flex items-center gap-2 mb-4">
+										<input type="radio" className="h-4 w-4" name="business_type" onChange={() => storeData("businessType", "marketing_agency")} />
+										<label htmlFor="" className="text-[15px] font-light">
+											Marketing agency
+										</label>
+									</div>
+									<div className="flex items-center gap-2 mb-4">
+										<input type="radio" className="h-4 w-4" name="business_type" onChange={() => storeData("businessType", "non_profit_organization")} />
+										<label htmlFor="" className="text-[15px] font-light">
+											Non-profit organization
+										</label>
+									</div>
+									<div className="flex items-center gap-2 mb-4">
+										<input type="radio" className="h-4 w-4" name="business_type" onChange={() => setShowOtherTypeForm(true)} />
+										<label htmlFor="" className="text-[15px] font-light">
+											Other
+										</label>
+									</div>
+									{showOtherTypeForm && (
+										<div className="relative">
+											<p className="absolute right-0 -top-6 opacity-50 text-sm">optional</p>
+											<input
+												type="text"
+												className="w-full h-12 px-2 focus:outline-0 border-[1px] text-sm rounded-[5px]"
+												placeholder="Please share your company description"
+												onChange={(e) => storeData("businessType", e.target.value)}
+											/>
+										</div>
+									)}
+								</div>
+								{/* Image field */}
+								<div className="w-full ">
+									<label className="w-full flex items-center">Upload company's logo</label>
+									<input type="file" accept="image/*" />
+								</div>
+								<div className="h-[1px] bg-[rgb(226,232,240)] mt-8"></div>
+								<PrimaryButton type="button" sx="!w-[120px] ml-auto !h-12 !mt-12 !bg-[#32325C]" isLoading={isLoading} text="Continue" handleClick={(e: any) => saveOrg(e)} />
+							</form>
+						</>
+					)}
+
+					{completed && (
+						<>
+							<div className="w-48 flex items-center justify-center h-48 rounded-full border-[2px] border-[#32325c] my-16">
+								<IoMdCheckmark className="text-5xl" />
 							</div>
+							<h3 className="text-3xl font-medium mb-5">Welcome to Company Name, Ty!</h3>
+							<p className="w-3/5 opacity-80 mb-8 text-center">
+								We appreciate your input and look forward to working with you. If you have any questions or suggestions, please do not hesitate to{" "}
+								<Link href="/contact-us" className="text-sec hover:underline">
+									contact us.
+								</Link>
+							</p>
 
-							{/* Image field */}
-							<div className="w-full ">
-								<label className="w-full flex items-center">Upload company's logo</label>
-								<input type="file" accept="image/*" />
-							</div>
-
-							<div className="h-[1px] bg-[rgb(226,232,240)] mt-8"></div>
-
-							<button className="block mt-8 w-[120px] h-12 rounded-[5px] text-white hover:bg-opacity-70 bg-[#32325C] ml-auto" type="button" onClick={(e: any) => saveOrg(e)}>
-								Continue
-							</button>
-						</form>
-					</>
-				)}
-
-				{completed && (
-					<>
-						<div className="w-48 flex items-center justify-center h-48 rounded-full border-[2px] border-[#32325c] my-16">
-							<IoMdCheckmark className="text-5xl" />
-						</div>
-						<h3 className="text-3xl font-medium mb-5">Welcome to Company Name, Ty!</h3>
-						<p className="w-3/5 opacity-80 mb-8 text-center">
-							We appreciate your input and look forward to working with you. If you have any questions or suggestions, please do not hesitate to{" "}
-							<Link href="/contact-us" className="text-sec hover:underline">
-								contact us.
-							</Link>
-						</p>
-
-						<PrimaryButton text="Let's Start" href="/dashboard" sx="!w-[120px]" />
-					</>
-				)}
-			</section>
-		</div>
+							<PrimaryButton text="Let's Start" href="/dashboard" sx="!w-[120px]" />
+						</>
+					)}
+				</section>
+			</div>
+		</Mainpage>
 	);
 };
 

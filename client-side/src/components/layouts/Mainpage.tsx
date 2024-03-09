@@ -74,9 +74,9 @@ const Component = ({ children }: { children: React.ReactNode; isAdmin?: boolean 
 	);
 };
 
-const Mainpage = ({ children, isAdmin = false }: { children: ReactNode; isAdmin?: boolean }) => {
+const Mainpage = ({ children, isAdmin = false, orgPage = false }: { children: ReactNode; isAdmin?: boolean; orgPage?: boolean }) => {
 	return (
-		<ProtectedRoute loginRequired={true} isAdmin={isAdmin}>
+		<ProtectedRoute loginRequired={true} isAdmin={isAdmin} orgPage={orgPage}>
 			<Component isAdmin={isAdmin}>{children}</Component>
 		</ProtectedRoute>
 	);

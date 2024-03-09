@@ -19,9 +19,9 @@ const Component = ({ children }: { children: ReactNode }) => {
 	useEffect(() => {
 		if (!data?.accountInfo) return;
 
-		const { firstname, lastname, email, role, _id } = data.accountInfo;
+		const { firstname, lastname, email, role, _id, orgId } = data.accountInfo;
 		// Store user data
-		dispatch(setData({ firstname, lastname, email, role, _id }));
+		dispatch(setData({ firstname, lastname, email, role, _id, orgId }));
 	}, [data]);
 
 	return (

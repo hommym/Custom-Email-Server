@@ -5,7 +5,7 @@ import { createAuthorizationHeader } from '@/utils/cookies';
 const userApi = createApi({
   reducerPath: 'userApi',
   baseQuery: fetchBaseQuery({
-    baseUrl: `${process.env.NEXT_PUBLIC_API_URL}/api`,
+    baseUrl: `${process.env.NEXT_PUBLIC_API_URL}/api/user`,
     prepareHeaders: (headers) => {
       return createAuthorizationHeader(headers)
     },
@@ -14,7 +14,7 @@ const userApi = createApi({
   endpoints: (builder) => ({
     fetchLoggedInUserRequest: builder.query<any, void>({
       query: () => ({
-        url: "/auth/logged-in",
+        url: "/logged-in",
       }),
     }),
 
@@ -24,6 +24,13 @@ const userApi = createApi({
         method: 'PUT',
         body: { firstname, lastname }
       }),
+    }),
+    createOrganization: builder.mutation<{ message: string; orgId: string }, { orgName: string; employeeRange: string; businessType: string; logo: string }>({
+      query: ({ orgName, employeeRange, businessType, logo }) => ({
+        url: '/create-org',
+        body: { orgName, employeeRange, businessType, logo },
+        method: 'POST'
+      })
     }),
 
 
@@ -41,5 +48,6 @@ export const {
   useFetchLoggedInUserRequestQuery,
   useUpdateUserProfileRequestMutation,
   useFetchAllUsersNoPagesRequestQuery,
+  useCreateOrganizationMutation
 } = userApi
 export default userApi

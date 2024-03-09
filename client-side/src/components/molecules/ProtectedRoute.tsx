@@ -13,9 +13,10 @@ interface ProtectedRouteProps {
 	loginRequired?: Boolean;
 	isAdmin?: boolean;
 	auth?: boolean;
+	orgPage?: boolean;
 }
 
-const ProtectedRoute = ({ children, loginRequired = false, isAdmin = false, auth = false }: ProtectedRouteProps) => {
+const ProtectedRoute = ({ children, loginRequired = false, isAdmin = false, auth = false, orgPage = false }: ProtectedRouteProps) => {
 	const router = useRouter();
 	const user = useSelector(useUserSlice);
 
@@ -27,8 +28,12 @@ const ProtectedRoute = ({ children, loginRequired = false, isAdmin = false, auth
 			router.replace("/");
 		}
 
-		if (loginRequired && user?._id && !user?.orgId) {
+		if (loginRequired && user?._id && !user?.orgId && !orgPage) {
 			router.replace("/organization");
+		}
+
+		if (loginRequired && user?._id && user?.orgId) {
+			router.replace("/dashboard");
 		}
 		// Protected page for admin
 		if (isAdmin && (!user?._id || !user?.isAdmin)) {
@@ -38,7 +43,12 @@ const ProtectedRoute = ({ children, loginRequired = false, isAdmin = false, auth
 
 	return (
 		<>
-			{user?._id && <>{user?.orgId && { children }}</>}
+			{user?._id && (
+				<>
+					{!orgPage && user?.orgId && <>{children}</>}
+					{orgPage && !user?.orgId && <>{children}</>}
+				</>
+			)}
 			{!loginRequired && <>{children}</>}
 		</>
 	);
