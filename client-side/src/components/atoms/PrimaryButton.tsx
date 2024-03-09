@@ -9,7 +9,7 @@ interface IButton {
 	isLoading?: boolean;
 	disabled?: boolean;
 	type?: "button" | "submit";
-	handleClick?: () => void;
+	handleClick?: (e: any) => void;
 }
 
 const PrimaryButton = ({ href, text, sx = "", disabled, isLoading, type = "button", handleClick }: IButton) => {
@@ -23,7 +23,7 @@ const PrimaryButton = ({ href, text, sx = "", disabled, isLoading, type = "butto
 			)}
 
 			{!href && (
-				<button className={style} disabled={disabled || isLoading} type={type} onClick={() => (handleClick ? handleClick() : "")}>
+				<button className={style} disabled={disabled || isLoading} type={type} onClick={(e) => (handleClick ? handleClick(e) : "")}>
 					{isLoading ? <Loading sx="h-7 w-7" stroke="#fff" /> : text}
 				</button>
 			)}

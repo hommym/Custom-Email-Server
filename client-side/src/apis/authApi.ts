@@ -33,7 +33,7 @@ const authApi = createApi({
         body: { email, mode }
       })
     }),
-    loginRequest: builder.mutation<{ token: string, user: any }, { email: string; password: string }>({
+    loginRequest: builder.mutation<{ jwtForLogIn: string, message: string }, { email: string; password: string }>({
       query: ({ email, password }) => ({
         url: '/login',
         method: 'POST',

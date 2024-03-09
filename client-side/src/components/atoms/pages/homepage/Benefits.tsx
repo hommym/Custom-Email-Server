@@ -5,14 +5,17 @@ import PrimaryButton from "../../PrimaryButton";
 
 import SendEmailsImage from "@/assets/send-email.webp";
 import GrowAudienceImage from "@/assets/grow-audience.webp";
+import { useSelector } from "react-redux";
+import { useUserSlice } from "@/slices/user.slice";
 
 const Benefits = () => {
 	const [active, setActive] = useState(0);
+	const user = useSelector(useUserSlice);
 	return (
 		<section className=" max-w-6xl  mx-auto w-full h-auto py-24 flex items-stretch  justify-between gap-6">
 			<article className="w-1/5">
 				{["Send Email", "Grow your audience"].map((benefit, index) => (
-					<button className="w-full rounded-[5px] h-16 overflow-hidden gap-4 bg-white shadow-2xl mb-4 flex items-center justify-start" onClick={() => setActive(index)}>
+					<button key={index} className="w-full rounded-[5px] h-16 overflow-hidden gap-4 bg-white shadow-2xl mb-4 flex items-center justify-start" onClick={() => setActive(index)}>
 						<div className={`w-3 h-full ${active === index ? "bg-sec" : "bg-transparent"}`}></div>
 						<p className={`${active === index ? "font-black text-deep-text text-[18px]" : ""}`}>{benefit}</p>
 					</button>
@@ -29,7 +32,7 @@ const Benefits = () => {
 								sends.
 							</p>
 
-							<PrimaryButton text="Try for free" href="/create-account" sx="!w-[150px] !font-bold" />
+							<PrimaryButton text="Try for free" href={user?._id ? "/dashboard" : "/create-account"} sx="!w-[150px] !font-bold" />
 						</div>
 
 						<div className="w-1/2 h-full  relative">
@@ -47,7 +50,7 @@ const Benefits = () => {
 								automations for even better results.
 							</p>
 
-							<PrimaryButton text="Try for free" href="/create-account" sx="!w-[150px] !font-bold" />
+							<PrimaryButton text="Try for free" href={user?._id ? "/dashboard/audience" : "/create-account"} sx="!w-[150px] !font-bold" />
 						</div>
 
 						<div className="w-1/2 h-full  relative">

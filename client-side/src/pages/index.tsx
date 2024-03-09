@@ -1,5 +1,8 @@
 import Image from "next/image";
 import Link from "next/link";
+import { useSelector } from "react-redux";
+
+import { useUserSlice } from "@/slices/user.slice";
 
 import Benefits from "@/components/atoms/pages/homepage/Benefits";
 import Staticpage from "@/components/layouts/Staticpage";
@@ -8,7 +11,6 @@ import PrimaryButton from "@/components/atoms/PrimaryButton";
 import ProductMarketingImage from "@/assets/product-marketing.webp";
 import EmailMarketingLogo from "@/assets/email-marketing-logo.svg";
 import SupportImage from "@/assets/support.webp";
-import HeroImage from "@/assets/main-graphic-woman.webp";
 
 import { LuSend } from "react-icons/lu";
 import { RiUserReceived2Line } from "react-icons/ri";
@@ -16,6 +18,7 @@ import { MdOutlineCreateNewFolder } from "react-icons/md";
 import { IoIosArrowRoundForward, IoMdCheckmark } from "react-icons/io";
 
 export default function Home() {
+	const user = useSelector(useUserSlice);
 	return (
 		<Staticpage>
 			<main className="w-full h-auto min-h-screen bg-[#F7F7FC]  mx-auto">
@@ -93,7 +96,7 @@ export default function Home() {
 										{ name: "Free", price: 0 },
 										{ name: "Premium", price: 200 },
 									].map((plan, index, arr) => (
-										<div className={`w-1/2 ${index !== arr?.length - 1 ? "border-r-[1px]" : ""}`}>
+										<div className={`w-1/2 ${index !== arr?.length - 1 ? "border-r-[1px]" : ""}`} key={index}>
 											<h3 className="text-xl font-light mb-6">{plan?.name}</h3>
 											<p className="text-[12px] opacity-80">Starting from</p>
 											<p className="text-xl">
@@ -151,7 +154,7 @@ export default function Home() {
 					<section className="w-full py-24 relative">
 						<div className="w-full max-w-5xl bg-gradient flex items-center justify-center flex-col  p-12 py-20 rounded-[20px] mx-auto">
 							<h3 className="text-white font-black text-2xl mb-10"> Starting with Company Name is easy, fast and free</h3>
-							<PrimaryButton text="Start now" sx="!w-[120px] !rounded-[3px] !font-bold" />
+							<PrimaryButton text="Start now" href={user?._id ? "/dashboard" : "/create-account"} sx="!w-[120px] !rounded-[3px] !font-bold" />
 
 							<p className="text-[12px] mt-4 text-white">Free plan available. No credit card required. </p>
 						</div>

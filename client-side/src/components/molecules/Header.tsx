@@ -1,12 +1,15 @@
 import React from "react";
 import { useRouter } from "next/router";
-import Link from "next/link";
+import { useSelector } from "react-redux";
+
+import { useUserSlice } from "@/slices/user.slice";
 
 import PrimaryButton from "../atoms/PrimaryButton";
 import Logo from "../atoms/Logo";
 
 const Header = () => {
 	const { pathname } = useRouter();
+	const user = useSelector(useUserSlice);
 	return (
 		<header className="sticky top-0 bg-white z-[3] shadow-md left-0 py-6">
 			<div className="w-full max-w-6xl flex items-center justify-between  mx-auto">
@@ -26,10 +29,17 @@ const Header = () => {
 						About Us
 					</a>
 				</nav>
-				<div className="w-1/5 h-full flex items-center justify-between gap-4">
-					<PrimaryButton href="/login" text="Log in" sx="border-[1px] !bg-transparent !text-sec border-sec" />
-					<PrimaryButton href="/create-account" text="Try For Free" sx="border-[1px] border-sec" />
-				</div>
+				{!user?._id && (
+					<div className="w-1/5 h-full flex items-center justify-between gap-4">
+						<PrimaryButton href="/login" text="Log in" sx="border-[1px] !bg-transparent !text-sec border-sec" />
+						<PrimaryButton href="/create-account" text="Try For Free" sx="border-[1px] border-sec" />
+					</div>
+				)}
+				{user?._id && (
+					<div className="w-[10%] h-full flex items-center justify-between gap-4">
+						<PrimaryButton href="/dashboard" text="Dashboard" sx="border-[1px] !bg-transparent !text-sec border-sec" />
+					</div>
+				)}
 			</div>
 		</header>
 	);

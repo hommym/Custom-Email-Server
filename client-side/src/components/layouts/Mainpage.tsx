@@ -1,8 +1,9 @@
-import React from "react";
+import React, { ReactNode } from "react";
 import Link from "next/link";
 import { useRouter } from "next/router";
 
 import Logo from "../atoms/Logo";
+import ProtectedRoute from "../molecules/ProtectedRoute";
 
 import { VscSettingsGear } from "react-icons/vsc";
 import { HiMiniHomeModern } from "react-icons/hi2";
@@ -10,7 +11,7 @@ import { LuActivity } from "react-icons/lu";
 import { IoPeopleSharp } from "react-icons/io5";
 import { GiTeamIdea } from "react-icons/gi";
 
-const Mainpage = ({ children }: { children: React.ReactNode }) => {
+const Component = ({ children }: { children: React.ReactNode; isAdmin?: boolean }) => {
 	const { pathname } = useRouter();
 	return (
 		<div className="w-full h-screen flex items-start justify-start">
@@ -70,6 +71,14 @@ const Mainpage = ({ children }: { children: React.ReactNode }) => {
 				<div className="p-6 px-10 min-h-[90vh] bg-[#F3F5F8]">{children}</div>
 			</section>
 		</div>
+	);
+};
+
+const Mainpage = ({ children, isAdmin = false, orgPage = false }: { children: ReactNode; isAdmin?: boolean; orgPage?: boolean }) => {
+	return (
+		<ProtectedRoute loginRequired={true} isAdmin={isAdmin} orgPage={orgPage}>
+			<Component isAdmin={isAdmin}>{children}</Component>
+		</ProtectedRoute>
 	);
 };
 

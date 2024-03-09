@@ -1,11 +1,16 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
+import { toast } from "react-toastify";
+
+import { useUploadContactsMutation } from "@/apis/usersApi";
+import useCreateErrorFromApiRequest from "@/hooks/useCreateErrorFromApiRequest";
 
 import { IoMdInformationCircle } from "react-icons/io";
 import { IoClose } from "react-icons/io5";
 import { AiOutlinePlus } from "react-icons/ai";
 import { CiFileOn } from "react-icons/ci";
 
-const UploadFile = ({ setStep }: { setStep: React.Dispatch<React.SetStateAction<number>> }) => {
+const UploadFile = ({ setStep, setContacts }: { setStep: React.Dispatch<React.SetStateAction<number>>; setContacts: any }) => {
+	const [extractContacts, { data, error, isLoading }] = useUploadContactsMutation();
 	const [file, setFile] = useState<any>({});
 	const getFile = (e: any) => {
 		const files = e.target?.files;
@@ -17,8 +22,18 @@ const UploadFile = ({ setStep }: { setStep: React.Dispatch<React.SetStateAction<
 	};
 
 	const getContactsFromFile = () => {
-		setStep((prev) => ++prev);
+		extractContacts({ file });
 	};
+
+	useEffect(() => {
+		if (!data) return;
+		setContacts(data);
+		toast.success("Contacts extracted successfully", { autoClose: 500 });
+
+		setStep((prev) => ++prev);
+	}, [data]);
+
+	useCreateErrorFromApiRequest(error);
 	return (
 		<>
 			<div className="p-5 border-[1px] rounded-[5px] bg-[#F3F5FF] flex items-start justify-start gap-2">
