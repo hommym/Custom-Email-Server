@@ -1,34 +1,26 @@
-const asyncHandler=require("express-async-handler")
-const Employee= require("../../schemas/employeeSchema")
+const asyncHandler = require("express-async-handler");
+const Employee = require("../../schemas/employeeSchema");
 const Organisation = require("../../schemas/organisationSchema");
 const bcrypt = require("bcrypt");
-const{tObjectId}=require("../../libs/mongoose.js")
-
-const employeeCountController = asyncHandler( async (req, res, next) => {
+const { tObjectId } = require("../../libs/mongoose.js");
 
 
+const employeeCountController = asyncHandler(async (req, res, next) => {
+  if (!req.query.orgId) {
+    return res.status(400).json({ error: "No data passed for the query orgId" });
+  }
 
-if(!req.query.orgId){
+  const employees = await Employee.find({ orgId: tObjectId(req.query.orgId) }).select("-provider -verfCode -password -__v -isVerified");
 
-return res.status(400).json({error:"No data passed for the query orgId"})
+  if (employees.length === 0) {
+    return res.status(200).json({ employees: [] });
+  }
 
-
-}
-
-const employees = await Employee.find({ orgId: tObjectId(req.query.orgId) }).select("-provider -verfCode -password -__v -isVerified");
-
-if(employees.length===0){
-
-   return  res.status(200).json({employees:[]})
-}
-
-res.status(200).json({employees,employeeCount:employees.length})
-
-
+  res.status(200).json({ employees, employeeCount: employees.length });
 });
 
 const employeeSignUpController = asyncHandler(async (req, res, next) => {
-  const { firstName, lastName, email, password ,role } = req.body;
+  const { firstName, lastName, email, password, role } = req.body;
   if (!(firstName || email || password || lastName || role)) {
     throw new Error("Some fields in the body are empty");
   }
@@ -56,7 +48,7 @@ const employeeSignUpController = asyncHandler(async (req, res, next) => {
   const hashedPassword = await bcrypt.hash(process.env.DefaultPasswordEmployee, 10);
 
   // saving employee data in database
-  const newEmployee = await Employeemployee.create({ firstName, lastName, email,role, password: hashedPassword, orgId: req.user.orgId });
+  const newEmployee = await Employeemployee.create({ firstName, lastName, email, role, password: hashedPassword, orgId: req.user.orgId });
   console.log("New employee saved in database");
 
   // updating number of employees
@@ -67,9 +59,26 @@ const employeeSignUpController = asyncHandler(async (req, res, next) => {
   next();
 });
 
+const changeStatusController = asyncHandler(async (req, res, next) => {
+  const { status } = req.body;
+  if(!status){
 
+      res.status(400).json({message:"No data in status"})
+  }
+  const { employeeId } = req.params;
+  const newEmployeeDoc = await Employee.updateOne({ _id: tObjectId(employeeId) }, { $set: { status } });
+
+  res.status(200).json({ message: "Status changed sucessfully", status });
+});
+
+const loggedInController = asyncHandler(async (req, res) => {
+  console.log("Account info sent");
+  res.status(200).json({ accountInfo: await Employee.findOne({ _id: req.id }).select("-provider -verfCode -password -__v -isVerified") });
+});
 
 module.exports = {
   employeeCountController,
   employeeSignUpController,
+  changeStatusController,
+  loggedInController
 };

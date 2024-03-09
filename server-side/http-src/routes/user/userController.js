@@ -3,6 +3,7 @@ const organisation = require("../../schemas/organisationSchema");
 const user = require("../../schemas/userSchema");
 const { csvToArray } = require("../../libs/csvParser.js");
 const asyncHandler = require("express-async-handler");
+require("dotenv").config();
 
 const orgCreationController = asyncHandler(async (req, res, next) => {
 	const { orgName, employeeRange, businessType } = req.body;
@@ -66,8 +67,10 @@ const loggedInController = asyncHandler(async (req, res) => {
 		return res.status(200).json({ accountInfo: await user.findOne({ _id: req.id }).select("-provider -verfCode -password -__v -isVerified") });
 	}
 
-	console.log("account info sent");
-	res.status(200).json({ accountInfo: await employee.findOne({ _id: req.id }).select("-provider -verfCode -password -__v -isVerified") });
+	res.redirect(`${process.env.BackEndBaseUrl}\api\employee\logged-in`)
+
+	// console.log("account info sent");
+	// res.status(200).json({ accountInfo: await employee.findOne({ _id: req.id }).select("-provider -verfCode -password -__v -isVerified") });
 });
 
 module.exports = {
