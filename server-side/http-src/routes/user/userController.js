@@ -40,7 +40,7 @@ const orgCreationController = asyncHandler(async (req, res, next) => {
   const savedOrganisation = !employeeRange.includes("21") ? await organisation.create({ orgName, maxEmployeeCount, businessType }) : await organisation.create({ orgName, businessType });
   await user.updateOne({ _id: req.id }, { $set: { orgId: savedOrganisation._id } });
   console.log("Organisation Created Successfully");
-  res.status(200).json({ message: "Organisation Created Successfully" });
+  res.status(200).json({ message: "Organisation Created Successfully", orgId: savedOrganisation._id });
 });
 
 const emailUploadController = asyncHandler(async (req, res, next) => {
