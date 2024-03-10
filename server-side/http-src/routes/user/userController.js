@@ -5,6 +5,7 @@ const Employee = require("../../schemas/employeeSchema");
 const { csvToArray } = require("../../libs/csvParser.js");
 const asyncHandler = require("express-async-handler");
 const addressFilter = require("../../../helperMethods/emailadressFilter.js");
+const CustmerAdress = require("../../schemas/customerSchema");
 require("dotenv").config();
 
 const orgCreationController = asyncHandler(async (req, res, next) => {
@@ -74,8 +75,29 @@ const loggedInController = asyncHandler(async (req, res) => {
   res.status(200).json({ accountInfo: await Employee.findOne({ _id: req.id }).select("-provider -verfCode -password -__v -isVerified") });
 });
 
+const saveContactController = asyncHandler(async (req, res) => {
+  const { emailAddresses } = req.body;
+
+  if (emailAddresses.length === 0) {
+    return res.status(200).json({ message: "no contacts uploaded", uploadedContacts: [] });
+  }
+  let listOfDocToSave = [];
+  const orgId = (await User.findOne({ _id: req.id })).orgId;
+
+  for (const address of emailAddresses) {
+    listOfDocToSave.push({ emailAddress: address, orgId });
+  }
+
+  
+  console.log("Contacts uploading...");
+  const uploadedContacts = await CustmerAdress.insertMany(listOfDocToSave);
+  console.log("Upload complete");
+  res.status(200).json({ message: "Contacts successfully uploaded", uploadedContacts });
+});
+
 module.exports = {
   orgCreationController,
   contactsUploadController,
   loggedInController,
+  saveContactController,
 };

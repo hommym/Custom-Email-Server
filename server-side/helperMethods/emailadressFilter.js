@@ -16,7 +16,7 @@ const addressFilter = async (results, req) => {
     let indexTracker = 0;
 
     for (const e of results) {
-      if (e === emailAdObj.emailAdress) {
+      if (e === emailAdObj.emailAddress) {
         if (!(indexTracker in indexOfElementToRemove)) {
           indexOfElementToRemove.push(indexTracker);
         }
