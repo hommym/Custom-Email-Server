@@ -9,7 +9,7 @@ const employeeRouter = express.Router();
 
 employeeRouter.get("/show-employees", verifyJwt, adminChecker, employeeCountController);
 employeeRouter.post("/sign-up", verifyJwt, adminChecker, employeeSignUpController, sendConfirmation);
-
+// employeeRouter.post("/upload-contact")
 
 employeeRouter.post("/:employeeId/change-status", verifyJwt, changeStatusController);
 module.exports = employeeRouter;

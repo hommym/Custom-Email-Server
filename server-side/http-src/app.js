@@ -35,6 +35,9 @@ const startApplication = async () => {
   console.log("Connecting to the database...");
   await connectToAccountInfoDatabase(process.env.MongoDbConnectionUrl);
 
+
+
+
 	app.listen(port, () => {
 		console.log(`Server is listening on ${port} `);
 	});

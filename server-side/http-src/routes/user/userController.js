@@ -4,6 +4,7 @@ const User = require("../../schemas/userSchema");
 const Employee = require("../../schemas/employeeSchema");
 const { csvToArray } = require("../../libs/csvParser.js");
 const asyncHandler = require("express-async-handler");
+const addressFilter = require("../../../helperMethods/emailadressFilter.js");
 require("dotenv").config();
 
 const orgCreationController = asyncHandler(async (req, res, next) => {
@@ -49,12 +50,13 @@ const contactsUploadController = asyncHandler(async (req, res, next) => {
   if (req.file) {
     console.log("File received", req.file);
     if (req.file.mimetype === "text/csv") {
-      return await csvToArray(req.file.buffer, res);
+      return await csvToArray(req.file.buffer, res,req);
     } else {
       const jsonObject = JSON.parse(req.file.buffer.toString());
       // Convert JSON object into an array of values
-      const results = Object.values(jsonObject);
+      let results = Object.values(jsonObject);
       console.log("Json data converted into array");
+      results= await addressFilter(results,req)
       return res.status(200).json({ emailAdresses: results, adressCount: results.length });
     }
   }
