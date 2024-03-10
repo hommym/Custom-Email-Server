@@ -9,7 +9,7 @@ const addressFilter = async (results, req) => {
   console.log("duplicates removed set convert to array");
 
   // filtering out emails using orgId to get rid of already exist emails in dataBase
-  const allEmailAddressOfOrg = await CustmerAdress.find({ orgId:(await User.findOne({ _id: req.id })).orgId});
+  const allEmailAddressOfOrg = await CustmerAdress.find({ orgId: (await User.findOne({ _id: req.id })).orgId });
   const indexOfElementToRemove = [];
   console.log("Filtering with data in database start..");
   allEmailAddressOfOrg.forEach((emailAdObj) => {

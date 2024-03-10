@@ -50,13 +50,13 @@ const contactsUploadController = asyncHandler(async (req, res, next) => {
   if (req.file) {
     console.log("File received", req.file);
     if (req.file.mimetype === "text/csv") {
-      return await csvToArray(req.file.buffer, res,req);
+      return await csvToArray(req.file.buffer, res, req);
     } else {
       const jsonObject = JSON.parse(req.file.buffer.toString());
       // Convert JSON object into an array of values
       let results = Object.values(jsonObject);
       console.log("Json data converted into array");
-      results= await addressFilter(results,req)
+      results = await addressFilter(results, req);
       return res.status(200).json({ emailAdresses: results, adressCount: results.length });
     }
   }
