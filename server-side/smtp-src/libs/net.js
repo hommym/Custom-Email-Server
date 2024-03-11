@@ -2,12 +2,11 @@ const net = require("net");
 
 const sendMail = (mailObject) => {
   const configOptions = {
-    host:mailObject.mxRecord.mailServerIpAdress[0],
+    host: mailObject.mxRecord.mailServerIpAdress[0],
     port: 25, //mailObject.mxRecord.port[1],
   };
 
   const client = net.createConnection(configOptions, () => {
-    
     // Send EHLO/HELO command to initiate the SMTP session
     client.write(`EHLO ${mailObject.mxRecord.domainName}\r\n`);
 

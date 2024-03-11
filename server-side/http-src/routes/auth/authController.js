@@ -2,7 +2,6 @@
 const bcrypt = require("bcrypt");
 const User = require("../../schemas/userSchema.js");
 const employee = require("../../schemas/employeeSchema.js");
-const organisation = require("../../schemas/organisationSchema");
 const { jwtForLogIn } = require("../../libs/jsonwebtoken.js");
 require("dotenv").config();
 
@@ -38,45 +37,7 @@ const userSignUpController = asyncHandler(async (req, res, next) => {
 	next();
 });
 
-const employeeSignUpController = asyncHandler(async (req, res, next) => {
-	const { firstName,lastName,email,password } = req.body;
-	if (!(firstName || email || password || lastName)) {
-		throw new Error("Some fields in the body are empty");
-	}
 
-	// checking if account already exist
-	if (await employee.findOne({ email: email })) {
-		res.status(200);
-		throw new Error("Account already exist");
-	}
-
-  if (!req.user.orgId) {
-    return res.status(402).json({ message: "No Organisation present for employees to be added to" });
-  }
-
-  const userWithOrgDocumentAvailable = await req.user.populate("orgId");
-  const { employeeCount, maxEmployeeCount } = userWithOrgDocumentAvailable.orgId;
-
-  if (maxEmployeeCount) {
-    if (employeeCount === maxEmployeeCount) {
-      return res.status(402).json({ message: "You can't add anymore employees you limit has been reached" });
-    }
-  }
-
-	// hashing password
-	const hashedPassword = await bcrypt.hash(process.env.DefaultPasswordEmployee, 10);
-
-  // saving employee data in database
-  const newEmployee = await employee.create({ firstName,lastName ,email, password: hashedPassword, orgId: req.user.orgId });
-  console.log("New employee saved in database");
-
-  // updating number of employees
-  await organisation.updateOne({ _id: req.user.orgId }, { $set: { employeeCount: userWithOrgDocumentAvailable.orgId.employeeCount + 1 } });
-  req.body.employee = newEmployee;
-  console.log("Orgnisation employeeCont Updated");
-
-	next();
-});
 
 const emailConfirmationController = asyncHandler(async (req, res) => {
 	const updatedDocument = await User.updateOne({ _id: req.id, verfCode: req.verfCode }, { $set: { isVerified: true, verfCode: 0 } });
@@ -206,7 +167,6 @@ module.exports = {
   userSignUpController,
   logInController,
   emailConfirmationController,
-  employeeSignUpController,
   setPasswordController,
   changePasswordController,
   smtpAuthController,

@@ -2,9 +2,9 @@
 const mongoose = require("mongoose");
 
 const orgEmailAdresses = new mongoose.Schema({
-  orgId: ObjectId,
-  emailAdress: String,
-  category: String,
+  orgId: mongoose.Schema.Types.ObjectId,
+  emailAddress: String,
+  category:String
 });
 
-module.exports = mongoose.model("Org-Email-Adress", orgEmailAdresses);
+module.exports = mongoose.model("Org-Email-Address", orgEmailAdresses);

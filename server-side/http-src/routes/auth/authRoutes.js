@@ -4,7 +4,6 @@ const {
   userSignUpController,
   logInController,
   emailConfirmationController,
-  employeeSignUpController,
   setPasswordController,
   changePasswordController,
   smtpAuthController,
@@ -17,7 +16,7 @@ const authRouter = express.Router();
 
 authRouter.post("/user/sign-up", userSignUpController, sendConfirmation);
 
-authRouter.post("/employee/sign-up", verifyJWT, adminChecker, employeeSignUpController, sendConfirmation);
+
 
 authRouter.post("/login", userChecker, logInController);
 
