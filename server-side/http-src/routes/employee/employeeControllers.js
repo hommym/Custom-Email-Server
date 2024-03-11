@@ -4,7 +4,6 @@ const Organisation = require("../../schemas/organisationSchema");
 const bcrypt = require("bcrypt");
 const { tObjectId } = require("../../libs/mongoose.js");
 
-
 const employeeCountController = asyncHandler(async (req, res, next) => {
   if (!req.query.orgId) {
     return res.status(400).json({ error: "No data passed for the query orgId" });
@@ -20,8 +19,8 @@ const employeeCountController = asyncHandler(async (req, res, next) => {
 });
 
 const employeeSignUpController = asyncHandler(async (req, res, next) => {
-  const { firstName, lastName, email, password, role } = req.body;
-  if (!(firstName || email || password || lastName || role)) {
+  const { firstName, lastName, email, role } = req.body;
+  if (!(firstName && email && role && lastName)) {
     throw new Error("Some fields in the body are empty");
   }
 
@@ -61,18 +60,14 @@ const employeeSignUpController = asyncHandler(async (req, res, next) => {
 
 const changeStatusController = asyncHandler(async (req, res, next) => {
   const { status } = req.body;
-  if(!status){
-
-   return res.status(400).json({message:"No data in status"})
+  if (!status) {
+    return res.status(400).json({ message: "No data in status" });
   }
   const { employeeId } = req.params;
-  const newEmployeeDoc = await Employee.findOneAndUpdate({ _id:tObjectId(employeeId) }, { $set: { status:status } });
- 
+  const newEmployeeDoc = await Employee.findOneAndUpdate({ _id: tObjectId(employeeId) }, { $set: { status: status } });
 
-  res.status(200).json({ message: "Status changed sucessfully",status:status });
+  res.status(200).json({ message: "Status changed sucessfully", status: status });
 });
-
-
 
 module.exports = {
   employeeCountController,
