@@ -10,21 +10,22 @@ const employeesApi = createApi({
       return createAuthorizationHeader(headers)
     },
   }),
+  tagTypes: ['EMPLOYEES'],
+
 
   endpoints: (builder) => ({
     createNewTeamMember: builder.mutation<{ message: string; orgId: string }, { firstname: string; lastname: string; email: string; role: string }>({
       query: ({ firstname, lastname, email, role }) => ({
-        url: '/create-org',
+        url: '/sign-up',
         body: { firstname, lastname, email, role },
         method: 'POST'
-      })
+      }),
+      invalidatesTags: [{ type: 'EMPLOYEES' }]
     }),
 
 
-    fetchAllEmployees: builder.query<any, { orgId: string }>({
-      query: ({ orgId }) => ({
-        url: `/show-employees?orgId=${orgId}`,
-      }),
+    fetchAllEmployees: builder.query<{ employees: any }, { orgId: string }>({
+      query: ({ orgId }) => `/show-employees?orgId=${orgId}`,
     }),
 
     changeEmployeesStatus: builder.mutation<{ message: string; status: string }, { status: string; employeeId: string }>({
@@ -32,7 +33,8 @@ const employeesApi = createApi({
         url: `/${employeeId}/status`,
         method: 'PUT',
         body: { status }
-      })
+      }),
+      invalidatesTags: [{ type: 'EMPLOYEES' }]
     })
 
   })
@@ -40,7 +42,7 @@ const employeesApi = createApi({
 
 export const {
   useCreateNewTeamMemberMutation,
-  useFetchAllEmployeesQuery,
+  useLazyFetchAllEmployeesQuery,
   useChangeEmployeesStatusMutation
 } = employeesApi
 export default employeesApi

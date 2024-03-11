@@ -17,6 +17,7 @@ const importContacts = () => {
 	const [step, setStep] = useState(1);
 	const [format, setFormat] = useState<"file" | "text" | "">("");
 	const [contacts, setContacts] = useState<IContact[]>([]);
+	console.log(contacts);
 
 	const changeFormat = (e: any) => {
 		setFormat(e.target.id);

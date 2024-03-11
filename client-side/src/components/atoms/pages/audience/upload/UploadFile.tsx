@@ -27,7 +27,7 @@ const UploadFile = ({ setStep, setContacts }: { setStep: React.Dispatch<React.Se
 
 	useEffect(() => {
 		if (!data) return;
-		setContacts(data);
+		setContacts(data?.emailAddresses);
 		toast.success("Contacts extracted successfully", { autoClose: 500 });
 
 		setStep((prev) => ++prev);
@@ -54,7 +54,7 @@ const UploadFile = ({ setStep, setContacts }: { setStep: React.Dispatch<React.Se
 							</div>
 							<p className="mt-3">Upload a file</p>
 						</label>
-						<input type="file" accept=".csv , .json , .zip, .xml" id="emailFile" className="hidden" onChange={getFile} />
+						<input type="file" accept=".csv , .json" id="emailFile" className="hidden" onChange={getFile} />
 					</>
 				)}
 				{file?.name && (

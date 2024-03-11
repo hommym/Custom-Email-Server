@@ -3,12 +3,12 @@ const express = require("express");
 const cors = require("cors");
 require("dotenv").config();
 const {connectToAccountInfoDatabase} = require("./libs/mongoose.js");
-const authRouter = require("../http-src/routes/auth/authRoutes.js");
-const userRouter = require("../http-src/routes/user/userRoutes.js");
+const authRouter = require("./routes/auth/authRoutes.js");
+const userRouter = require("./routes/user/userRoutes.js");
 const emailSendRouter = require("./routes/email/emailRoute.js");
-const employeeRouter=require("../http-src/routes/employee/employeeRoutes.js")
-const dnsRouter=require("../http-src/routes/dns/dnsRoutes.js")
-const errorHandler = require("../http-src/middleware/errorHandler.js");
+const employeeRouter=require("./routes/employee/employeeRoutes.js")
+const dnsRouter=require("./routes/dns/dnsRoutes.js")
+const errorHandler = require("./middleware/errorHandler.js");
 
 const app = express();
 

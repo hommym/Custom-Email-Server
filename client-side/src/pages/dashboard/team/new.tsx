@@ -1,21 +1,35 @@
-import React from "react";
+import React, { useEffect } from "react";
 import Link from "next/link";
+import { toast } from "react-toastify";
+
+import useSelectedPropertiesFromHookForm from "@/hooks/useSelectedValuesFromHooks";
+import { registerTeamMemberSchema } from "@/libs/hookform";
+import { useCreateNewTeamMemberMutation } from "@/apis/employeesApi";
+import useCreateErrorFromApiRequest from "@/hooks/useCreateErrorFromApiRequest";
 
 import Mainpage from "@/components/layouts/Mainpage";
 import PrimaryInput from "@/components/atoms/PrimaryInput";
 import PrimaryButton from "@/components/atoms/PrimaryButton";
 
 import { IoIosArrowBack } from "react-icons/io";
-import useSelectedPropertiesFromHookForm from "@/hooks/useSelectedValuesFromHooks";
-import { registerTeamMemberSchema } from "@/libs/hookform";
 
 const NewContact = () => {
-	const { register, handleSubmit } = useSelectedPropertiesFromHookForm(registerTeamMemberSchema);
+	const { register, handleSubmit, reset } = useSelectedPropertiesFromHookForm(registerTeamMemberSchema);
+	const [registerTeamMember, { data, error, isLoading }] = useCreateNewTeamMemberMutation();
 
 	const registerNewMember = (data: any) => {
 		const { firstname, lastname, role, email } = data;
-		console.log({ firstname, lastname, role, email });
+		registerTeamMember({ firstname, lastname, role, email });
 	};
+
+	useEffect(() => {
+		if (!data) return;
+		toast.success("Team member successfully registered", { autoClose: 1500 });
+		reset();
+	}, [data]);
+
+	useCreateErrorFromApiRequest(error);
+
 	return (
 		<Mainpage>
 			<main className="min-h-[86vh]">
@@ -37,8 +51,8 @@ const NewContact = () => {
 					<div className="w-full mb-6">
 						<label htmlFor="role">Select account role</label>
 						<select id="role" {...register("role")} className="w-full h-12 rounded-[5px] px-3">
-							<option value="">Employee</option>
-							<option value="">Admin</option>
+							<option value="employee">Employee</option>
+							<option value="admin">Admin</option>
 						</select>
 					</div>
 
