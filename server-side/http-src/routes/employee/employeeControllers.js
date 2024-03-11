@@ -43,11 +43,8 @@ const employeeSignUpController = asyncHandler(async (req, res, next) => {
     }
   }
 
-  // hashing password
-  const hashedPassword = await bcrypt.hash(process.env.DefaultPasswordEmployee, 10);
-
   // saving employee data in database
-  const newEmployee = await Employee.create({ firstName, lastName, email, role, password: hashedPassword, orgId: req.user.orgId });
+  const newEmployee = await Employee.create({ firstName, lastName, email, role, orgId: req.user.orgId });
   console.log("New employee saved in database");
 
   // updating number of employees
