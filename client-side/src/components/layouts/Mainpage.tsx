@@ -10,6 +10,7 @@ import { HiMiniHomeModern } from "react-icons/hi2";
 import { LuActivity } from "react-icons/lu";
 import { IoPeopleSharp } from "react-icons/io5";
 import { GiTeamIdea } from "react-icons/gi";
+import { FaPaintBrush } from "react-icons/fa";
 
 const Component = ({ children }: { children: React.ReactNode; isAdmin?: boolean }) => {
 	const { pathname } = useRouter();
@@ -20,7 +21,7 @@ const Component = ({ children }: { children: React.ReactNode; isAdmin?: boolean 
 				<div className="w-full h-[15%] pl-8  flex items-center justify-start  gap-3">
 					<Logo sx="w-auto !text-sm" textSx="!text-lg" />
 				</div>
-				<nav className="w-full h-[70%] pl-8  overflow-y-auto">
+				<nav className="w-full h-[70%] pl-8  overflow-y-auto main">
 					<Link href="/dashboard" className={`"w-full mb-5 flex items-center gap-2 ${pathname === "/dashboard" ? "bg-sec active" : "bg-slate-100"} px-4 py-2 rounded-l-full`}>
 						<span className="w-8 h-8 flex items-center justify-center">
 							<HiMiniHomeModern className="text-lg" />
@@ -54,8 +55,17 @@ const Component = ({ children }: { children: React.ReactNode; isAdmin?: boolean 
 					</Link>
 
 					<Link
+						href="/dashboard/templates"
+						className={`"w-full mb-5 flex items-center gap-2 ${pathname.startsWith("/dashboard/templates") ? "bg-sec active" : "bg-slate-100"} px-4 py-2 rounded-l-full`}>
+						<span className="h-8 w-8 flex items-center justify-center">
+							<FaPaintBrush className="text-lg" />
+						</span>
+						<p className="text-[15px]">Templates</p>
+					</Link>
+
+					<Link
 						href="/dashboard/settings"
-						className={`"w-full mb-5 flex items-center gap-2 ${pathname.startsWith("/dashboard/settings") ? "bg-sec active" : "bg-slate-100"} px-4 py-2 rounded-l-full`}>
+						className={`"w-full flex items-center gap-2 ${pathname.startsWith("/dashboard/settings") ? "bg-sec active" : "bg-slate-100"} px-4 py-2 rounded-l-full`}>
 						<span className="w-8 h-8 flex items-center justify-center">
 							<VscSettingsGear className="text-lg" />
 						</span>

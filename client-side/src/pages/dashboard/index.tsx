@@ -69,7 +69,7 @@ const index = () => {
 						</button>
 						<p className="font-medium">Create template</p>
 					</Link>
-					<Link href="/" className="w-full bg-white hover:bg-[#EDEEFF] p-4 flex items-center justify-start gap-4 shadow-md border-[1px]">
+					<Link href="/dashboard/templates/new" className="w-full bg-white hover:bg-[#EDEEFF] p-4 flex items-center justify-start gap-4 shadow-md border-[1px]">
 						<button className="w-10 h-10 flex items-center justify-center">
 							<GrDomain />
 						</button>
