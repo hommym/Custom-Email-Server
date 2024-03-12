@@ -15,17 +15,17 @@ const Header = () => {
 			<div className="w-full max-w-6xl flex items-center justify-between  mx-auto">
 				<Logo sx="w-auto" textSx="!text-xl" />
 
-				<nav className="flex items-center gap-6 justify-between">
-					<a className={`${pathname === "/" ? "text-sec" : "text-deep-text hover:text-sec"} font-bold text-[18px]`} href="/">
+				<nav className="flex items-center gap-10 justify-between">
+					<a className={`${pathname === "/" ? "text-sec" : "text-deep-text hover:text-sec"} font-bold text-[16px]`} href="/">
 						Home
 					</a>
-					<a className={`${pathname === "/pricings" ? "text-sec" : "text-deep-text hover:text-sec"} font-bold text-[18px]`} href="/pricings">
+					<a className={`${pathname === "/pricings" ? "text-sec" : "text-deep-text hover:text-sec"} font-bold text-[16px]`} href="/pricings">
 						Pricings
 					</a>
-					<a className={`${pathname === "/contact-us" ? "text-sec" : "text-deep-text hover:text-sec"} font-bold text-[18px]`} href="/contact-us">
+					<a className={`${pathname === "/contact-us" ? "text-sec" : "text-deep-text hover:text-sec"} font-bold text-[16px]`} href="/contact-us">
 						Contact Us
 					</a>
-					<a className={`${pathname === "/about-us" ? "text-sec" : "text-deep-text hover:text-sec"} font-bold text-[18px]`} href="/about-us">
+					<a className={`${pathname === "/about-us" ? "text-sec" : "text-deep-text hover:text-sec"} font-bold text-[16px]`} href="/about-us">
 						About Us
 					</a>
 				</nav>

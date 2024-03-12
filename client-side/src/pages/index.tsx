@@ -93,8 +93,8 @@ export default function Home() {
 							<div className="bg-white relative -bottom-14 shadow-md h-auto w-full rounded-[25px] flex flex-col items-center justify-center mt-2 p-12 ">
 								<div className="w-full flex gap-6 mb-12">
 									{[
-										{ name: "Free", price: 0 },
-										{ name: "Premium", price: 200 },
+										{ name: "Starter", price: 0 },
+										{ name: "Pro", price: 200 },
 									].map((plan, index, arr) => (
 										<div className={`w-1/2 ${index !== arr?.length - 1 ? "border-r-[1px]" : ""}`} key={index}>
 											<h3 className="text-xl font-light mb-6">{plan?.name}</h3>
