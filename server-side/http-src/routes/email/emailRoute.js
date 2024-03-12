@@ -1,14 +1,15 @@
 // importing required modules
 const express = require("express");
-const expressAsyncHandler = require("express-async-handler");
 const verifyJWT = require("../../middleware/verifyJwt.js");
 const userChecker = require("../../middleware/userChecker.js");
 const saveEmail = require("../../middleware/saveEmail.js");
-const { sendController, emailTrackerController } = require("./emailController.js");
-const emailSendRouter = express.Router();
+const { sendController, emailTrackerController, outBoxController } = require("./emailController.js");
+const emailRouter = express.Router();
 
-emailSendRouter.post("/send", expressAsyncHandler(verifyJWT), expressAsyncHandler(userChecker), expressAsyncHandler(saveEmail), expressAsyncHandler(sendController));
+emailRouter.post("/send", verifyJWT, userChecker, saveEmail, sendController);
 
-emailSendRouter.get("/email-tracker/:emailId", expressAsyncHandler(emailTrackerController));
+emailRouter.get("/email-tracker/:emailId", emailTrackerController);
 
-module.exports = emailSendRouter;
+emailRouter.get("/outbox", verifyJWT,userChecker,outBoxController);
+
+module.exports = emailRouter;
