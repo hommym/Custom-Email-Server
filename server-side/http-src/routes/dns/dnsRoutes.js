@@ -1,5 +1,5 @@
 const express = require("express");
-const {saveMxRecords}= require("./dnsController.js")
+const { saveMxRecords,allMxRecords} = require("./dnsController.js");
 
 
 const dnsRouter = express.Router();
@@ -7,6 +7,6 @@ const dnsRouter = express.Router();
 
 
 dnsRouter.post("/save-mxrecords",saveMxRecords)
-dnsRouter.get("/get-mxRecords",)
+dnsRouter.get("/get-mxRecords",allMxRecords)
 
 module.exports = dnsRouter;

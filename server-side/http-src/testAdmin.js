@@ -15,34 +15,34 @@
 
 // testing smtp server
 
-// const nodeMailer = require("nodemailer");
+const nodeMailer = require("nodemailer");
 
-// const transporter = nodeMailer.createTransport({
-//   host: "10.232.105.113",
-//   port: 25,
-//   tls: {
-//     rejectUnauthorized: false,
-//   },
-//   auth: {
-//     user: "hommykendrick@gmail.com",
-//     pass: "Herberth1624",
-//   },
-// });
+const transporter = nodeMailer.createTransport({
+  host: "10.232.105.113",
+  port: 25,
+  tls: {
+    rejectUnauthorized: false,
+  },
+  auth: {
+    user: "hommykendrick@gmail.com",
+    pass: "Herberth1624",
+  },
+});
+// hommyM@continuumpayout.com
+const mailOptions = {
+  from: "hommyM@continuumpayout.com",
+  to: "herbertharthur80@yahoo.com",
+  subject: "Test Mail",
+  text: `This is just a test to show it is working`,
+};
 
-// const mailOptions = {
-//   from: "herbertharthur80@continuumpayout.com",
-//   to: "herbertharthur80@yahoo.com",
-//   subject: "Test Mail",
-//   text: `This is just a test to show it is working`,
-// };
-
-// transporter.sendMail(mailOptions, (error, info) => {
-//   if (error) {
-//     console.error("Error sending email: ", error);
-//   } else {
-//     console.log("Email sent: ", info.response);
-//   }
-// });
+transporter.sendMail(mailOptions, (error, info) => {
+  if (error) {
+    console.error("Error sending email: ", error);
+  } else {
+    console.log("Email sent: ", info.response);
+  }
+});
 
 
 

@@ -13,14 +13,13 @@ const mxRecordOfDomain = new mongoose.Schema({
   },
 
   mailServerIpAdress: {
-    type: String,
+    type: Array,
     required: true,
   },
- 
-  backUpMxRecord:{
-    type:Object
+  priority: Number,
+  backUpMxRecord: {
+    type: Object,
   },
-
 });
 
 

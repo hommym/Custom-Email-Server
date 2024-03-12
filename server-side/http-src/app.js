@@ -8,6 +8,7 @@ const userRouter = require("../http-src/routes/user/userRoutes.js");
 const emailSendRouter = require("./routes/email/emailRoute.js");
 const employeeRouter = require("../http-src/routes/employee/employeeRoutes.js");
 const dnsRouter = require("../http-src/routes/dns/dnsRoutes.js");
+const contactUsRouter=require("../http-src/routes/contactUs/contactUsRoute.js")
 const errorHandler = require("../http-src/middleware/errorHandler.js");
 
 const app = express();
@@ -25,7 +26,7 @@ app.use("/api/user", userRouter);
 app.use("/api/employee", employeeRouter);
 app.use("/api/email", emailSendRouter);
 app.use("/api/dns", dnsRouter);
-
+app.use("/api/contact-us",contactUsRouter)
 // error handling middleware
 app.use(errorHandler);
 const port = process.env.PORT ? process.env.PORT : 8000;
