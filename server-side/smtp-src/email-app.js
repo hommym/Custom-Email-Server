@@ -1,10 +1,12 @@
 // imorting  needed modules
 const SMTPServer = require("smtp-server").SMTPServer;
+const axios = require("axios");
 const { parseMail } = require("./libs/mailParser.js");
 const { getMxRecordsOfDomain } = require("../smtp-src/libs/dns.js");
 const MxrecordsOfDomains = require("../../server-side/http-src/schemas/mxRecordsOfDomains");
 const { sendMail } = require("./libs/net.js");
 require("dotenv").config();
+let mxRecordsWithHighImportance = [];
 
 const port = process.env.PORT ? process.env.PORT : 25;
 
@@ -28,7 +30,6 @@ const server = new SMTPServer({
 
       // make a network request to http server to authenticate the user on the smtp server(not implemented)
       console.log("Checking server for account..");
-      const axios = require("axios");
       const response = await axios({
         method: "get",
         url: `http://localhost:8000/api/auth/smtp-auth`,
@@ -60,6 +61,15 @@ const server = new SMTPServer({
     stream.on("end", async () => {
       console.log("Message has been fully recieved");
 
+      if (mxRecordsWithHighImportance.length === 0) {
+        console.log("Checking for mxRecords backup in database...");
+        mxRecordsWithHighImportance = await axios({
+          method: "get",
+          url: `http://localhost:8000/api/dns/get-mxRecords`,
+        });
+        mxRecordsWithHighImportance = mxRecordsWithHighImportance.data;
+      }
+
       const messageObject = await parseMail(message);
       // console.log(messageObject);
 
@@ -69,15 +79,22 @@ const server = new SMTPServer({
       //   listOfMxRecords = await getMxRecordsOfDomain(messageObject.to.text);
       // }
 
-      let listOfMxRecords = await getMxRecordsOfDomain(messageObject.to.text);
-
+      // for now lets assume there is going to be only one email address
       const mailObjectForSend = {
         subject: messageObject.subject,
         to: messageObject.to.text,
         from: messageObject.from.text,
         emailMessage: messageObject.text,
-        mxRecord: listOfMxRecords[0],
+        // mxRecord: listOfMxRecords[0],
       };
+
+      const mxRecordOfOneAddress = mxRecordsWithHighImportance.find((item) => item.domainName === messageObject.to.text.split("@")[1]);
+
+      if (mxRecordOfOneAddress) {
+        mailObjectForSend.mxRecord = mxRecordOfOneAddress;
+      } else {
+        mailObjectForSend.mxRecord = await getMxRecordsOfDomain(messageObject.to.text, mxRecordsWithHighImportance);
+      }
 
       sendMail(mailObjectForSend);
 
