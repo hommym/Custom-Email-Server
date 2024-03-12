@@ -3,8 +3,16 @@ import Link from "next/link";
 
 import Staticpage from "@/components/layouts/Staticpage";
 import PrimaryButton from "@/components/atoms/PrimaryButton";
+import useSelectedPropertiesFromHookForm from "@/hooks/useSelectedValuesFromHooks";
+import { contactSchema } from "@/libs/hookform";
 
 const contactUs = () => {
+	const { register, handleSubmit } = useSelectedPropertiesFromHookForm(contactSchema);
+
+	const sendContactMessage = (data: any) => {
+		const { name, email, message } = data;
+		console.log({ name, message, email });
+	};
 	return (
 		<Staticpage>
 			<main className="flex flex-col items-center justify-center py-24">
@@ -21,30 +29,30 @@ const contactUs = () => {
 
 				<section className="w-full h-auto">
 					<div className="w-full max-w-6xl mx-auto rounded-[25px] shadow-md h-auto bg-[#F8F8FC] mt-12 py-24">
-						<form action="" className="w-[70%] mx-auto ">
+						<form action="" className="w-[70%] mx-auto" onSubmit={handleSubmit(sendContactMessage)}>
 							<div className="flex items-center justify-between gap-4">
 								<div className="w-full">
-									<label htmlFor="" className="block mb-[5px] text-deep-text font-medium text-sm">
+									<label htmlFor="name" className="block mb-[5px] text-deep-text font-medium text-sm">
 										Name <span className="text-red-400">*</span>
 									</label>
-									<input className="w-full h-12 px-3 border-[1px] rounded-[5px] " type="text" />
+									<input id="name" className="w-full h-12 text-sm px-3 border-[1px] rounded-[5px] " type="text" {...register("name")} />
 								</div>
 								<div className="w-full">
-									<label htmlFor="" className="block mb-[5px] text-deep-text font-medium text-sm">
+									<label htmlFor="email" className="block mb-[5px] text-deep-text font-medium text-sm">
 										Email <span className="text-red-400">*</span>
 									</label>
-									<input className="w-full h-12 px-3 border-[1px] rounded-[5px] " type="text" />
+									<input id="email" className="w-full h-12 text-sm px-3 border-[1px] rounded-[5px] " type="text" {...register("email")} />
 								</div>
 							</div>
 
 							<div className="mt-8">
-								<label htmlFor="" className="block mb-[5px] text-deep-text font-medium text-sm">
+								<label htmlFor="message" className="block mb-[5px] text-deep-text font-medium text-sm">
 									Message <span className="text-red-400">*</span>
 								</label>
-								<textarea name="" className="w-full h-48 border-[1px] resize-none rounded-[5px]"></textarea>
+								<textarea id="message" className="w-full p-4 text-sm h-48 border-[1px] resize-none rounded-[5px]" {...register("message")}></textarea>
 							</div>
 
-							<PrimaryButton text="Send" sx="!w-[150px] !h-[60px] py-4 !font-bold !bg-deep-text !mt-8" />
+							<PrimaryButton text="Send" sx="!w-[150px] !h-[60px] py-4 !font-bold !bg-deep-text !mt-8" type="submit" />
 						</form>
 					</div>
 				</section>

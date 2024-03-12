@@ -34,7 +34,6 @@ export const setPasswordSchema = z.object({
 export const contactSchema = z.object({
 	name: z.string().min(1, { message: "Please enter your name" }).min(3, { message: 'Name should not be less than 3 characters' }),
 	email: z.string().min(1, { message: "Please enter your email address" }).email({ message: "Please enter a valid email address" }),
-	type: z.string().min(1, { message: "Please enter select the type of question" }),
 	message: z.string().min(1, { message: "Please enter your message" }).min(25, { message: "Message must be at least 25 characters" }),
 });
 
