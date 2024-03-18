@@ -1,6 +1,7 @@
 // importing neccesary modules
-const outBox = require("../../schemas/outboxSchema");
+const OutBox = require("../../schemas/outboxSchema");
 const nodeMailer = require("nodemailer");
+const asyncHandler = require("express-async-handler");
 const mongoose = require("mongoose");
 
 const sendController = async (req, res, next) => {
@@ -41,12 +42,23 @@ const sendController = async (req, res, next) => {
 const emailTrackerController = async (req, res, next) => {
   const { emailId } = req.params;
   // updating number people opening the email
-  const oldDocument = await outBox.findById(emailId);
-  await outBox.updateOne({ _id: new mongoose.Types.ObjectId(emailId) }, { $set: { viewCount: oldDocument.viewCount + 1 } });
+  const oldDocument = await OutBox.findById(emailId);
+  await OutBox.updateOne({ _id: new mongoose.Types.ObjectId(emailId) }, { $set: { viewCount: oldDocument.viewCount + 1 } });
   res.end("Email tracked");
 };
+
+const outBoxController = asyncHandler(async (req, res) => {
+  if (req.user) {
+    const allEmail = await OutBox.find({ organisation: req.user.orgId });
+    return res.status(200).json({ outBox: allEmail });
+  }
+
+  const allEmail = await OutBox.find({ organisation: req.employee.orgId });
+  res.status(200).json({ outBox: allEmail });
+});
 
 module.exports = {
   sendController,
   emailTrackerController,
+  outBoxController,
 };
