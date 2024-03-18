@@ -1,5 +1,5 @@
 import { IPricing } from "@/pages/pricings";
-import React from "react";
+import React, { useEffect } from "react";
 
 import { useSelector } from "react-redux";
 import { useUserSlice } from "@/slices/user.slice";
@@ -7,9 +7,29 @@ import { useUserSlice } from "@/slices/user.slice";
 import PrimaryButton from "../atoms/PrimaryButton";
 
 import { IoCheckmark } from "react-icons/io5";
+import { useLazyCreateSubscriptionSessionQuery } from "@/apis/stripeApi";
+import useCreateErrorFromApiRequest from "@/hooks/useCreateErrorFromApiRequest";
 
-const PricingCard = ({ name, desc, contacts, emails, amount, features }: IPricing) => {
+interface IPricingCard extends IPricing {
+	priceId: any;
+}
+
+const PricingCard = ({ name, desc, contacts, emails, amount, features, priceId }: IPricingCard) => {
 	const user = useSelector(useUserSlice);
+	console.log(priceId);
+
+	const [createSession, { data, error, isLoading }] = useLazyCreateSubscriptionSessionQuery();
+
+	const planManagement = () => {
+		createSession({ priceId });
+	};
+
+	useEffect(() => {
+		if (!data) return;
+		window.location.href = data.url;
+	}, [data]);
+
+	useCreateErrorFromApiRequest(error);
 	return (
 		<div className="w-full bg-white shadow-2xl flex items-center justify-center flex-col p-10  rounded-[10px]">
 			<h1 className="text-3xl font-bold text-deep-text mb-6">{name}</h1>
@@ -21,7 +41,8 @@ const PricingCard = ({ name, desc, contacts, emails, amount, features }: IPricin
 			<p className="font-normal text-sm">for up to {contacts} contacts</p>
 			<p className="font-normal text-sm">and up to {emails}</p>
 
-			<PrimaryButton text={name === "Starter" ? "Try For Free" : "Get Started"} sx="!mt-8 !w-1/2" href={user?._id ? "/create-account" : "/dashboard"} />
+			{!user?._id && <PrimaryButton text={name === "Starter" ? "Try For Free" : "Get Started"} sx="!mt-8 !w-1/2" href={"/create-account"} />}
+			{user?._id && <PrimaryButton text={name === "Starter" ? "Try For Free" : "Get Started"} sx="!mt-8 !w-1/2" handleClick={planManagement} />}
 
 			<div className="w-full mt-6">
 				{features?.map((feature, index) => (

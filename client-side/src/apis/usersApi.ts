@@ -53,6 +53,9 @@ const userApi = createApi({
         }
       }
     })
+    , getSubscriptionPlans: builder.query<{ data: string[] }, void>({
+      query: () => '/'
+    })
   })
 })
 
