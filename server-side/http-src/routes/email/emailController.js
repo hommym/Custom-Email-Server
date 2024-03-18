@@ -5,10 +5,13 @@ const asyncHandler = require("express-async-handler");
 const mongoose = require("mongoose");
 
 const sendController = async (req, res, next) => {
+
+
+
   //  setting up nodemailer
   const transporter = nodeMailer.createTransport({
-    host: "192.168.72.30",
-    port: 587,
+    host: "192.168.83.30",
+    port: 25,
     tls: {
       rejectUnauthorized: false,
     },
