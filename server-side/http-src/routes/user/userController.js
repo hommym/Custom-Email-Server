@@ -6,6 +6,7 @@ const { csvToArray } = require("../../libs/csvParser.js");
 const asyncHandler = require("express-async-handler");
 const addressFilter = require("../../../helperMethods/emailadressFilter.js");
 const CustmerAdress = require("../../schemas/customerSchema");
+const { extractSubscriptionDetails } = require("../stripe/stripe.controller.js");
 require("dotenv").config();
 
 const orgCreationController = asyncHandler(async (req, res, next) => {
@@ -66,13 +67,17 @@ const contactsUploadController = asyncHandler(async (req, res, next) => {
 });
 
 const loggedInController = asyncHandler(async (req, res) => {
+	let accountInfo = {};
 	if (req.user) {
-		console.log("account info sent");
-		return res.status(200).json({ accountInfo: await User.findOne({ _id: req.id }).select("-provider -verfCode -password -__v -isVerified") });
+		accountInfo = await User.findOne({ _id: req.id }).select("-provider -verfCode -password -__v -isVerified");
+		// Get customer details
+		const subscription = await extractSubscriptionDetails(accountInfo?.customerId);
+		accountInfo = { ...accountInfo?._doc, subscription };
+	} else {
+		accountInfo = await Employee.findOne({ _id: req.id }).select("-provider -verfCode -password -__v -isVerified");
+		accountInfo = { ...accountInfo?._doc, subscription };
 	}
-
-	console.log("account info sent");
-	res.status(200).json({ accountInfo: await Employee.findOne({ _id: req.id }).select("-provider -verfCode -password -__v -isVerified") });
+	res.status(200).json({ accountInfo });
 });
 
 const saveContactController = asyncHandler(async (req, res) => {

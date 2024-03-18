@@ -34,7 +34,7 @@ const Pricings = () => {
 
 					<div className="w-full max-w-4xl mx-auto mt-14 flex items-start justify-between gap-12">
 						{pricings?.map((pricing, index) => (
-							<PricingCard {...pricing} priceId={data?.plans && data?.plans?.length > 0 ? data?.plans[index] : ""} />
+							<PricingCard {...pricing} priceId={data?.plans && data?.plans?.length > 0 ? data?.plans[index] : ""} key={index} />
 						))}
 					</div>
 				</main>

@@ -4,11 +4,10 @@ const asyncHandler = require("express-async-handler");
 const stripe = require("stripe")(process.env.stripe_key);
 const Users = require("../../schemas/userSchema");
 
-let customerId = "cus_PiDlFVOn0D5c7Y";
-
 let prices = ["", process.env.ProStripePlan];
 
-const extractSubscription = asyncHandler(async (customerId) => {
+const extractSubscriptionDetails = asyncHandler(async (customerId) => {
+	if (!customerId) return "free";
 	// / Retrieve customer using  id
 	const subscriptions = await stripe.subscriptions.list({
 		customer: customerId,
@@ -21,7 +20,7 @@ const extractSubscription = asyncHandler(async (customerId) => {
 		let { plan, status } = subscription;
 		if (status === "active") {
 			plan = prices.findIndex((price) => price == plan.id);
-			return plan !== -1 ? (plan == 0 ? "premium" : plan === 1 ? "pro" : "free") : "free";
+			return plan !== -1 ? (plan === 1 ? "pro" : "free") : "free";
 		} else {
 			user.plan = "free";
 		}
@@ -57,18 +56,18 @@ const createSubscriptionCheckoutSession = asyncHandler(async (req, res) => {
 	if (!customerId) {
 		// Create customer
 		let customer = await createCustomer(user?.email);
-		console.log(customer);
 		customerId = customer.id;
 		await Users.updateOne({ _id: user?._id }, { customerId });
 	}
-	if (!priceId) {
-		return res.status(400).json({ error: "Please provide a priceId" });
-	}
 
 	// Retrieve customer id
-	const plan = await extractSubscription(customerId);
+	const plan = await extractSubscriptionDetails(customerId);
 
 	if (plan === "free") {
+		// Check priceId
+		if (!priceId) {
+			return res.status(400).json({ error: "Please provide a priceId" });
+		}
 		// Create a session checkout
 		const session = await stripe.checkout.sessions.create({
 			mode: "subscription",
@@ -88,7 +87,7 @@ const createSubscriptionCheckoutSession = asyncHandler(async (req, res) => {
 		// Create a biiling
 		const billingPortalSession = await stripe.billingPortal.sessions.create({
 			customer: customerId,
-			return_url: `${process.env.CLIENT_URL}/stripe`,
+			return_url: `${process.env.CLIENT_URL}/pricings`,
 		});
 		res.status(200).json({ url: billingPortalSession?.url });
 	}
@@ -134,4 +133,5 @@ module.exports = {
 	createSubscriptionCheckoutSession,
 	getCustomerDetails,
 	createCustomer,
+	extractSubscriptionDetails,
 };

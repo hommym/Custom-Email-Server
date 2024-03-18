@@ -16,7 +16,6 @@ interface IPricingCard extends IPricing {
 
 const PricingCard = ({ name, desc, contacts, emails, amount, features, priceId }: IPricingCard) => {
 	const user = useSelector(useUserSlice);
-	console.log(priceId);
 
 	const [createSession, { data, error, isLoading }] = useLazyCreateSubscriptionSessionQuery();
 
@@ -42,7 +41,21 @@ const PricingCard = ({ name, desc, contacts, emails, amount, features, priceId }
 			<p className="font-normal text-sm">and up to {emails}</p>
 
 			{!user?._id && <PrimaryButton text={name === "Starter" ? "Try For Free" : "Get Started"} sx="!mt-8 !w-1/2" href={"/create-account"} />}
-			{user?._id && <PrimaryButton text={name === "Starter" ? "Try For Free" : "Get Started"} sx="!mt-8 !w-1/2" handleClick={planManagement} />}
+			{user?._id && user?.role === "admin" && (
+				<>
+					{name === "Starter" && (
+						<PrimaryButton
+							text={user?.subscription === "free" ? "Current Plan" : "Free Tier"}
+							disabled={user?.subscription === "free" || isLoading}
+							sx="!mt-8 !w-1/2"
+							handleClick={planManagement}
+						/>
+					)}
+					{name !== "Starter" && (
+						<PrimaryButton text={user?.subscription === "pro" ? "Cancel Plan" : "Subscribe"} disabled={isLoading} isLoading={isLoading} sx="!mt-8 !w-1/2" handleClick={planManagement} />
+					)}
+				</>
+			)}
 
 			<div className="w-full mt-6">
 				{features?.map((feature, index) => (
