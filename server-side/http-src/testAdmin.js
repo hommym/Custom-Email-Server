@@ -30,8 +30,8 @@ const transporter = nodeMailer.createTransport({
 });
 // hommyM@continuumpayout.com
 const mailOptions = {
-  from: "hommyM@continuumpayout.com",
-  to: "herbertharthur80@yahoo.com",
+  from: "hmyM@continuumpayout.com",
+  to: "hommyM@continuumpayout.com",
   subject: "Test Mail",
   text: `This is just a test to show it is working`,
 };

@@ -7,12 +7,14 @@ const MxrecordsOfDomains = require("../../server-side/http-src/schemas/mxRecords
 const { sendMail } = require("./libs/net.js");
 require("dotenv").config();
 let mxRecordsWithHighImportance = [];
-
+const emailAddressesToGroups = require("../helperMethods/emailAddressToGroups.js");
+const { groupReadyListner, eventEmmitter } = require("./libs/events.js");
 const port = process.env.PORT ? process.env.PORT : 25;
 
 const server = new SMTPServer({
   logger: true,
   authOptional: true,
+  socketTimeout: 60 * 60000,
   onConnect(session, callback) {
     console.log(`New user with ip ${session.remoteAddress} has being connected`);
     return callback();
@@ -61,42 +63,26 @@ const server = new SMTPServer({
     stream.on("end", async () => {
       console.log("Message has been fully recieved");
 
-      if (mxRecordsWithHighImportance.length === 0) {
-        console.log("Checking for mxRecords backup in database...");
-        mxRecordsWithHighImportance = await axios({
-          method: "get",
-          url: `http://localhost:8000/api/dns/get-mxRecords`,
-        });
-        mxRecordsWithHighImportance = mxRecordsWithHighImportance.data;
-      }
-
       const messageObject = await parseMail(message);
-      // console.log(messageObject);
+      console.log(messageObject.to);
 
-      // sending email to the reciepeint
-      // let listOfMxRecords = await MxrecordsOfDomains.find({ domainName: messageObject.to.text.split("@")[1] });
-      // if (listOfMxRecords.length === 0) {
-      //   listOfMxRecords = await getMxRecordsOfDomain(messageObject.to.text);
-      // }
+      // implement strategy for sending here
 
-      // for now lets assume there is going to be only one email address
-      const mailObjectForSend = {
-        subject: messageObject.subject,
-        to: messageObject.to.text,
-        from: messageObject.from.text,
-        emailMessage: messageObject.text,
-        // mxRecord: listOfMxRecords[0],
-      };
+      groupReadyListner("group-ready", (data) => {
+        // send mail
+        console.log("Emails Sent For one group", data[0]);
+      });
 
-      const mxRecordOfOneAddress = mxRecordsWithHighImportance.find((item) => item.domainName === messageObject.to.text.split("@")[1]);
+      await emailAddressesToGroups(messageObject.to.text.split(","), eventEmmitter);
 
-      if (mxRecordOfOneAddress) {
-        mailObjectForSend.mxRecord = mxRecordOfOneAddress;
-      } else {
-        mailObjectForSend.mxRecord = await getMxRecordsOfDomain(messageObject.to.text, mxRecordsWithHighImportance);
-      }
-
-      sendMail(mailObjectForSend);
+      // const mailObjectForSend = {
+      //   subject: messageObject.subject,
+      //   to: messageObject.to.text,
+      //   from: messageObject.from.text,
+      //   emailMessage: messageObject.text ? messageObject.text : messageObject.html.text,
+      //   // mxRecord: listOfMxRecords[0],
+      // };
+      // sendMail(mailObjectForSend);
 
       console.log("Message Delivered");
 
