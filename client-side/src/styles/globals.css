@@ -25,3 +25,31 @@ a.active svg {
 	background: rgb(66, 100, 213);
 	background: linear-gradient(110deg, rgba(66, 100, 213, 1) 24%, rgba(79, 209, 197, 1) 95%);
 }
+
+::-webkit-scrollbar-thumb {
+	@apply !bg-sec;
+}
+
+@media screen and (min-width: 768px) {
+	::selection {
+		@apply bg-sec !text-white opacity-100;
+	}
+	::-webkit-scrollbar {
+		@apply w-[10px] rounded-full;
+	}
+	.main::-webkit-scrollbar {
+		@apply w-[4px];
+	}
+
+	::-webkit-scrollbar-track {
+		@apply bg-transparent !w-[1px] md:w-[10px];
+	}
+
+	::-webkit-scrollbar-thumb {
+		@apply bg-sec rounded-[20px];
+	}
+
+	::-webkit-scrollbar-thumb:hover {
+		@apply bg-[red];
+	}
+}

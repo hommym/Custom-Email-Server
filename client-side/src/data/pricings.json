@@ -1,0 +1,18 @@
+[
+	{
+		"name": "Starter",
+		"desc": "Start your journey: try all the basic features for free",
+		"amount": 0,
+		"contacts": 1000,
+		"emails": "100 emails per day",
+		"features": ["Access to Email Delivery Engine", "Email Designer", "Landing Page Editor", "Analytics", "Customer Support"]
+	},
+	{
+		"name": "Pro",
+		"desc": "A toolkit to help you make, manage and send emails",
+		"amount": 200.0,
+		"contacts": 500000,
+		"emails": "10000 emails per day",
+		"features": ["Access to Email Delivery Engine", "Email Designer", "Landing Page Editor", "Analytics", "Customer Support"]
+	}
+]

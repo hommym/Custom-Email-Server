@@ -15,9 +15,9 @@ const app = express();
 
 app.use(express.json());
 app.use(
-  cors({
-    origin: "*",
-  })
+	cors({
+		origin: "*",
+	})
 );
 
 // setting up routes
@@ -32,13 +32,13 @@ app.use(errorHandler);
 const port = process.env.PORT ? process.env.PORT : 8000;
 
 const startApplication = async () => {
-  // connecting database
-  console.log("Connecting to the database...");
-  await connectToAccountInfoDatabase(process.env.MongoDbConnectionUrl);
+	// connecting database
+	console.log("Connecting to the database...");
+	await connectToAccountInfoDatabase(process.env.MongoDbConnectionUrl);
 
-  app.listen(port, () => {
-    console.log(`Server is listening on ${port} `);
-  });
+	app.listen(port, () => {
+		console.log(`Server is listening on ${port} `);
+	});
 };
 
 startApplication();
