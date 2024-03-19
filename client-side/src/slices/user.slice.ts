@@ -6,7 +6,8 @@ type userSliceType = {
   lastname: string,
   _id: string,
   role: string,
-  orgId: string
+  orgId: string,
+  subscription: string
 }
 
 const initialState: userSliceType = {
@@ -15,7 +16,8 @@ const initialState: userSliceType = {
   lastname: '',
   _id: '',
   role: '',
-  orgId: ''
+  orgId: '',
+  subscription: 'free'
 }
 const userSlice = createSlice({
   name: 'user',
