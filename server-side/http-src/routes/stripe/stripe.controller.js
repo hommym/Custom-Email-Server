@@ -78,8 +78,8 @@ const createSubscriptionCheckoutSession = asyncHandler(async (req, res) => {
 					quantity: 1,
 				},
 			],
-			success_url: `${process.env.CLIENT_URL}/stripe/success?type=recur&session_id={CHECKOUT_SESSION_ID}`,
-			cancel_url: `${process.env.CLIENT_URL}/stripe/error`,
+			success_url: `${process.env.CLIENT_URL}/subscriptions/success?type=recur&session_id={CHECKOUT_SESSION_ID}`,
+			cancel_url: `${process.env.CLIENT_URL}/subscriptions/error`,
 			customer: customerId,
 		});
 		res.status(200).json({ url: session?.url });

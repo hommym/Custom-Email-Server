@@ -43,14 +43,7 @@ const PricingCard = ({ name, desc, contacts, emails, amount, features, priceId }
 			{!user?._id && <PrimaryButton text={name === "Starter" ? "Try For Free" : "Get Started"} sx="!mt-8 !w-1/2" href={"/create-account"} />}
 			{user?._id && user?.role === "admin" && (
 				<>
-					{name === "Starter" && (
-						<PrimaryButton
-							text={user?.subscription === "free" ? "Current Plan" : "Free Tier"}
-							disabled={user?.subscription === "free" || isLoading}
-							sx="!mt-8 !w-1/2"
-							handleClick={planManagement}
-						/>
-					)}
+					{name === "Starter" && <PrimaryButton text={user?.subscription === "free" ? "Current Plan" : "Free Tier"} disabled={true} sx="!mt-8 !w-1/2" handleClick={planManagement} />}
 					{name !== "Starter" && (
 						<PrimaryButton text={user?.subscription === "pro" ? "Cancel Plan" : "Subscribe"} disabled={isLoading} isLoading={isLoading} sx="!mt-8 !w-1/2" handleClick={planManagement} />
 					)}
