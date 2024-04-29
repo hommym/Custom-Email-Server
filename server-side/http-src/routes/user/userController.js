@@ -4,7 +4,7 @@ const User = require("../../schemas/userSchema");
 const Employee = require("../../schemas/employeeSchema");
 const { csvToArray } = require("../../libs/csvParser.js");
 const asyncHandler = require("express-async-handler");
-const addressFilter = require("../../../helperMethods/emailadressFilter.js");
+const addressFilter = require("../../../helperTools/emailadressFilter.js")
 const CustmerAdress = require("../../schemas/customerSchema");
 const { extractSubscriptionDetails } = require("../stripe/stripe.controller.js");
 require("dotenv").config();

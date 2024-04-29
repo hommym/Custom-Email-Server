@@ -1,6 +1,6 @@
 const csvParser = require("csv-parser");
 const { Readable } = require("stream");
-const addressFilter = require("../../helperMethods/emailadressFilter.js");
+const addressFilter = require("../../helperTools/emailadressFilter.js");
 
 const csvToArray = async (fileBuffer, res, req) => {
   let results = [];

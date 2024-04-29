@@ -35,8 +35,12 @@ const sendMailToSuperAdmin = (mailOptions) => {
 const sendMailToPostfix = async (emailQueue, addresses, eventEmitter) => {
   const mailObjectFromQueue = emailQueue.peek();
   const postfixTransporter = nodeMailer.createTransport({
-    host: "localhost",
+    host: "127.0.0.1",
     port: 25,
+    secure:false,
+    tls:{
+      rejectUnauthorized:false
+    }
   });
 
   const mailObject = {
@@ -49,9 +53,13 @@ const sendMailToPostfix = async (emailQueue, addresses, eventEmitter) => {
   try {
     await postfixTransporter.sendMail(mailObject);
     emailQueue.dequeue();
+    console.log("Emails sent to Postfix");
     eventEmitter("peekAtEmailQueue");
   } catch (error) {
-    console.log(error);
+    console.log(`SendMailToPostfix Error: ${error}`);
+
+    // implement a fall back strategy during failure(Not implemented)
+
   }
 };
 

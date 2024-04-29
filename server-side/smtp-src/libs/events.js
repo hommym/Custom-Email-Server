@@ -57,6 +57,10 @@ const groupReadyListner = (eventToListen, callBack) => {
   eventObject.on(eventToListen, callBack);
 };
 
+const peekAtQueueDataListner = (eventToListen, callBack) => {
+  eventObject.on(eventToListen, callBack);
+};
+
 module.exports = {
   eventEmmitter,
   echloListner,
@@ -65,4 +69,5 @@ module.exports = {
   dataRListner,
   retryConnectionListner,
   groupReadyListner,
+  peekAtQueueDataListner
 };

@@ -3,14 +3,14 @@ const OutBox = require("../../schemas/outboxSchema");
 const nodeMailer = require("nodemailer");
 const asyncHandler = require("express-async-handler");
 const mongoose = require("mongoose");
-
+require("dotenv").config()
 const sendController = async (req, res, next) => {
 
 
 
   //  setting up nodemailer
   const transporter = nodeMailer.createTransport({
-    host: "192.168.83.30",
+    host: process.env.SmtpServerAdress,
     port: 25,
     tls: {
       rejectUnauthorized: false,

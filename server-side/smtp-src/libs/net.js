@@ -1,16 +1,16 @@
 const net = require("net");
-const { eventEmmitter, echloListner, mailToListner, rcptToListner, dataRListner,retryConnectionListner } = require("./events");
-const fileSys=require("fs/promises")
-const path = require("path")
+const { eventEmmitter, echloListner, mailToListner, rcptToListner, dataRListner, retryConnectionListner } = require("./events");
+const fileSys = require("fs/promises");
+const path = require("path");
 const smtpPorts = [25, 465, 587];
-let port = 0;
+let port = 1;
 let commandTracker = 1;
 let retryConnection = false;
 const createConnection = (mailObject, port) => {
   retryConnection = false;
   const configOptions = {
-    host: mailObject.mxRecord.mailServerIpAdress[0],
-    port: port,
+    host: "p.webshare.io",
+    port: 9999,
   };
 
   const client = net.createConnection(configOptions, async () => {
@@ -18,13 +18,13 @@ const createConnection = (mailObject, port) => {
     echloListner(client, mailObject, "ehloF");
     mailToListner(client, mailObject, "mailF");
     rcptToListner(client, "rcptF");
-    const privateKey=await fileSys.readFile(path.resolve("private.key"),{encoding:"utf8"})
+    const privateKey = await fileSys.readFile(path.resolve("private.key"), { encoding: "utf8" });
     dataRListner(client, mailObject, "dataF", privateKey);
-    retryConnectionListner("retryConnection",()=>{
-       client = createConnection(mailObject, smtpPorts[port]);
-    })
-   
-    client.write(`EHLO ${mailObject.mxRecord.domainName}\r\n`);
+    retryConnectionListner("retryConnection", () => {
+      client = createConnection(mailObject, smtpPorts[port]);
+    });
+
+    client.write(`HELO ${mailObject.mxRecord.domainName}\r\n`);
   });
 
   return client;
