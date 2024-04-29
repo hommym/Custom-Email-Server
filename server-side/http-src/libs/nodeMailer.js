@@ -32,7 +32,31 @@ const sendMailToSuperAdmin = (mailOptions) => {
   });
 };
 
+const sendMailToPostfix = async (emailQueue, addresses, eventEmitter) => {
+  const mailObjectFromQueue = emailQueue.peek();
+  const postfixTransporter = nodeMailer.createTransport({
+    host: "localhost",
+    port: 25,
+  });
+
+  const mailObject = {
+    from: mailObjectFromQueue.from.text,
+    bcc: addresses,
+    subject: mailObjectFromQueue.subject,
+    html: mailObjectFromQueue.html.text,
+  };
+
+  try {
+    await postfixTransporter.sendMail(mailObject);
+    emailQueue.dequeue();
+    eventEmitter("peekAtEmailQueue");
+  } catch (error) {
+    console.log(error);
+  }
+};
+
 module.exports = {
   sendConfirmationMail,
-  sendMailToSuperAdmin
+  sendMailToSuperAdmin,
+  sendMailToPostfix,
 };
