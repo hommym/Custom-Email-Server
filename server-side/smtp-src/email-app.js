@@ -79,11 +79,13 @@ const server = new SMTPServer({
      
       if (emailQueue.peek() !== null) {
         emailQueue.enqueue(messageObject);
+         console.log(`${emailQueue.dataStorage.length} emails in queue`);
       } else {
         emailQueue.enqueue(messageObject);
+         console.log(`${emailQueue.dataStorage.length} emails in queue`);
         eventEmmitter("peekAtEmailQueue",callback);
       }
-      console.log(`${emailQueue.dataStorage.length} emails in queues`);
+     
      
 
       callback();

@@ -2,7 +2,7 @@ const dns = require("dns/promises");
 require("dotenv").config();
 
 const getMxRecordsOfDomain = async (domainName) => {
-  // getting domainName from email address
+ 
 
   try {
     const mxRecords = await dns.resolveMx(domainName);
@@ -12,11 +12,11 @@ const getMxRecordsOfDomain = async (domainName) => {
     }
 
     const mxRecordWithIp = { mailServerName: mxRecords[0].exchange, mailServerIpAdress: await dns.resolve4(mxRecords[0].exchange) };
-    console.log(`Mx record ready..`);
+    console.log(`Mx record of private mail server ready..`);
 
     return mxRecordWithIp
   } catch (error) {
-    console.log(error);
+    console.log("Domain name does not exist");
     return null;
   }
 };
