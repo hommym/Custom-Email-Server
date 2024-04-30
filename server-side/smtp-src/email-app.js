@@ -5,20 +5,20 @@ const { parseMail } = require("./libs/mailParser.js");
 const { getMxRecordsOfDomain } = require("../smtp-src/libs/dns.js");
 const emailQueue = new (require("../helperTools/emailQueue.js"))();
 const emailRouter= require("../helperTools/emailRouting.js")
-const MxrecordsOfDomains = require("../../server-side/http-src/schemas/mxRecordsOfDomains");
-const { sendMail } = require("./libs/net.js");
 require("dotenv").config();
-let mxRecordsWithHighImportance = [];
-const { groupReadyListner, eventEmmitter, peekAtQueueDataListner } = require("./libs/events.js");
+const {  eventEmmitter, peekAtQueueDataListner } = require("./libs/events.js");
 const port = 25;
 
 
 
- peekAtQueueDataListner("peekAtEmailQueue", async (callback) => {
+ peekAtQueueDataListner("peekAtEmailQueue", async () => {
    console.log("Queue listner executed");
    if (emailQueue.peek() !== null) {
      // routing emails to be sent with either thirdParty sender or native sender
      await emailRouter(emailQueue, eventEmmitter);
+   }
+   else{
+    console.log("All Email Sent")
    }
  });
 
@@ -83,20 +83,8 @@ const server = new SMTPServer({
         emailQueue.enqueue(messageObject);
         eventEmmitter("peekAtEmailQueue",callback);
       }
-      console.log(emailQueue.dataStorage.length);
+      console.log(`${emailQueue.dataStorage.length} emails in queues`);
      
-
-      // const mailObjectForSend = {
-      //   subject: messageObject.subject,
-      //   to: messageObject.to.text,
-      //   from: messageObject.from.text,
-      //   emailMessage: messageObject.text ? messageObject.text : messageObject.html.text,
-      //   mxRecord: "alt1.gmail-smtp-in.l.google.com", //await getMxRecordsOfDomain(messageObject.to.text, listOfMxRecords),
-      // };
-      // await getMxRecordsOfDomain(messageObject.to.text, listOfMxRecords);
-      // sendMail(mailObjectForSend);
-
-      // console.log("Message Delivered");
 
       callback();
     });
