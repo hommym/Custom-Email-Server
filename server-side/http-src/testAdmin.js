@@ -44,34 +44,34 @@
 //   }
 // });
 
-const SMTPServer = require("smtp-server").SMTPServer;
+// const SMTPServer = require("smtp-server").SMTPServer;
 
-const server = new SMTPServer({
-  logger: true,
-  authOptional: true,
-  socketTimeout: 60 * 60000,
-  onConnect(session, callback) {
-    console.log(`New user with ip ${session.remoteAddress} has being connected`);
-    return callback();
-  },
+// const server = new SMTPServer({
+//   logger: true,
+//   authOptional: true,
+//   socketTimeout: 60 * 60000,
+//   onConnect(session, callback) {
+//     console.log(`New user with ip ${session.remoteAddress} has being connected`);
+//     return callback();
+//   },
 
-  onData(stream, session, callback) {
-    let message = Buffer.alloc(0);
+//   onData(stream, session, callback) {
+//     let message = Buffer.alloc(0);
 
-    stream.on("data", (data) => {
-      message = Buffer.concat([message, data]);
+//     stream.on("data", (data) => {
+//       message = Buffer.concat([message, data]);
 
-      // message=data
-    });
+//       // message=data
+//     });
 
-    stream.on("end", async () => {
-      console.log("Message has been fully recieved");
-    });
+//     stream.on("end", async () => {
+//       console.log("Message has been fully recieved");
+//     });
 
-    callback();
-  },
-});
+//     callback();
+//   },
+// });
 
-server.listen(25, "127.0.0.1", () => {
-  console.log(`SMTP listening on port ${25}`);
-});
+// server.listen(25, "192.168.177.30", () => {
+//   console.log(`SMTP listening on port ${25}`);
+// });

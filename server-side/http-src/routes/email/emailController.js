@@ -8,7 +8,7 @@ const sendController = asyncHandler(async (req, res, next) => {
   //  setting up nodemailer
   const transporter = nodeMailer.createTransport({
     host: process.env.SmtpServerAdress,
-    port: 25,
+    port: 587,
     tls: {
       rejectUnauthorized: false,
     },

@@ -1,27 +1,24 @@
 // imorting  needed modules
+require("dotenv").config();
 const SMTPServer = require("smtp-server").SMTPServer;
 const axios = require("axios");
 const { parseMail } = require("./libs/mailParser.js");
-const { getMxRecordsOfDomain } = require("../smtp-src/libs/dns.js");
 const emailQueue = new (require("../helperTools/emailQueue.js"))();
-const emailRouter= require("../helperTools/emailRouting.js")
-require("dotenv").config();
-const {  eventEmmitter, peekAtQueueDataListner } = require("./libs/events.js");
-const port = 25;
+const emailRouter = require("../helperTools/emailRouting.js");
+const { eventEmmitter, peekAtQueueDataListner, defaultEmailSenderListners } = require("./libs/events.js");
 
+peekAtQueueDataListner("peekAtEmailQueue", async () => {
+  console.log("Queue listner executed");
+  if (emailQueue.peek() !== null) {
+    // routing emails to be sent with either thirdParty sender or native sender
+    await emailRouter(emailQueue, eventEmmitter);
+  } else {
+    console.log("All Email Sent");
+  }
+});
 
-
- peekAtQueueDataListner("peekAtEmailQueue", async () => {
-   console.log("Queue listner executed");
-   if (emailQueue.peek() !== null) {
-     // routing emails to be sent with either thirdParty sender or native sender
-     await emailRouter(emailQueue, eventEmmitter);
-   }
-   else{
-    console.log("All Email Sent")
-   }
- });
-
+// defining all listeners used by default email sender
+// defaultEmailSenderListners();
 
 const server = new SMTPServer({
   // logger: true,
@@ -68,31 +65,31 @@ const server = new SMTPServer({
 
     stream.on("data", (data) => {
       message = Buffer.concat([message, data]);
-
-      // message=data
     });
 
     stream.on("end", async () => {
       console.log("Message has been fully recieved");
 
       const messageObject = await parseMail(message);
-     
+
       if (emailQueue.peek() !== null) {
         emailQueue.enqueue(messageObject);
-         console.log(`${emailQueue.dataStorage.length} emails in queue`);
+        console.log(`${emailQueue.dataStorage.length} emails in queue`);
       } else {
         emailQueue.enqueue(messageObject);
-         console.log(`${emailQueue.dataStorage.length} emails in queue`);
-        eventEmmitter("peekAtEmailQueue",callback);
+        console.log(`${emailQueue.dataStorage.length} emails in queue`);
+        eventEmmitter("peekAtEmailQueue", callback);
       }
-     
-     
 
       callback();
     });
   },
 });
 
-server.listen(port, "192.168.177.30", () => {
-  console.log(`SMTP listening on port ${port}`);
-});
+const startMailServer = () => {
+  server.listen(587, "192.168.177.30", () => {
+    console.log(`SMTP  listening on port 587`);
+  });
+};
+
+startMailServer();

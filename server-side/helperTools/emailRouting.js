@@ -29,11 +29,8 @@ const emailRouter = async (emailQueue, eventEmmitter) => {
           addressesForDefaultSender.push(address);
         }
       } else {
-        console.log("Invalid emaail address");
+        console.log("Invalid email address");
         // add code for removing such email addresses from users contacts(Not implemented yet)
-
-
-        
       }
     }
   }
