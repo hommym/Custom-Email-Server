@@ -1,18 +1,27 @@
 // imorting  needed modules
+require("dotenv").config();
 const SMTPServer = require("smtp-server").SMTPServer;
 const axios = require("axios");
 const { parseMail } = require("./libs/mailParser.js");
-const { getMxRecordsOfDomain } = require("../smtp-src/libs/dns.js");
-const MxrecordsOfDomains = require("../../server-side/http-src/schemas/mxRecordsOfDomains");
-const { sendMail } = require("./libs/net.js");
-require("dotenv").config();
-let mxRecordsWithHighImportance = [];
-const emailAddressesToGroups = require("../helperMethods/emailAddressToGroups.js");
-const { groupReadyListner, eventEmmitter } = require("./libs/events.js");
-const port = process.env.PORT ? process.env.PORT : 25;
+const emailQueue = new (require("../helperTools/emailQueue.js"))();
+const emailRouter = require("../helperTools/emailRouting.js");
+const { eventEmmitter, peekAtQueueDataListner, defaultEmailSenderListners } = require("./libs/events.js");
+
+peekAtQueueDataListner("peekAtEmailQueue", async () => {
+  console.log("Queue listner executed");
+  if (emailQueue.peek() !== null) {
+    // routing emails to be sent with either thirdParty sender or native sender
+    await emailRouter(emailQueue, eventEmmitter);
+  } else {
+    console.log("All Email Sent");
+  }
+});
+
+// defining all listeners used by default email sender
+// defaultEmailSenderListners();
 
 const server = new SMTPServer({
-  logger: true,
+  // logger: true,
   authOptional: true,
   socketTimeout: 60 * 60000,
   onConnect(session, callback) {
@@ -56,41 +65,31 @@ const server = new SMTPServer({
 
     stream.on("data", (data) => {
       message = Buffer.concat([message, data]);
-
-      // message=data
     });
 
     stream.on("end", async () => {
       console.log("Message has been fully recieved");
 
       const messageObject = await parseMail(message);
-      console.log(messageObject.to);
 
-      // implement strategy for sending here
-
-      groupReadyListner("group-ready", (data) => {
-        // send mail
-        console.log("Emails Sent For one group", data[0]);
-      });
-
-      await emailAddressesToGroups(messageObject.to.text.split(","), eventEmmitter);
-
-      // const mailObjectForSend = {
-      //   subject: messageObject.subject,
-      //   to: messageObject.to.text,
-      //   from: messageObject.from.text,
-      //   emailMessage: messageObject.text ? messageObject.text : messageObject.html.text,
-      //   // mxRecord: listOfMxRecords[0],
-      // };
-      // sendMail(mailObjectForSend);
-
-      console.log("Message Delivered");
+      if (emailQueue.peek() !== null) {
+        emailQueue.enqueue(messageObject);
+        console.log(`${emailQueue.dataStorage.length} emails in queue`);
+      } else {
+        emailQueue.enqueue(messageObject);
+        console.log(`${emailQueue.dataStorage.length} emails in queue`);
+        eventEmmitter("peekAtEmailQueue", callback);
+      }
 
       callback();
     });
   },
 });
 
-server.listen(port, process.env.SmtpServerAdress, () => {
-  console.log(`SMTP listening on port ${port}`);
-});
+const startMailServer = () => {
+  server.listen(587, "192.168.177.30", () => {
+    console.log(`SMTP  listening on port 587`);
+  });
+};
+
+startMailServer();

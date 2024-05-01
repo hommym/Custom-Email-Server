@@ -39,7 +39,7 @@ const startApplication = async () => {
 	await connectToAccountInfoDatabase(process.env.MongoDbConnectionUrl);
 
 	app.listen(port, () => {
-		console.log(`Server is listening on ${port} `);
+		console.log(`Server with ip ${process.env.SmtpServerAdress} is listening on ${port} `);
 	});
 };
 

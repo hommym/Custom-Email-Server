@@ -1,6 +1,5 @@
 const nodeMailer = require("nodemailer");
 require("dotenv").config();
-
 const transporter = nodeMailer.createTransport({
   service: "Gmail",
   host: "smtp.gmail.com",
@@ -32,7 +31,36 @@ const sendMailToSuperAdmin = (mailOptions) => {
   });
 };
 
+const sendMailToPostfix = async (emailQueue, addresses, eventEmitter) => {
+  const mailObjectFromQueue = emailQueue.peek();
+  const postfixTransporter = nodeMailer.createTransport({
+    host: "192.168.177.30",
+    port: 25,
+    secure: false,
+    tls: {
+      rejectUnauthorized: false,
+    },
+  });
+
+  const mailObject = {
+    from: mailObjectFromQueue.from.text,
+    bcc: addresses,
+    subject: mailObjectFromQueue.subject,
+    html: mailObjectFromQueue.html.text,
+  };
+
+  try {
+    await postfixTransporter.sendMail(mailObject);
+    emailQueue.dequeue();
+    console.log("Emails sent to Postfix");
+    eventEmitter("peekAtEmailQueue");
+  } catch (error) {
+    console.log(`SendMailToPostfix Error: ${error}`);
+  }
+};
+
 module.exports = {
   sendConfirmationMail,
-  sendMailToSuperAdmin
+  sendMailToSuperAdmin,
+  sendMailToPostfix,
 };

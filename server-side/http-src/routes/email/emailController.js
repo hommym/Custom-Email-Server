@@ -3,15 +3,12 @@ const OutBox = require("../../schemas/outboxSchema");
 const nodeMailer = require("nodemailer");
 const asyncHandler = require("express-async-handler");
 const mongoose = require("mongoose");
-
-const sendController = async (req, res, next) => {
-
-
-
+require("dotenv").config();
+const sendController = asyncHandler(async (req, res, next) => {
   //  setting up nodemailer
   const transporter = nodeMailer.createTransport({
-    host: "192.168.83.30",
-    port: 25,
+    host: process.env.SmtpServerAdress,
+    port: 587,
     tls: {
       rejectUnauthorized: false,
     },
@@ -33,22 +30,22 @@ const sendController = async (req, res, next) => {
   //   sending email to my server
   transporter.sendMail(req.body.mailObject, (error, info) => {
     if (error) {
-      console.error("Error sending email: ", error);
-      next(new Error("500"));
+      console.log("Error sending email: ", error);
+      throw error
     } else {
       console.log("Email sent: ", info.response);
       res.status(200).json({ message: "Email successfully sent" });
     }
   });
-};
+});
 
-const emailTrackerController = async (req, res, next) => {
+const emailTrackerController = asyncHandler(async (req, res, next) => {
   const { emailId } = req.params;
   // updating number people opening the email
   const oldDocument = await OutBox.findById(emailId);
   await OutBox.updateOne({ _id: new mongoose.Types.ObjectId(emailId) }, { $set: { viewCount: oldDocument.viewCount + 1 } });
   res.end("Email tracked");
-};
+});
 
 const outBoxController = asyncHandler(async (req, res) => {
   if (req.user) {
