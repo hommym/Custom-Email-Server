@@ -1,25 +1,18 @@
 const net = require("net");
-const { eventEmmitter, echloListner, mailToListner, rcptToListner, dataRListner, retryConnectionListner } = require("./events");
+const { eventEmmitter, retryConnectionListner } = require("./events");
 const fileSys = require("fs/promises");
 const path = require("path");
 const smtpPorts = [25, 465, 587];
 let port = 1;
-let commandTracker = 1;
-let retryConnection = false;
-const createConnection = (mailObject, port) => {
-  retryConnection = false;
+
+const createConnection = (mailObject,MxRecord,port) => {
   const configOptions = {
-    host: "p.webshare.io",
-    port: 9999,
+    host: MxRecord.mailServerName,
+    port: port,
   };
 
-  const client = net.createConnection(configOptions, async () => {
-    // defining all my listners
-    echloListner(client, mailObject, "ehloF");
-    mailToListner(client, mailObject, "mailF");
-    rcptToListner(client, "rcptF");
-    const privateKey = await fileSys.readFile(path.resolve("private.key"), { encoding: "utf8" });
-    dataRListner(client, mailObject, "dataF", privateKey);
+  const client = net.createConnection(configOptions,  () => {
+    
     retryConnectionListner("retryConnection", () => {
       client = createConnection(mailObject, smtpPorts[port]);
     });
@@ -29,13 +22,14 @@ const createConnection = (mailObject, port) => {
 
   return client;
 };
-const sendMail = (mailObject) => {
-  // const configOptions = {
-  //   host: mailObject.mxRecord.mailServerIpAdress[0],
-  //   port: 25, //mailObject.mxRecord.port[1],
-  // };
+const sendMail = async (MxRecord,portNum,mailObject) => {
+  
 
-  let client = createConnection(mailObject, smtpPorts[port]);
+let commandTracker = 1;
+let retryConnection = false;
+
+  const privateKey = await fileSys.readFile(path.resolve("private.key"), { encoding: "utf8" });
+  let client = createConnection(mailObject, MxRecord.mailServerName,portNum);
 
   // Handle data received from the mail server
   client.on("data", (data) => {
@@ -44,19 +38,17 @@ const sendMail = (mailObject) => {
 
     if (response.includes("220") && commandTracker === 1) {
       commandTracker++;
-      eventEmmitter("ehloF");
+      eventEmmitter("ehloF", { client, mailObject });
     } else if (response.includes("250") && commandTracker === 2) {
       commandTracker++;
-      eventEmmitter("mailF");
+      eventEmmitter("mailF", { client, mailObject });
     } else if (response.includes("250") && commandTracker === 3) {
       commandTracker++;
-      eventEmmitter("rcptF");
+      eventEmmitter("rcptF", client);
     } else if (response.includes("354") || (response.includes("250") && commandTracker === 4)) {
       commandTracker++;
-      eventEmmitter("dataF");
+      eventEmmitter("dataF", { client, mailObject, privateKey });
     } else if (response.includes("550 5.5.1 Protocol error")) {
-      // Remove all event listeners from the client object
-      port++;
       commandTracker = 1;
       retryConnection = true;
       client.end();

@@ -15,34 +15,38 @@
 
 // testing smtp server
 
-// const nodeMailer = require("nodemailer");
-// // const { sendMail } = require("../smtp-src/libs/net.js");
-// // const { getMxRecordsOfDomain } = require("../smtp-src/libs/dns.js");
+const nodeMailer = require("nodemailer");
+// const { sendMail } = require("../smtp-src/libs/net.js");
+// const { getMxRecordsOfDomain } = require("../smtp-src/libs/dns.js");
 
-// const transporter = nodeMailer.createTransport({
-//   host: "email-smtp.eu-north-1.amazonaws.com",
-//   port: 25,
+const transporter = nodeMailer.createTransport({
+  host: "mail.123stmtp.com",
+  port: 587,
 
-//   auth: {
-//     user: "AKIAW3MEBZ2ZXZPF5GE3",
-//     pass: "BGyqP3SJ4pHBdzTeoT17e1rOIbV8DhRhzuTdG6DlyAGD",
-//   },
-// });
-// // hommyM@continuumpayout.com
-// const mailOptions = {
-//   from: "EmaCompanyLimited@123stmtp.com",
-//   to: "herbertharthur80@gmail.com",
-//   subject: "Test Mail",
-//   text: `You are welcome`,
-// };
+  auth: {
+    user: "hommykendrick@gmail.com",
+    pass: "Herberth1624",
+  },
 
-// transporter.sendMail(mailOptions, (error, info) => {
-//   if (error) {
-//     console.error("Error sending email: ", error);
-//   } else {
-//     console.log("Email sent: ", info.response);
-//   }
-// });
+  tls:{
+    rejectUnauthorized:false
+  }
+});
+// hommyM@continuumpayout.com
+const mailOptions = {
+  from: "EmaCompanyLimited@123stmtp.com",
+  to: "herbertharthur80@gmail.com",
+  subject: "Test Mail",
+  text: `You are welcome`,
+};
+
+transporter.sendMail(mailOptions, (error, info) => {
+  if (error) {
+    console.error("Error sending email: ", error);
+  } else {
+    console.log("Email sent: ", info.response);
+  }
+});
 
 // const SMTPServer = require("smtp-server").SMTPServer;
 

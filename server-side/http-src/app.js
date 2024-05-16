@@ -9,6 +9,7 @@ const emailSendRouter = require("./routes/email/emailRoute.js");
 const employeeRouter = require("../http-src/routes/employee/employeeRoutes.js");
 const dnsRouter = require("../http-src/routes/dns/dnsRoutes.js");
 const contactUsRouter = require("../http-src/routes/contactUs/contactUsRoute.js");
+const adminRouter=require("./routes/admin/superAdminRouter.js")
 const errorHandler = require("../http-src/middleware/errorHandler.js");
 const subscriptionsRouter = require("./routes/stripe/stripe.router.js");
 
@@ -29,6 +30,7 @@ app.use("/api/email", emailSendRouter);
 app.use("/api/dns", dnsRouter);
 app.use("/api/contact-us", contactUsRouter);
 app.use("/api/stripe", subscriptionsRouter);
+app.use("/api/admin",adminRouter)
 // error handling middleware
 app.use(errorHandler);
 const port = process.env.PORT ? process.env.PORT : 8000;
