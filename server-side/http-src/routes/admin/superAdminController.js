@@ -1,5 +1,6 @@
 const asyncHandler = require("express-async-handler");
 const UserSchema = require("../../schemas/userSchema");
+const EmployeeSchema = require("../../schemas/employeeSchema");
 const { tObjectId } = require("../../libs/mongoose");
 
 const allAdminAccountsController = asyncHandler(async (req, res) => {
@@ -10,28 +11,32 @@ const allAdminAccountsController = asyncHandler(async (req, res) => {
 });
 
 const accounActivationController = asyncHandler(async (req, res) => {
-  const { id } = req.body;
-
-  if (!id) {
-    req.status(400);
-    throw new Error("Bad request no id found");
-  }
-
+  const{adminId}=req.query
+   console.log("Activating an account....");
   // activating account
-  await UserSchema.updateOne({ _id: tObjectId(id) }, { $set: { accountStatus: "active" } });
+  const updatedDoc = await UserSchema.findOneAndUpdate({ _id: tObjectId(adminId) }, { $set: { accountStatus: "inactive" } }).select("orgId");
+
+  if (updatedDoc.orgId) {
+    // activating all employee account under this account
+   await EmployeeSchema.updateMany({ orgId: updatedDoc.orgId }, { $set: { status: "active" } });
+  }
+   console.log("Account activated");
   res.status(200).json({ message: "account activated" });
 });
 
 const accountDeactivationController = asyncHandler(async (req, res) => {
-  const { id } = req.body;
+  const { adminId } = req.query;
+  console.log("Deactivating an account....");
+  // activating account
+  const updatedDoc = await UserSchema.findOneAndUpdate({ _id: tObjectId(adminId) }, { $set: { accountStatus: "inactive" } }).select("orgId");
 
-  if (!id) {
-    req.status(400);
-    throw new Error("Bad request no id found");
+  
+  if (updatedDoc.orgId) {
+    // activating all employee account under this account
+    await EmployeeSchema.updateMany({ orgId: updatedDoc.orgId }, { $set: { status: "inactive" } });
   }
 
-  // activating account
-  await UserSchema.updateOne({ _id: tObjectId(id) }, { $set: { accountStatus: "inactive" } });
+  console.log("Account deactivated");
   res.status(200).json({ message: "account deactivated" });
 });
 
