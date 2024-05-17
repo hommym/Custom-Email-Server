@@ -46,7 +46,7 @@ const user = new mongoose.Schema({
 	},
 	customerId: {
 		type: String,
-		required: true,
+		// required: true,
 	},
 	accountStatus:{
 		type:String,

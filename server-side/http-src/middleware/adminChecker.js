@@ -7,10 +7,10 @@ const adminChecker = asyncHandler(async (req, res, next) => {
 
   if (userAccount && (userAccount.role === "superAdmin" || userAccount.role === "admin")) {
     req.user = userAccount;
-    console.log("account belongs to orgOwner or Admin");
+    console.log("account belongs to an Admin or SuperAdmin");
     next();
   } else {
-    console.log("account do not belong orgOwner or Admin");
+    console.log("account do not belong an Admin or SuperAdmin");
     res.status(401);
     throw new Error("Unathorize to create an employee");
   }

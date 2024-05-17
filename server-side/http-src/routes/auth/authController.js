@@ -68,7 +68,7 @@ const logInController = asyncHandler(async (req, res, next) => {
 			return res.status(200).json({ jwtForLogIn: token, message: "Log in successful" });
 		}
 		res.status(401);
-		throw new Error("Password incorrect");
+		throw new Error("Invalid email and password");
 	}
 
 	// if smtp server is being access by an employee
@@ -82,7 +82,7 @@ const logInController = asyncHandler(async (req, res, next) => {
 		return res.status(200).json({ jwtForLogIn: token, message: "Log in successful" });
 	}
 	res.status(401);
-	throw new Error("Password incorrect");
+	throw new Error("Invalid email and password");
 });
 
 const setPasswordController = asyncHandler(async (req, res, next) => {

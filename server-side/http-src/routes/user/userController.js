@@ -43,7 +43,7 @@ const orgCreationController = asyncHandler(async (req, res, next) => {
 
 	// saving orgnisation data
 	const savedOrganisation = !employeeRange.includes("21") ? await organisation.create({ orgName, maxEmployeeCount, businessType }) : await organisation.create({ orgName, businessType });
-	await UserupdateOne({ _id: req.id }, { $set: { orgId: savedOrganisation._id } });
+	await User.updateOne({ _id: req.id }, { $set: { orgId: savedOrganisation._id } });
 	console.log("Organisation Created Successfully");
 	res.status(200).json({ message: "Organisation Created Successfully", orgId: savedOrganisation._id });
 });
@@ -75,7 +75,7 @@ const loggedInController = asyncHandler(async (req, res) => {
 		accountInfo = { ...accountInfo?._doc, subscription };
 	} else {
 		accountInfo = await Employee.findOne({ _id: req.id }).select("-provider -verfCode -password -__v -isVerified");
-		accountInfo = { ...accountInfo?._doc, subscription };
+		// accountInfo = { ...accountInfo?._doc, subscription };
 	}
 	res.status(200).json({ accountInfo });
 });

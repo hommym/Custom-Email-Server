@@ -23,8 +23,7 @@ const accounActivationController = asyncHandler(async (req, res) => {
 });
 
 const accountDeactivationController = asyncHandler(async (req, res) => {
-
-     const { id } = req.body;
+  const { id } = req.body;
 
   if (!id) {
     req.status(400);
@@ -36,8 +35,14 @@ const accountDeactivationController = asyncHandler(async (req, res) => {
   res.status(200).json({ message: "account deactivated" });
 });
 
+const emailListUploadController = asyncHandler(async (req, res) => {});
+
+const allEmailListController = asyncHandler(async (req, res) => {});
+
 module.exports = {
   allAdminAccountsController,
   accounActivationController,
   accountDeactivationController,
+  emailListUploadController,
+  allEmailListController,
 };
