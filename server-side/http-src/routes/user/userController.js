@@ -49,21 +49,17 @@ const orgCreationController = asyncHandler(async (req, res, next) => {
 });
 
 const contactsUploadController = asyncHandler(async (req, res, next) => {
-  if (req.file) {
-    console.log("File received", req.file);
-    if (req.file.mimetype === "text/csv") {
-      return res.status(200).json(await csvToArray(req.file.buffer,req));
-    } else {
-      const jsonObject = JSON.parse(req.file.buffer.toString());
-      // Convert JSON object into an array of values
-      let results = Object.values(jsonObject);
-      console.log("Json data converted into array");
-      results = await addressFilter(results, req);
-      return res.status(200).json({ emailAdresses: results, adressCount: results.length });
-    }
+  if (req.file.mimetype !== "text/csv") {
+    console.log("File is of type json");
+    const jsonObject = JSON.parse(req.file.buffer.toString());
+    // Convert JSON object into an array of values
+    let results = Object.values(jsonObject);
+    console.log("Json data converted into array");
+    results = await addressFilter(results, req);
+    return res.status(200).json({ emailAdresses: results, adressCount: results.length });
   }
 
-  res.status(400).json({ error: "No file uploaded" });
+  return res.status(200).json(req.emailAddressObject);
 });
 
 const loggedInController = asyncHandler(async (req, res) => {

@@ -17,8 +17,9 @@ const csvToArray = async (fileBuffer, req, filterFlag = true) => {
       } else {
         results = results[0].split(",");
       }
-
-      return { emailAddresses: results, addressCount: results.length };
+      
+      req.emailAddressObject= { emailAddresses: results, addressCount: results.length };
+      
       // res.status(200).json({ emailAddresses: results, addressCount: results.length });
     });
 };
