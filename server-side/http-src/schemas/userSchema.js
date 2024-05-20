@@ -46,8 +46,13 @@ const user = new mongoose.Schema({
 	},
 	customerId: {
 		type: String,
-		required: true,
+		// required: true,
 	},
+	accountStatus:{
+		type:String,
+		enum:["active","inactive"],
+		default:"active"
+	}
 });
 
 module.exports = mongoose.model("User", user);

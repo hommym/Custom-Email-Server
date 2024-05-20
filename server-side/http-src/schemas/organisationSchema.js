@@ -8,10 +8,6 @@ const organisation = new mongoose.Schema({
     required: true,
   },
 
-  customer: {
-    type: Object,
-  },
-
   maxEmployeeCount: {
     type: Number,
   },

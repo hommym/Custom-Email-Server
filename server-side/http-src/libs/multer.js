@@ -1,7 +1,7 @@
 const multer = require("multer");
 
-const parseSingleFileFormData = (fileType) => {
-  return multer().single(fileType);
+const parseSingleFileFormData = (fieldName) => {
+  return multer().single(fieldName);
 };
 
 module.exports = {

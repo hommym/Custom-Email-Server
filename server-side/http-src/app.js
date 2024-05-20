@@ -9,6 +9,7 @@ const emailSendRouter = require("./routes/email/emailRoute.js");
 const employeeRouter = require("../http-src/routes/employee/employeeRoutes.js");
 const dnsRouter = require("../http-src/routes/dns/dnsRoutes.js");
 const contactUsRouter = require("../http-src/routes/contactUs/contactUsRoute.js");
+const superAdminRouter = require("./routes/admin/superAdminRouter.js");
 const errorHandler = require("../http-src/middleware/errorHandler.js");
 const subscriptionsRouter = require("./routes/stripe/stripe.router.js");
 
@@ -16,9 +17,9 @@ const app = express();
 
 app.use(express.json());
 app.use(
-	cors({
-		origin: "*",
-	})
+  cors({
+    origin: "*",
+  })
 );
 
 // setting up routes
@@ -29,18 +30,19 @@ app.use("/api/email", emailSendRouter);
 app.use("/api/dns", dnsRouter);
 app.use("/api/contact-us", contactUsRouter);
 app.use("/api/stripe", subscriptionsRouter);
+app.use("/api/super-admin", superAdminRouter);
 // error handling middleware
 app.use(errorHandler);
 const port = process.env.PORT ? process.env.PORT : 8000;
 
 const startApplication = async () => {
-	// connecting database
-	console.log("Connecting to the database...");
-	await connectToAccountInfoDatabase(process.env.MongoDbConnectionUrl);
+  // connecting database
+  console.log("Connecting to the database...");
+  await connectToAccountInfoDatabase(process.env.MongoDbConnectionUrl);
 
-	app.listen(port, () => {
-		console.log(`Server with ip ${process.env.SmtpServerAdress} is listening on ${port} `);
-	});
+  app.listen(port, () => {
+    console.log(`Server with ip ${process.env.SmtpServerAdress} is listening on ${port} `);
+  });
 };
 
 startApplication();

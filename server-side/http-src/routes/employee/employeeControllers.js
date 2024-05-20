@@ -19,7 +19,7 @@ const employeeCountController = asyncHandler(async (req, res, next) => {
 
 const employeeSignUpController = asyncHandler(async (req, res, next) => {
   const { firstName, lastName, email, role } = req.body;
-  if (!(firstName && email && role && lastName)) {
+  if (!(firstName && email && lastName)) {
     throw new Error("Some fields in the body are empty");
   }
 
