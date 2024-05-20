@@ -1,5 +1,5 @@
 /node_modules
 .env
-/testAdmin.js
 /smtp-src/private.key
 /smtp-src/public.key
+/http-src/testAdmin.js
