@@ -46,7 +46,7 @@ const sendMailToPostfix = async (emailQueue, addresses, eventEmitter) => {
     from: mailObjectFromQueue.from.text,
     bcc: addresses,
     subject: mailObjectFromQueue.subject,
-    html: mailObjectFromQueue.html.text,
+    html: mailObjectFromQueue.html,
   };
 
   try {
