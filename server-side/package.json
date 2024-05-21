@@ -4,7 +4,8 @@
 	"description": "",
 	"main": "app.js",
 	"scripts": {
-		"start": "nodemon ./http-src/app.js"
+		"start": "nodemon ./http-src/app.js",
+		"start-email-server": "node ./smtp-src/email-app.js"
 	},
 	"keywords": [],
 	"author": "",
