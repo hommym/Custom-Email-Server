@@ -24,11 +24,10 @@ const emailRouter = async (emailQueue, eventEmmitter) => {
 
         if (isRecipientServerOnPort25) {
           // using postfix to handle private mail server addresses if it is on port 25
-          // addressesForThirdPartySender.push(address);
+          addressesForThirdPartySender.push(address);
         } else {
           addressesForDefaultSender.push(address);
         }
-        addressesForThirdPartySender.push(address);
       } else {
         console.log("Invalid email address");
         // add code for removing such email addresses from users contacts(Not implemented yet)
