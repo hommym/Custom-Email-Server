@@ -34,7 +34,7 @@ const sendMailToSuperAdmin = (mailOptions) => {
 const sendMailToPostfix = async (emailQueue, addresses, eventEmitter) => {
   const mailObjectFromQueue = emailQueue.peek();
   const postfixTransporter = nodeMailer.createTransport({
-    host: "192.168.177.30",
+    host: "localhost",
     port: 25,
     secure: false,
     tls: {
