@@ -43,7 +43,7 @@ const server = new SMTPServer({
       console.log("Checking server for account..");
       const response = await axios({
         method: "get",
-        url: `https://custom-email-server.onrender.com/api/auth/smtp-auth`,
+        url: `http://123stmtp.com/api/auth/smtp-auth`,
         data: {
           email: username,
           password: password,
