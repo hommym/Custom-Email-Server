@@ -28,10 +28,10 @@ const emailRouter = async (emailQueue, eventEmmitter) => {
         } else {
           addressesForDefaultSender.push(address);
         }
-         addressesForThirdPartySender.push(address);
+        addressesForThirdPartySender.push(address);
       } else {
         console.log("Invalid email address");
-         eventEmmitter("peekAtEmailQueue");
+
         // add code for removing such email addresses from users contacts(Not implemented yet)
       }
     }
@@ -45,6 +45,10 @@ const emailRouter = async (emailQueue, eventEmmitter) => {
     // use node mailer to push emails to third party sender (ie Postfix)
     console.log("Preparing to send emails To Postfix");
     await sendMailToPostfix(emailQueue, addressesForThirdPartySender, eventEmmitter);
+  }
+
+  if (addressesForThirdPartySender.length === 0 && addressesForDefaultSender.length === 0) {
+    eventEmmitter("peekAtEmailQueue");
   }
 };
 
