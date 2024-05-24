@@ -31,6 +31,7 @@ const emailRouter = async (emailQueue, eventEmmitter) => {
          addressesForThirdPartySender.push(address);
       } else {
         console.log("Invalid email address");
+         eventEmmitter("peekAtEmailQueue");
         // add code for removing such email addresses from users contacts(Not implemented yet)
       }
     }
