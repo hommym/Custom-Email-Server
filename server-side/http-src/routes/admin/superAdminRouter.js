@@ -1,11 +1,13 @@
 const express = require("express");
-const { allAdminAccountsController, accounActivationController, accountDeactivationController, bulkEmailUploadController,allBulkEmailController } = require("./superAdminController.js");
+const { allAdminAccountsController, accounActivationController, accountDeactivationController, bulkEmailUploadController,allBulkEmailController,adminCreatorController } = require("./superAdminController.js");
 const verifyJwt = require("../../middleware/verifyJwt.js");
 const superAdminChecker=require("../../middleware/superAdminChecker.js")
 const {parseSingleFileFormData}= require("../../libs/multer.js")
 const csvToArray = require("../../middleware/csvToArray.js");
 
 const adminRouter = express.Router();
+
+adminRouter.post("/create/admin-account", verifyJwt, superAdminChecker,adminCreatorController)
 
 adminRouter.get("/admin-accounts", verifyJwt, superAdminChecker, allAdminAccountsController);
 

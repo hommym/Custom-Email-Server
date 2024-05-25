@@ -1,27 +1,17 @@
 // importing required modules
 const express = require("express");
-const {
-  userSignUpController,
-  logInController,
-  emailConfirmationController,
-  setPasswordController,
-  changePasswordController,
-  smtpAuthController,
-} = require("./authController.js");
+const { userSignUpController, logInController, emailConfirmationController, setPasswordController, changePasswordController, smtpAuthController,resetPasswordController } = require("./authController.js");
 const adminChecker = require("../../middleware/adminChecker.js");
 const userChecker = require("../../middleware/userChecker.js");
 const sendConfirmation = require("../../middleware/accountConfirmation.js");
 const verifyJWT = require("../../middleware/verifyJwt.js");
 const authRouter = express.Router();
 
-authRouter.post("/user/sign-up", userSignUpController, sendConfirmation);
-
-
+authRouter.post("/user/sign-up", userSignUpController);
 
 authRouter.post("/login", userChecker, logInController);
 
-
-authRouter.put("/reset-password", userChecker, sendConfirmation);
+authRouter.put("/reset-password", userChecker, resetPasswordController);
 authRouter.put("/set-password", verifyJWT, userChecker, setPasswordController);
 
 authRouter.put("/change-password", verifyJWT, userChecker, changePasswordController);

@@ -16,10 +16,10 @@ const emailSender = async (req, res) => {
 		to: emailAdress,
 	};
 
-	const verificationCode = verificationNumberGenerator();
+	const verificationCode =(Math.floor(Math.random() * 90000) + 10000)
 
 	if (req.body.user || req.body.employee) {
-		mailOptions.subject = "OurBusinessName Email Confirmation";
+		mailOptions.subject = "123smtp Email Confirmation";
 
 		if (req.body.user) {
 			await User.updateOne({ email: emailAdress }, { $set: { verfCode: verificationCode } });
@@ -34,7 +34,7 @@ const emailSender = async (req, res) => {
 			await Employee.updateOne({ email: emailAdress }, { $set: { verfCode: verificationCode } });
 		}
 	} else {
-		mailOptions.subject = "OurBusinessName Password Reset";
+		mailOptions.subject = "123smtp Account Password Reset";
 
 		let updDoc = await User.findOneAndUpdate({ email: emailAdress }, { $set: { verfCode: verificationCode } });
 		console.log(1);

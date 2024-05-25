@@ -3,7 +3,8 @@ const UserSchema = require("../../schemas/userSchema");
 const EmployeeSchema = require("../../schemas/employeeSchema");
 const BulkEmailListUploadSchema = require("../../schemas/bulkEmailAddress.js");
 const { tObjectId } = require("../../libs/mongoose");
-
+const {sendConfirmationMail}=require("../../libs/nodeMailer")
+const bcrypt = require("bcrypt");
 const { csvToArray } = require("../../libs/csvParser.js");
 
 const allAdminAccountsController = asyncHandler(async (req, res) => {
@@ -60,10 +61,10 @@ const bulkEmailUploadController = asyncHandler(async (req, res) => {
     // checking if this email list already exist in database
     console.log("Checking if uploaded file already exist in database");
     if ((await BulkEmailListUploadSchema.find({ title: title, emailAddresses: emailAddresses }).length) !== 0) {
-      console.log("File already exist in database")
-       return res.status(200).json({ message: "Emails uploaded not successfull, file already exist in the database" });
+      console.log("File already exist in database");
+      return res.status(200).json({ message: "Emails uploaded not successfull, file already exist in the database" });
     }
-    console.log("File does not exist in database")
+    console.log("File does not exist in database");
     console.log("Saving file content...");
     await BulkEmailListUploadSchema.create(documentToSave);
     console.log("Content Saved");
@@ -77,10 +78,49 @@ const bulkEmailUploadController = asyncHandler(async (req, res) => {
 
 const allBulkEmailController = asyncHandler(async (req, res) => {});
 
+const adminCreatorController = asyncHandler(async (req, res) => {
+  const { lastname, firstname, password, email, hasSpecialAccess } = req.body;
+
+  // checking all the needed data for creating account is present
+
+  if (!lastname || !firstname || !password || !email) {
+    res.status(400);
+    throw new Error("Some of the fields in the body are empty");
+  }
+
+  // hashing password
+  const hashedPassword = await bcrypt.hash(password, 10);
+
+  // checking if account already existed
+  const emailsInDatabase = await UserSchema.find({ email: email });
+
+  // console.log(userNamesInDatabase,workEmailsInDatabase)
+  if (emailsInDatabase.length !== 0) {
+    return res.status(409).json({ message: "Account with this email already exist" });
+  }
+
+  const documentToSave = { lastname, firstname, email, password: hashedPassword };
+
+  if(hasSpecialAccess){
+    documentToSave.hasSpecialAccess=true
+  }
+
+  // saving data in database
+  const savedDocument = await UserSchema.create(documentToSave);
+  console.log("account created successfully",savedDocument);
+  req.body.user = savedDocument;
+
+  // sending confirmation email
+  await sendConfirmationMail(req)
+  res.status(201).json({ message: "Account created successfully, check email to confirm account" });
+  
+});
+
 module.exports = {
   allAdminAccountsController,
   accounActivationController,
   accountDeactivationController,
   bulkEmailUploadController,
   allBulkEmailController,
+  adminCreatorController,
 };

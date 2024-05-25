@@ -52,7 +52,9 @@ const user = new mongoose.Schema({
 		type:String,
 		enum:["active","inactive"],
 		default:"active"
-	}
+	},
+	// the field is set for account which are created by the superAdmin himself and will allow the user to use the system even without paying
+	hasSpecialAccess:Boolean
 });
 
 module.exports = mongoose.model("User", user);
