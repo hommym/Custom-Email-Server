@@ -36,9 +36,9 @@ const server = new SMTPServer({
 
     try {
       // checking if the connected client has an account on the server
-      if (!password || !username) {
-        return callback(new Error("No password or username provided"));
-      }
+      // if (!password || !username) {
+      //   throw new Error("No password or username provided");
+      // }
 
       // make a network request to http server to authenticate the user on the smtp server(not implemented)
       console.log("Checking server for account..");
@@ -57,9 +57,12 @@ const server = new SMTPServer({
         usernameQueue.enqueue(username);
         return callback(null, { user: username });
       }
+      else{
+        throw new Error(response.data.error)
+      }
     } catch (error) {
-      console.log(error);
-      callback(null, false);
+      console.log("An error occurred durring authentication");
+      callback(error);
     }
   },
   onData(stream, session, callback) {
@@ -96,7 +99,7 @@ const server = new SMTPServer({
 
 const startMailServer = () => {
   server.listen(587, "104.168.132.221", () => {
-    console.log(`SMTP  listening on port 587`);
+    console.log(`SMTP  listening on port 587..`);
   });
 };
 
