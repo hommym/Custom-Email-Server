@@ -57,11 +57,8 @@ const server = new SMTPServer({
         usernameQueue.enqueue(username);
         return callback(null, { user: username });
       }
-      else{
-        throw new Error(response.data.error)
-      }
     } catch (error) {
-      console.log("An error occurred durring authentication");
+      console.log(error);
       callback(error);
     }
   },
@@ -79,7 +76,7 @@ const server = new SMTPServer({
       console.log("Message parsed");
       // setting the from field using the username
       console.log("Setting from field in message object...");
-      messageObject.from= usernameQueue.dequeue();
+      messageObject.from = usernameQueue.dequeue();
       console.log("From field set");
 
       // console.log(messageObject.html);

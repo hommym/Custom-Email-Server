@@ -4,13 +4,13 @@ const bcrypt = require("bcrypt");
 const User = require("../../schemas/userSchema.js");
 const employee = require("../../schemas/employeeSchema.js");
 const { jwtForLogIn } = require("../../libs/jsonwebtoken.js");
-const { sendConfirmationMail,sendPasswordResetEmail } = require("../../libs/nodeMailer");
-const userNameGenerator=require("../../../helperTools/userNameGenerator.js")
+const { sendConfirmationMail, sendPasswordResetEmail } = require("../../libs/nodeMailer");
+const userNameGenerator = require("../../../helperTools/userNameGenerator.js");
 
 const asyncHandler = require("express-async-handler");
 require("dotenv").config();
 
-const userSignUpController = asyncHandler(async (req, res,) => {
+const userSignUpController = asyncHandler(async (req, res) => {
   const { lastname, firstname, password, email } = req.body;
 
   // checking all the needed data for creating account is present
@@ -27,8 +27,7 @@ const userSignUpController = asyncHandler(async (req, res,) => {
   const emailsInDatabase = await User.find({ email: email });
 
   // generating a deafualt userName for account
-  const userName =await userNameGenerator(firstname)
-
+  const userName = await userNameGenerator(firstname);
 
   // console.log(userNamesInDatabase,workEmailsInDatabase)
   if (emailsInDatabase.length !== 0) {
@@ -36,7 +35,7 @@ const userSignUpController = asyncHandler(async (req, res,) => {
   }
 
   // saving data in database
-  const savedDocument = await User.create({ firstname, lastname, password: hashedPassword, email,userName });
+  const savedDocument = await User.create({ firstname, lastname, password: hashedPassword, email, userName });
   console.log("account created successfully");
   req.body.user = savedDocument;
 
@@ -144,11 +143,11 @@ const changePasswordController = asyncHandler(async (req, res, next) => {
   }
 });
 
-const resetPasswordController=asyncHandler(async(req,res)=>{
-	// sending emaill
-	await sendPasswordResetEmail(req)
-	res.status(201).json({ message: "An email has been sent check your mail to proceed with password reset" });
-})
+const resetPasswordController = asyncHandler(async (req, res) => {
+  // sending emaill
+  await sendPasswordResetEmail(req);
+  res.status(201).json({ message: "An email has been sent check your mail to proceed with password reset" });
+});
 
 const smtpAuthController = asyncHandler(async (req, res, next) => {
   console.log("Authenticating a user hiting smtp server...");
@@ -158,7 +157,16 @@ const smtpAuthController = asyncHandler(async (req, res, next) => {
     //  comparing hashed password in body to the one in the database(req.user.password)
     if (isPasswordsTheSame) {
       console.log("User authenticated");
-      return res.status(200).json({ message: "Account present on server" });
+      console.log("Checking if user is on a paid plan or has been given special access by superAdmin");
+      // checking if user has special access
+      if (req.user.hasSpecialAccess) {
+        return res.status(200).json({ message: "Account present on server" });
+      }
+
+      // checking if user is on a subscription(Not yet implemented)
+
+      res.status(401);
+      throw new Error("User is not a subscription or have special access");
     }
     res.status(401);
     throw new Error("Password does not match");
@@ -183,5 +191,5 @@ module.exports = {
   setPasswordController,
   changePasswordController,
   smtpAuthController,
-  resetPasswordController
+  resetPasswordController,
 };
