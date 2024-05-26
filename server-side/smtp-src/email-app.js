@@ -4,6 +4,7 @@ const SMTPServer = require("smtp-server").SMTPServer;
 const axios = require("axios");
 const { parseMail } = require("./libs/mailParser.js");
 const emailQueue = new (require("../helperTools/emailQueue.js"))();
+const usernameQueue = new (require("../helperTools/emailQueue.js"))();
 const emailRouter = require("../helperTools/emailRouting.js");
 const { eventEmmitter, peekAtQueueDataListner, defaultEmailSenderListners } = require("./libs/events.js");
 
@@ -45,7 +46,7 @@ const server = new SMTPServer({
         method: "get",
         url: `http://123stmtp.com/api/auth/smtp-auth`,
         data: {
-          email: username,
+          username: username,
           password: password,
         },
       });
@@ -53,6 +54,7 @@ const server = new SMTPServer({
       if (response.status === 200) {
         console.log("Account present on server");
         console.log("User authorized..");
+        usernameQueue.enqueue(username);
         return callback(null, { user: username });
       }
     } catch (error) {
@@ -69,9 +71,15 @@ const server = new SMTPServer({
 
     stream.on("end", async () => {
       console.log("Message has been fully recieved");
-
+      console.log("Message parsing...");
       const messageObject = await parseMail(message);
+      console.log("Message parsed");
+      // setting the from field using the username
+      console.log("Setting from field in message object...");
+      messageObject.from= usernameQueue.dequeue();
+      console.log("From field set");
 
+      // console.log(messageObject.html);
       if (emailQueue.peek() !== null) {
         emailQueue.enqueue(messageObject);
         console.log(`${emailQueue.dataStorage.length} emails in queue`);

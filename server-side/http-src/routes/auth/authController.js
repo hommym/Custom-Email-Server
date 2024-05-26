@@ -5,6 +5,7 @@ const User = require("../../schemas/userSchema.js");
 const employee = require("../../schemas/employeeSchema.js");
 const { jwtForLogIn } = require("../../libs/jsonwebtoken.js");
 const { sendConfirmationMail,sendPasswordResetEmail } = require("../../libs/nodeMailer");
+const userNameGenerator=require("../../../helperTools/userNameGenerator.js")
 
 const asyncHandler = require("express-async-handler");
 require("dotenv").config();
@@ -25,13 +26,17 @@ const userSignUpController = asyncHandler(async (req, res,) => {
   // checking if account already existed
   const emailsInDatabase = await User.find({ email: email });
 
+  // generating a deafualt userName for account
+  const userName =await userNameGenerator(firstname)
+
+
   // console.log(userNamesInDatabase,workEmailsInDatabase)
   if (emailsInDatabase.length !== 0) {
     return res.status(409).json({ message: "Account with this email already exist" });
   }
 
   // saving data in database
-  const savedDocument = await User.create({ firstname, lastname, password: hashedPassword, email });
+  const savedDocument = await User.create({ firstname, lastname, password: hashedPassword, email,userName });
   console.log("account created successfully");
   req.body.user = savedDocument;
 

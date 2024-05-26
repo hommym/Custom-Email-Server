@@ -54,7 +54,11 @@ const user = new mongoose.Schema({
 		default:"active"
 	},
 	// the field is set for account which are created by the superAdmin himself and will allow the user to use the system even without paying
-	hasSpecialAccess:Boolean
+	hasSpecialAccess:Boolean,
+	userName:{
+		type:String,
+		required:true
+	}
 });
 
 module.exports = mongoose.model("User", user);

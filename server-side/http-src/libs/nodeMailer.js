@@ -18,7 +18,7 @@ const transporter = nodeMailer.createTransport({
 
 const sendConfirmationMail = async (req) => {
   try {
-    console.log("Preparing Email Confirmation message...");
+    console.log("Preparing Email Confirmation message....");
     const emailAddress = req.body.email;
     const mailOptions = {
       from: "AccountConfirmation@123stmtp.com",
@@ -29,7 +29,7 @@ const sendConfirmationMail = async (req) => {
 
     if (req.body.user) {
       // Email for admin accounts
-      console.log("The Email being Prepared is for an Admin..");
+      console.log("The Email being Prepared is for an Admin....");
       await User.updateOne({ email: emailAddress }, { $set: { verfCode: verificationCode } });
       mailOptions.text = `${req.body.firstname} ,your account has being created successfully, to confirm email click on this link ${
         process.env.FrontEndBaseUrl
@@ -103,7 +103,7 @@ const sendMailToPostfix = async (emailQueue, addresses, eventEmitter) => {
   });
 
   const mailObject = {
-    from: mailObjectFromQueue.from.text,
+    from: mailObjectFromQueue.from,
     bcc: addresses,
     subject: mailObjectFromQueue.subject,
     html: mailObjectFromQueue.html,
