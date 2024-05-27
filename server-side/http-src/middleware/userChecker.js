@@ -4,7 +4,7 @@ const employee = require("../schemas/employeeSchema");
 const asyncHandler = require("express-async-handler");
 
 const userChecker = asyncHandler(async (req, res, next) => {
-	const userWanted = req.body.email ? await user.findOne({ email: req.body.email }) : await user.findById(req.id);
+	const userWanted = req.body.email ? await user.findOne({ email: req.body.email }) : req.body.username ? await user.findOne({userName:req.body.username}) : await user.findById(req.id);
 	// console.log(req.id);
 	// console.log(userWanted)
 

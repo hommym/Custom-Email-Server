@@ -1,9 +1,11 @@
 // importing neccesary modules
+require("dotenv").config();
 const OutBox = require("../../schemas/outboxSchema");
 const nodeMailer = require("nodemailer");
 const asyncHandler = require("express-async-handler");
 const mongoose = require("mongoose");
-require("dotenv").config();
+const UserSchema = require("../../schemas/userSchema.js");
+
 const sendController = asyncHandler(async (req, res, next) => {
   //  setting up nodemailer
   const transporter = nodeMailer.createTransport({
@@ -31,7 +33,7 @@ const sendController = asyncHandler(async (req, res, next) => {
   transporter.sendMail(req.body.mailObject, (error, info) => {
     if (error) {
       console.log("Error sending email: ", error);
-      throw error
+      throw error;
     } else {
       console.log("Email sent: ", info.response);
       res.status(200).json({ message: "Email successfully sent" });
@@ -57,8 +59,36 @@ const outBoxController = asyncHandler(async (req, res) => {
   res.status(200).json({ outBox: allEmail });
 });
 
+const emailSentController = asyncHandler(async (req, res) => {
+  const { username, numOfEmailToSend } = req.body;
+  console.log("Checking email sending limit for account..");
+  console.log(`number of emails to send: ${numOfEmailToSend}`);
+
+  // getting the number of emails that has already been sent
+  const numberOfEmailsLeftForSending = await UserSchema.findOne({ userName: username }).select("emailLeftForSend");
+  console.log(`${numberOfEmailsLeftForSending.emailLeftForSend} left for sending`);
+  console.log("Checking ammount that can be sent....");
+  if (numberOfEmailsLeftForSending.emailLeftForSend !== 0) {
+    const recentNumberOfEmailsLeftForSending = numberOfEmailsLeftForSending.emailLeftForSend - numOfEmailToSend;
+    console.log(`${recentNumberOfEmailsLeftForSending} emails can be sent (when negative it represent the amount that cannot be sent)`);
+    if (recentNumberOfEmailsLeftForSending >= 0) {
+      await UserSchema.updateOne({ userName: username }, { $set: { emailLeftForSend: recentNumberOfEmailsLeftForSending } });
+      return res.status(200).json({ numberOfEmailToRemove: 0 });
+    } else {
+      //  the value send back to the client here will always be negative
+      await UserSchema.updateOne({ userName: username }, { $set: { emailLeftForSend: 0 } });
+      return res.status(200).json({ numberOfEmailToRemove: recentNumberOfEmailsLeftForSending });
+    }
+  } else {
+    res.status(401);
+    console.log("Limit exceeded");
+    throw new Error("Email Limit for the month exceeded");
+  }
+});
+
 module.exports = {
   sendController,
   emailTrackerController,
   outBoxController,
+  emailSentController,
 };

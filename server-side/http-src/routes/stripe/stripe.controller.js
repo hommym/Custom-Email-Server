@@ -31,7 +31,7 @@ const extractSubscriptionDetails = asyncHandler(async (customerId) => {
 
 // This is just for getting a customer,
 const getCustomerDetails = asyncHandler(async (customerId) => {
-	const plan = await extractSubscription(customerId);
+	const plan = await extractSubscriptionDetails(customerId);
 	res.status(200).json({ plan, customerId });
 });
 
