@@ -21,8 +21,8 @@ const emailRouter = async (emailQueue, eventEmmitter) => {
       const mxRecordsOfDomain = await getMxrecord(address.split("@")[1]);
       if (mxRecordsOfDomain) {
         //checking if the private mail server is listening on port 25
-        console.log("Checking if private mail server is listening on 25....");
-        const isRecipientServerOnPort25 = await serverPortChecker(mxRecordsOfDomain.mailServerName, 25);
+        // console.log("Checking if private mail server is listening on 25....");
+        // const isRecipientServerOnPort25 = await serverPortChecker(mxRecordsOfDomain.mailServerName, 25);
 
         if (isRecipientServerOnPort25) {
           // using postfix to handle private mail server addresses if it is on port 25

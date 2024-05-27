@@ -5,6 +5,7 @@ const BulkEmailListUploadSchema = require("../../schemas/bulkEmailAddress.js");
 const { tObjectId } = require("../../libs/mongoose");
 const {sendConfirmationMail}=require("../../libs/nodeMailer")
 const bcrypt = require("bcrypt");
+const userNameGenerator = require("../../../helperTools/userNameGenerator.js");
 const { csvToArray } = require("../../libs/csvParser.js");
 
 const allAdminAccountsController = asyncHandler(async (req, res) => {
@@ -99,21 +100,23 @@ const adminCreatorController = asyncHandler(async (req, res) => {
     return res.status(409).json({ message: "Account with this email already exist" });
   }
 
-  const documentToSave = { lastname, firstname, email, password: hashedPassword };
+  // generating a deafualt userName for account
+  const userName = await userNameGenerator(firstname);
 
-  if(hasSpecialAccess){
-    documentToSave.hasSpecialAccess=true
+  const documentToSave = { lastname, firstname, email, password: hashedPassword, isVerified: true, userName};
+
+  if (hasSpecialAccess) {
+    documentToSave.hasSpecialAccess = true;
   }
 
   // saving data in database
   const savedDocument = await UserSchema.create(documentToSave);
-  console.log("account created successfully",savedDocument);
+  console.log("account created successfully", savedDocument);
   req.body.user = savedDocument;
 
   // sending confirmation email
-  await sendConfirmationMail(req)
-  res.status(201).json({ message: "Account created successfully, check email to confirm account" });
-  
+  // await sendConfirmationMail(req)
+  res.status(201).json({ message: "Account created successfully" });
 });
 
 module.exports = {

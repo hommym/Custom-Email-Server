@@ -73,7 +73,7 @@ const sendPasswordResetEmail = async (req) => {
     mailOptions.text = `To reset the password please click this link ${process.env.FrontEndBaseUrl}/set-password?token=${await jwtForSignUp(updDoc._id, verificationCode)}`;
     console.log(updDoc);
 
-   // sending email
+    // sending email
     await transporter.sendMail(mailOptions);
     console.log("Email sent sucessfully");
   } catch (error) {
@@ -102,13 +102,20 @@ const sendMailToPostfix = async (emailQueue, addresses, eventEmitter) => {
     },
   });
 
-  const mailObject = {
-    from: mailObjectFromQueue.from,
-    bcc: addresses,
-    subject: mailObjectFromQueue.subject,
-    html: mailObjectFromQueue.html,
-  };
-
+  const mailObject = mailObjectFromQueue.html
+    ? {
+        from: mailObjectFromQueue.from,
+        bcc: addresses,
+        subject: mailObjectFromQueue.subject,
+        html: mailObjectFromQueue.html,
+      }
+    : {
+        from: mailObjectFromQueue.from,
+        bcc: addresses,
+        subject: mailObjectFromQueue.subject,
+        text: mailObjectFromQueue.text,
+      };
+  // console.log(`this is the mailobject ${mailObject.html}`);
   try {
     await postfixTransporter.sendMail(mailObject);
     emailQueue.dequeue();
