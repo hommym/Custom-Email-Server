@@ -5,14 +5,13 @@ const Employee = require("../schemas/employeeSchema.js");
 const { jwtForSignUp } = require("../libs/jsonwebtoken.js");
 
 const transporter = nodeMailer.createTransport({
-  host: "123stmtp.com",
-  port: 587,
+  service: "Gmail",
+  host: "smtp.gmail.com",
+  port: 465,
+  secure: true,
   auth: {
-    user: "arthurhommy@gmail.com",
-    pass: "Herberth1624",
-  },
-  tls: {
-    rejectUnauthorized: false,
+    user: process.env.SmtpUserName,
+    pass: process.env.SmtpSecret,
   },
 });
 
