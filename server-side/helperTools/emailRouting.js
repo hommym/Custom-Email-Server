@@ -24,12 +24,12 @@ const emailRouter = async (emailQueue, eventEmmitter) => {
         // console.log("Checking if private mail server is listening on 25....");
         // const isRecipientServerOnPort25 = await serverPortChecker(mxRecordsOfDomain.mailServerName, 25);
 
-        if (isRecipientServerOnPort25) {
-          // using postfix to handle private mail server addresses if it is on port 25
-          // addressesForThirdPartySender.push(address);
-        } else {
-          addressesForDefaultSender.push(address);
-        }
+        // if (isRecipientServerOnPort25) {
+        //   // using postfix to handle private mail server addresses if it is on port 25
+        //   // addressesForThirdPartySender.push(address);
+        // } else {
+        //   addressesForDefaultSender.push(address);
+        // }
         addressesForThirdPartySender.push(address);
       } else {
         console.log("Invalid email address");
