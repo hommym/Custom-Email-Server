@@ -59,6 +59,18 @@ const user = new mongoose.Schema({
     type: String,
     required: true,
   },
+  //   the limit to send for every month is 20,000
+  emailLeftForSend: {
+    type: Number,
+    default: 20000,
+    min:0
+  },
+
+  daysLeftForEmailReset: {
+    type: Number,
+    default: 30,
+	min:0
+  },
 });
 
 module.exports = mongoose.model("User", user);

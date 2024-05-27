@@ -6,6 +6,7 @@ const { parseMail } = require("./libs/mailParser.js");
 const emailQueue = new (require("../helperTools/emailQueue.js"))();
 const usernameQueue = new (require("../helperTools/emailQueue.js"))();
 const emailRouter = require("../helperTools/emailRouting.js");
+const sendingLimitChecker = require("../helperTools/sendingLimitChecker.js");
 const { eventEmmitter, peekAtQueueDataListner, defaultEmailSenderListners } = require("./libs/events.js");
 
 peekAtQueueDataListner("peekAtEmailQueue", async () => {
@@ -70,26 +71,41 @@ const server = new SMTPServer({
     });
 
     stream.on("end", async () => {
-      console.log("Message has been fully recieved");
-      console.log("Message parsing...");
-      const messageObject = await parseMail(message);
-      console.log("Message parsed");
-      // setting the from field using the username
-      console.log("Setting from field in message object...");
-      messageObject.from = usernameQueue.dequeue();
-      console.log("From field set");
+      try {
+        console.log("Message has been fully recieved");
+        console.log("Message parsing...");
+        const messageObject = await parseMail(message);
+        console.log("Message parsed");
 
-      // console.log(messageObject.html);
-      if (emailQueue.peek() !== null) {
-        emailQueue.enqueue(messageObject);
-        console.log(`${emailQueue.dataStorage.length} emails in queue`);
-      } else {
-        emailQueue.enqueue(messageObject);
-        console.log(`${emailQueue.dataStorage.length} emails in queue`);
-        eventEmmitter("peekAtEmailQueue", callback);
+        console.log("Converting the to property in the parsed message into array..");
+        messageObject.to = messageObject.to.text.split(",");
+        console.log("Convertion Complete");
+
+        // checking account sending limit
+        console.log("Checking account sending limit...");
+        messageObject.numberOfEmailsAllowedForSending = await sendingLimitChecker(messageObject.to, usernameQueue.peek());
+        console.log(`The number of address allowed for sending is ${messageObject.numberOfEmailsAllowedForSending}`);
+
+        // setting the from field using the username
+        console.log("Setting from field in message object...");
+        messageObject.from = usernameQueue.dequeue();
+        console.log("From field set");
+
+        // console.log(messageObject.html);
+        if (emailQueue.peek() !== null) {
+          emailQueue.enqueue(messageObject);
+          console.log(`${emailQueue.dataStorage.length} emails in queue`);
+        } else {
+          emailQueue.enqueue(messageObject);
+          console.log(`${emailQueue.dataStorage.length} emails in queue`);
+          eventEmmitter("peekAtEmailQueue", callback);
+        }
+
+        callback();
+      } catch (error) {
+        console.log(error);
+        callback(error);
       }
-
-      callback();
     });
   },
 });

@@ -160,6 +160,7 @@ const smtpAuthController = asyncHandler(async (req, res, next) => {
       console.log("Checking if user is on a paid plan or has been given special access by superAdmin");
       // checking if user has special access
       if (req.user.hasSpecialAccess) {
+        console.log("User has special access");
         return res.status(200).json({ message: "Account present on server" });
       }
 

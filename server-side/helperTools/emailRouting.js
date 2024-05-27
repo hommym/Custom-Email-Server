@@ -5,9 +5,11 @@ const emailRouter = async (emailQueue, eventEmmitter) => {
   const { sendMailToPostfix } = require("../http-src/libs/nodeMailer.js");
   const getMxrecord = require("../smtp-src/libs/dns.js");
 
+  const allAdress = emailQueue.peek().to;
   //  Grouping email addresses into the one to be sent by MTA(for public email addresses like gmail,yahoo etc) and default native sender(for private emails)
   console.log("Grouping addresses into those delivered by MTA and Default sender...");
-  for (const address of emailQueue.peek().to.text.split(",")) {
+  for (let i = 0; i <= emailQueue.peek().numberOfEmailsAllowedForSending-1; i=i+1) {
+    const address = allAdress[i];
     // checking if the adress belongs to public or private mail servers
     if (address.includes("@gmail.com") || address.includes("@yahoo.com") || address.includes("@hotmail.com") || address.includes("@outlook.com")) {
       addressesForThirdPartySender.push(address);
