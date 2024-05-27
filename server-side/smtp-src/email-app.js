@@ -87,9 +87,11 @@ const server = new SMTPServer({
         console.log(`The number of address allowed for sending is ${messageObject.numberOfEmailsAllowedForSending}`);
 
         // setting the from field using the username
-        console.log("Setting from field in message object...");
-        messageObject.from = usernameQueue.dequeue();
-        console.log("From field set");
+        if (!messageObject.from){
+           console.log("Setting from field in message object...");
+           messageObject.from = usernameQueue.dequeue();
+           console.log("From field set");
+        }
 
         // console.log(messageObject.html);
         if (emailQueue.peek() !== null) {

@@ -23,6 +23,7 @@ const sendConfirmationMail = async (req) => {
     const mailOptions = {
       from: "AccountConfirmation@123stmtp.com",
       to: emailAddress,
+      subject: "123stmtp Account Confirmation email",
     };
     // Randomly generating verfCode
     const verificationCode = Math.floor(Math.random() * 90000) + 10000;
@@ -59,6 +60,7 @@ const sendPasswordResetEmail = async (req) => {
     const mailOptions = {
       from: "AccountReset@123stmtp.com",
       to: emailAddress,
+      subject: "123stmtp Account Reset email",
     };
     // Randomly generating verfCode
     const verificationCode = Math.floor(Math.random() * 90000) + 10000;
