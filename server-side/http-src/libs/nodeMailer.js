@@ -32,7 +32,7 @@ const sendConfirmationMail = async (req) => {
       // Email for admin accounts
       console.log("The Email being Prepared is for an Admin....");
       await User.updateOne({ email: emailAddress }, { $set: { verfCode: verificationCode } });
-      mailOptions.text = `${req.body.firstname} ,your account has being created successfully, to confirm email click on this link ${
+      mailOptions.text = `${req.body.user.firstname} ,your account has being created successfully, to confirm email click on this link ${
         process.env.FrontEndBaseUrl
       }/verify-email?token=${await jwtForSignUp(req.body.user._id, verificationCode)}`;
     } else {
