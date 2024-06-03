@@ -67,8 +67,8 @@ const sendEmailConfirmationController = asyncHandler(async (req, res) => {
   console.log("Account exists");
 
   if (!userAccount.isVerified) {
-    console.log("Account verified email not sent");
-    res.status(200).json({ message: "Account has already been verified" });
+    console.log("Account verifification email not sent");
+    return res.status(200).json({ message: "Account has already been verified" });
   }
   console.log("Account not verified");
   console.log("Setting up  user field  data in req object");
@@ -77,7 +77,7 @@ const sendEmailConfirmationController = asyncHandler(async (req, res) => {
   // sending confirmation email
   await sendConfirmationMail(req);
 
-  res.status(200).json({message:"Email sent successfully"})
+  res.status(200).json({ message: "Email sent successfully" });
 });
 
 const emailConfirmationController = asyncHandler(async (req, res) => {
