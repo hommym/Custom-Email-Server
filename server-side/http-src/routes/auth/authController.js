@@ -45,6 +45,41 @@ const userSignUpController = asyncHandler(async (req, res) => {
   res.status(201).json({ message: "Account created successfully, check email to confirm account" });
 });
 
+const sendEmailConfirmationController = asyncHandler(async (req, res) => {
+  const { email } = req.body;
+
+  if (!email) {
+    res.status(400);
+    throw new Error("Invalid body email field undefined");
+  }
+  console.log("Sending account-confirmation email...");
+
+  console.log("Checking if account exist and is verified ...");
+
+  const userAccount = await User.findOne({ email: email });
+
+  if (!userAccount) {
+    console.log("Account does not exist");
+    res.status(401);
+    throw new Error("Unthorized access");
+  }
+
+  console.log("Account exists");
+
+  if (!userAccount.isVerified) {
+    console.log("Account verified email not sent");
+    res.status(200).json({ message: "Account has already been verified" });
+  }
+  console.log("Account not verified");
+  console.log("Setting up  user field  data in req object");
+  req.body.user = userAccount;
+
+  // sending confirmation email
+  await sendConfirmationMail(req);
+
+  res.status(200).json({message:"Email sent successfully"})
+});
+
 const emailConfirmationController = asyncHandler(async (req, res) => {
   const updatedDocument = await User.updateOne({ _id: req.id, verfCode: req.verfCode }, { $set: { isVerified: true, verfCode: 0 } });
   if (updatedDocument.modifiedCount === 0) {
@@ -193,4 +228,5 @@ module.exports = {
   changePasswordController,
   smtpAuthController,
   resetPasswordController,
+  sendEmailConfirmationController,
 };
