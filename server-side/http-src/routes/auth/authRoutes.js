@@ -8,10 +8,10 @@ const {
   changePasswordController,
   smtpAuthController,
   resetPasswordController,
+  sendEmailConfirmationController,
 } = require("./authController.js");
-const adminChecker = require("../../middleware/adminChecker.js");
+
 const userChecker = require("../../middleware/userChecker.js");
-const sendConfirmation = require("../../middleware/accountConfirmation.js");
 const UserSchema = require("../../schemas/userSchema.js");
 const verifyJWT = require("../../middleware/verifyJwt.js");
 const authRouter = express.Router();
@@ -25,6 +25,7 @@ authRouter.put("/set-password", verifyJWT, userChecker, setPasswordController);
 
 authRouter.put("/change-password", verifyJWT, userChecker, changePasswordController);
 
+authRouter.post("/account-confirmation-email",sendEmailConfirmationController);
 authRouter.put("/verify-email", verifyJWT, emailConfirmationController);
 
 // route to hit when authenticating people on the smtp server
@@ -36,6 +37,6 @@ authRouter.post("/change-to-super-admin", async (req, res) => {
 
   const update = await UserSchema.updateOne({ email }, { $set: { role: "superAdmin" } });
   console.log(update);
-  res.status(200).json(`Account with email: ${email} has been promoted to SuperAdmin`)
+  res.status(200).json(`Account with email: ${email} has been promoted to SuperAdmin`);
 });
 module.exports = authRouter;
