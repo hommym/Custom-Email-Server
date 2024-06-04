@@ -30,15 +30,7 @@ const sendController = asyncHandler(async (req, res, next) => {
   // console.log(req.body.mailObject.html);
 
   //   sending email to my server
-  transporter.sendMail(req.body.mailObject, (error, info) => {
-    if (error) {
-      console.log("Error sending email: ", error);
-      throw error;
-    } else {
-      console.log("Email sent: ", info.response);
-      res.status(200).json({ message: "Email successfully sent" });
-    }
-  });
+ await  transporter.sendMail(req.body.mailObject);
 });
 
 const emailTrackerController = asyncHandler(async (req, res, next) => {
