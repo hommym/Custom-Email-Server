@@ -6,7 +6,9 @@ const saveEmail = require("../../middleware/saveEmail.js");
 const { sendController, emailTrackerController, outBoxController, emailSentController } = require("./emailController.js");
 const emailRouter = express.Router();
 
-emailRouter.post("/send", verifyJWT, userChecker, saveEmail, sendController);
+// emailRouter.post("/send", verifyJWT, userChecker, saveEmail, sendController);
+
+emailRouter.post("/send", sendController);
 
 emailRouter.get("/email-tracker/:emailId", emailTrackerController);
 

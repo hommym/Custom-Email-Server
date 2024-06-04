@@ -15,19 +15,19 @@ const sendController = asyncHandler(async (req, res, next) => {
       rejectUnauthorized: false,
     },
     auth: {
-      user: req.body.email,
+      user: req.body.username,
       pass: req.body.password,
     },
   });
 
-  console.log("Setting email tracker...");
-  //   setting up tracking feature in the email message
-  const newText = `email-tracker/${req.emailId}`;
-  const pattern = /email-tracker/g;
-  const originalHtml = req.body.mailObject.html;
-  req.body.mailObject.html = originalHtml.replace(pattern, newText);
-  console.log("Finished setting email tracker");
-  console.log(req.body.mailObject.html);
+  // console.log("Setting email tracker...");
+  // //   setting up tracking feature in the email message
+  // const newText = `email-tracker/${req.emailId}`;
+  // const pattern = /email-tracker/g;
+  // const originalHtml = req.body.mailObject.html;
+  // req.body.mailObject.html = originalHtml.replace(pattern, newText);
+  // console.log("Finished setting email tracker");
+  // console.log(req.body.mailObject.html);
 
   //   sending email to my server
   transporter.sendMail(req.body.mailObject, (error, info) => {
