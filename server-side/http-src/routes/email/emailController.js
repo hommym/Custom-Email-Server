@@ -9,7 +9,7 @@ const UserSchema = require("../../schemas/userSchema.js");
 const sendController = asyncHandler(async (req, res, next) => {
   //  setting up nodemailer
   const transporter = nodeMailer.createTransport({
-    host: process.env.SmtpServerAdress,
+    host: " 123stmtp.com",
     port: 587,
     tls: {
       rejectUnauthorized: false,
