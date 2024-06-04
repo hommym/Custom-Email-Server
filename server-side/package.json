@@ -1,39 +1,40 @@
 {
-	"name": "custom-email-server-backend",
-	"version": "1.0.0",
-	"description": "",
-	"main": "app.js",
-	"scripts": {
-		"start": "nodemon ./http-src/app.js",
-		"start-email-server": "node ./smtp-src/email-app.js"
-	},
-	"keywords": [],
-	"author": "",
-	"license": "ISC",
-	"dependencies": {
-		"axios": "^1.6.7",
-		"bcrypt": "^5.1.1",
-		"cors": "^2.8.5",
-		"csv-parser": "^3.0.0",
-		"dkim": "^0.8.0",
-		"dotenv": "^16.4.5",
-		"express": "^4.19.2",
-		"express-async-handler": "^1.2.0",
-		"express-session": "^1.17.3",
-		"jsonwebtoken": "^9.0.2",
-		"mailparser": "^3.6.9",
-		"mongodb": "^6.3.0",
-		"mongoose": "^8.0.2",
-		"multer": "^1.4.5-lts.1",
-		"next": "^14.2.3",
-		"nodemailer": "^6.9.13",
-		"react": "^18.3.1",
-		"react-dom": "^18.3.1",
-		"smtp-server": "^3.13.2",
-		"stripe": "^14.21.0",
-		"telnet-client": "^2.2.0"
-	},
-	"devDependencies": {
-		"nodemon": "^2.0.7"
-	}
+  "name": "custom-email-server-backend",
+  "version": "1.0.0",
+  "description": "",
+  "main": "app.js",
+  "scripts": {
+    "start": "nodemon ./http-src/app.js",
+    "start-email-server": "node ./smtp-src/email-app.js",
+    "start-email-server-On-25": "node ./smtp-src/emailAppOnPort25.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "axios": "^1.6.7",
+    "bcrypt": "^5.1.1",
+    "cors": "^2.8.5",
+    "csv-parser": "^3.0.0",
+    "dkim": "^0.8.0",
+    "dotenv": "^16.4.5",
+    "express": "^4.19.2",
+    "express-async-handler": "^1.2.0",
+    "express-session": "^1.17.3",
+    "jsonwebtoken": "^9.0.2",
+    "mailparser": "^3.6.9",
+    "mongodb": "^6.3.0",
+    "mongoose": "^8.0.2",
+    "multer": "^1.4.5-lts.1",
+    "next": "^14.2.3",
+    "nodemailer": "^6.9.13",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
+    "smtp-server": "^3.13.2",
+    "stripe": "^14.21.0",
+    "telnet-client": "^2.2.0"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.7"
+  }
 }
