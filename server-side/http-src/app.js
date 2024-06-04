@@ -1,6 +1,7 @@
 // importing required modules
 const express = require("express");
 const cors = require("cors");
+const path=require("path")
 require("dotenv").config();
 const { connectToAccountInfoDatabase } = require("./libs/mongoose.js");
 const authRouter = require("../http-src/routes/auth/authRoutes.js");
@@ -23,6 +24,10 @@ app.use(
 );
 
 // setting up routes
+app.use(express.static(path.join(__dirname, "public")));
+app.get("/sender-temp",(req,res)=>{
+  res.sendFile(path.join(__dirname, "public", "index.html"));
+})
 app.use("/api/auth", authRouter);
 app.use("/api/user", userRouter);
 app.use("/api/employee", employeeRouter);
