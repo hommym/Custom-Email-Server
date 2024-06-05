@@ -80,7 +80,7 @@ const bulkEmailUploadController = asyncHandler(async (req, res) => {
 const allBulkEmailController = asyncHandler(async (req, res) => {});
 
 const adminCreatorController = asyncHandler(async (req, res) => {
-  const { lastname, firstname, password, email, hasSpecialAccess, role } = req.body;
+  const { lastname, firstname, password, email, hasSpecialAccess, role, isVerified } = req.body;
 
   // checking all the needed data for creating account is present
 
@@ -111,6 +111,10 @@ const adminCreatorController = asyncHandler(async (req, res) => {
 
   if(role){
      documentToSave.role = "superAdmin";
+  }
+
+  if(isVerified){
+    documentToSave.isVerified=true
   }
 
   // saving data in database
