@@ -24,8 +24,8 @@ app.use(
 );
 
 // setting up routes
-app.use(express.static(path.join(__dirname, "public")));
-app.get("/sender-temp",(req,res)=>{
+app.use("/mailer",express.static(path.join(__dirname, "public")));
+app.get("/mailer",(req,res)=>{
   res.sendFile(path.join(__dirname, "public", "index.html"));
 })
 app.use("/api/auth", authRouter);
