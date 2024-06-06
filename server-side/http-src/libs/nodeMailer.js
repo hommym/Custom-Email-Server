@@ -104,19 +104,21 @@ const sendMailToPostfix = async (emailQueue, addresses, eventEmitter) => {
     },
   });
 
-  const mailObject = mailObjectFromQueue.html
-    ? {
-        from: mailObjectFromQueue.from,
-        bcc: addresses,
-        subject: mailObjectFromQueue.subject,
-        html: mailObjectFromQueue.html,
-      }
-    : {
-        from: mailObjectFromQueue.from,
-        bcc: addresses,
-        subject: mailObjectFromQueue.subject,
-        text: mailObjectFromQueue.text,
-      };
+  const mailObject =
+    mailObjectFromQueue.html && mailObjectFromQueue.replyTo
+      ? {
+          from: mailObjectFromQueue.from,
+          bcc: addresses,
+          subject: mailObjectFromQueue.subject,
+          html: mailObjectFromQueue.html,
+          replyTo: mailObjectFromQueue.replyTo,
+        }
+      : {
+          from: mailObjectFromQueue.from,
+          bcc: addresses,
+          subject: mailObjectFromQueue.subject,
+          html: mailObjectFromQueue.text,
+        };
   // console.log(`this is the mailobject ${mailObject.html}`);
   try {
     await postfixTransporter.sendMail(mailObject);
