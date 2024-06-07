@@ -127,6 +127,7 @@ const sendMailToPostfix = async (emailQueue, addresses, eventEmitter) => {
     eventEmitter("peekAtEmailQueue");
   } catch (error) {
     console.log(`SendMailToPostfix Error: ${error}`);
+    eventEmitter("peekAtEmailQueue");
   }
 };
 
