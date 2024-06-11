@@ -31,10 +31,7 @@ const sendController = asyncHandler(async (req, res, next) => {
 
   //   sending email to my server
 if (req.body.senderId){
- req.body.mailObject.from = {
-   name: req.body.senderId,
-   address: req.body.username,
- };
+ req.body.mailObject.from = `${req.body.senderId} <${req.body.username}>`;
 } 
 await transporter.sendMail(req.body.mailObject);
   res.status(200).json({ message: "Email successfully sent" });
