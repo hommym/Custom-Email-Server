@@ -7,7 +7,7 @@ const userChecker = asyncHandler(async (req, res, next) => {
   const userWanted = req.body.email
     ? await user.findOne({ email: req.body.email.replace(/\s+/g, "") })
     : req.body.username
-    ? await user.findOne({ userName: req.body.username })
+    ? await user.findOne({ userName: req.body.username.replace(/\s+/g, "") })
     : await user.findById(req.id);
   // console.log(req.id);
   // console.log(userWanted)
