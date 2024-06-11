@@ -153,7 +153,7 @@ const smtpAuthController = asyncHandler(async (req, res, next) => {
   console.log("Authenticating a user hiting smtp server...");
   // if smtp server is being access by orgOwner
   if (req.user) {
-    const isPasswordsTheSame = await bcrypt.compare(req.body.password, req.user.password);
+    const isPasswordsTheSame = await bcrypt.compare(req.body.password.replace(/\s+/g, ""), req.user.password);
     //  comparing hashed password in body to the one in the database(req.user.password)
     if (isPasswordsTheSame) {
       console.log("User authenticated");
@@ -174,7 +174,7 @@ const smtpAuthController = asyncHandler(async (req, res, next) => {
   }
 
   // if smtp server is being access by an employee
-  const isPasswordsTheSame = await bcrypt.compare(req.body.password, req.employee.password);
+  const isPasswordsTheSame = await bcrypt.compare(req.body.password.replace(/\s+/g, ""), req.employee.password);
 
   if (isPasswordsTheSame) {
     console.log("User authenticated");
