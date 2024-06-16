@@ -3,3 +3,6 @@
 /smtp-src/private.key
 /smtp-src/public.key
 /http-src/testAdmin.js
+/http-src/certificate.crt.pem
+/http-src/private.key.pem
+/http-src/bundle.pem
