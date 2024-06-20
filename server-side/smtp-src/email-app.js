@@ -115,7 +115,7 @@ const server = new SMTPServer({
 });
 
 const startMailServer = () => {
-  server.listen(587, "104.168.132.221", () => {
+  server.listen(587, "104.168.160.33", () => {
     console.log(`SMTP  listening on port 587..`);
   });
 };
