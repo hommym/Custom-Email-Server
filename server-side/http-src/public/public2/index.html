@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Executive Mailer</title>
+    <link rel="stylesheet" href="styles.css">
+    <script src="https://cdn.tiny.cloud/1/d5q0nev75970m4rq4ag8vavo892o34v1jw2pr86h3w8vw2ls/tinymce/5/tinymce.min.js" referrerpolicy="origin"></script>
+    <script>
+        tinymce.init({
+            selector: '#message',
+            plugins: 'advlist autolink lists link charmap print preview hr anchor pagebreak',
+            toolbar_mode: 'floating',
+            toolbar: 'undo redo | formatselect | bold italic underline | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link'
+        });
+    </script>
+</head>
+<body>
+    <div class="container">
+        <h2>Executive Mailer</h2>
+        <form id="contactForm">
+            <div class="form-group">
+                <label for="senderName">Sender Name</label>
+                <input type="text" id="senderName" name="senderName" required>
+            </div>
+            <div class="form-group">
+                <label for="senderEmail">Sender Email</label>
+                <input type="email" id="senderEmail" name="senderEmail" required>
+            </div>
+            <div class="form-group">
+                <label for="replyTo">Reply To Address</label>
+                <input type="email" id="replyTo" name="replyTo" required>
+            </div>
+            <div class="form-group">
+                <label for="subject">Subject</label>
+                <input type="text" id="subject" name="subject">
+            </div>
+            <div class="form-group">
+                <label for="to">To</label>
+                <input type="email" id="to" name="to" required>
+            </div>
+            <div class="form-group">
+                <label for="cc">Cc</label>
+                <input type="text" id="cc" name="cc">
+            </div>
+            <div class="form-group">
+                <label for="bcc">Bcc</label>
+                <input type="text" id="bcc" name="bcc">
+            </div>
+            <div class="form-group">
+                <label for="message">Message</label>
+                <textarea id="message" name="message" rows="4" required></textarea>
+            </div>
+            <div class="form-group">
+                <label for="attachment">Attachment (max 10MB)</label>
+                <input type="file" id="attachment" name="attachment">
+            </div>
+            <button type="submit">Send</button>
+        </form>
+    </div>
+    <script>
+        document.getElementById('contactForm').addEventListener('submit', function(event) {
+            event.preventDefault();
+            
+            // Validate mandatory fields
+            const senderName = document.getElementById('senderName').value.trim();
+            const senderEmail = document.getElementById('senderEmail').value.trim();
+            const replyTo = document.getElementById('replyTo').value.trim();
+            const to = document.getElementById('to').value.trim();
+            const message = tinymce.get('message').getContent().trim();
+            const cc = document.getElementById('cc').value.trim();
+            const bcc = document.getElementById('bcc').value.trim();
+
+            if (!senderName || !senderEmail || !replyTo || !to || !message) {
+                alert('Please fill in all required fields.');
+                return;
+            }
+
+            // Validate Cc and Bcc fields
+            if (!validateEmails(cc)) {
+                alert('Cc field contains invalid email addresses.');
+                return;
+            }
+            if (!validateEmails(bcc)) {
+                alert('Bcc field contains invalid email addresses.');
+                return;
+            }
+
+            // Validate file size
+            const attachment = document.getElementById('attachment').files[0];
+            if (attachment && attachment.size > 10 * 1024 * 1024) {
+                alert('File size should not exceed 10MB.');
+                return;
+            }
+            
+            // Create form data
+            const formData = new FormData();
+            formData.append('senderName', senderName);
+            formData.append('senderEmail', senderEmail);
+            formData.append('replyTo', replyTo);
+            formData.append('subject', document.getElementById('subject').value.trim());
+            formData.append('to', to);
+            formData.append('cc', cc);
+            formData.append('bcc', bcc);
+            formData.append('message', message);
+            if (attachment) {
+                formData.append('attachment', attachment);
+            }
+            
+            // Submit form data to server
+            fetch('/api/v1/send-email', {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    alert('Email sent successfully!');
+                    document.getElementById('contactForm').reset();
+                    tinymce.get('message').setContent('');
+                } else {
+                    alert('Failed to send email. Please try again.');
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert('An error occurred. Please try again.');
+            });
+        });
+
+        function validateEmails(emailString) {
+            if (!emailString) {
+                return true;
+            }
+            const emails = emailString.split(',');
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            for (const email of emails) {
+                if (!email.trim().match(emailRegex)) {
+                    return false;
+                }
+            }
+            return true;
+        }
+    </script>
+</body>
+</html>

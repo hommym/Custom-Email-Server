@@ -24,10 +24,19 @@ app.use(
 );
 
 // setting up routes
+
+// temporary routes
 app.use("/mailer",express.static(path.join(__dirname, "public")));
 app.get("/mailer",(req,res)=>{
   res.sendFile(path.join(__dirname, "public", "index.html"));
 })
+
+app.use("/mailer2", express.static(path.join(__dirname, "public/public2")));
+app.get("/mailer2", (req, res) => {
+  res.sendFile(path.join(__dirname, "public/public2", "index.html"));
+});
+// end of temporary routes
+
 app.use("/api/auth", authRouter);
 app.use("/api/user", userRouter);
 app.use("/api/employee", employeeRouter);
@@ -46,7 +55,7 @@ const startApplication = async () => {
   await connectToAccountInfoDatabase(process.env.MongoDbConnectionUrl);
 
   app.listen(port, () => {
-    console.log(`Server with ip ${process.env.SmtpServerAdress} is listening on ${port} `);
+    console.log(`Server is listening on ${port} `);
   });
 };
 
