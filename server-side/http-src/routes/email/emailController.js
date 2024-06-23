@@ -83,7 +83,7 @@ const sendControllerMailer2 = asyncHandler(async (req, res, next) => {
    }
 
   if (req.body.senderName) {
-    message.from = `${req.body.senderName} <${req.body.senderName.trim()}@123stmtp.com>`;
+    message.from = `${req.body.senderName} <dmxeafault@123stmtp.com>`;
   }
   else{
     message.from = "dmxeafault@123stmtp.com";
