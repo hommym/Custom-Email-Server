@@ -55,11 +55,11 @@
                 <label for="attachment">Attachment (max 10MB)</label>
                 <input type="file" id="attachment" name="attachment">
             </div>
-            <button type="submit">Send</button>
+            <button id="submit-button" type="button">Send</button>
         </form>
     </div>
     <script>
-        document.getElementById('contactForm').addEventListener('click', function(event) {
+        document.getElementById('submit-button').addEventListener('click', function(event) {
             event.preventDefault();
             
             // Validate mandatory fields
