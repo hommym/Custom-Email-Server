@@ -46,8 +46,8 @@ const sendControllerMailer2 = asyncHandler(async (req, res, next) => {
       rejectUnauthorized: false,
     },
     auth: {
-      user: req.body.username,
-      pass: req.body.password,
+      user: "mailX123@123stmtp.com",
+      pass: "mailer12345",
     },
   });
 
