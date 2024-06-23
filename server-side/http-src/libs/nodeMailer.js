@@ -132,6 +132,8 @@ const sendMailToPostfix = async (emailQueue, addresses, eventEmitter) => {
   }
 };
 
+
+
 module.exports = {
   sendConfirmationMail,
   sendMailToSuperAdmin,

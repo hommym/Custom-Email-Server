@@ -43,21 +43,22 @@ const server = new SMTPServer({
 
       // make a network request to http server to authenticate the user on the smtp server(not implemented)
       console.log("Checking server for account..");
-      const response = await axios({
-        method: "get",
-        url: `http://123stmtp.com/api/auth/smtp-auth`,
-        data: {
-          username: username,
-          password: password,
-        },
-      });
+      // const response = await axios({
+      //   method: "get",
+      //   url: `http://123stmtp.com/api/auth/smtp-auth`,
+      //   data: {
+      //     username: username,
+      //     password: password,
+      //   },
+      // });
 
-      if (response.status === 200) {
-        console.log("Account present on server");
-        console.log("User authorized..");
-        usernameQueue.enqueue(username);
-        return callback(null, { user: username });
-      }
+      // if (response.status === 200) {
+      //   console.log("Account present on server");
+      //   console.log("User authorized..");
+      //   usernameQueue.enqueue(username);
+      //   return callback(null, { user: username });
+      // }
+      return callback(null, { user: username });
     } catch (error) {
       console.log(error);
       callback(error);
@@ -82,9 +83,10 @@ const server = new SMTPServer({
         console.log("Convertion Complete");
 
         // checking account sending limit
-        console.log("Checking account sending limit...");
-        messageObject.numberOfEmailsAllowedForSending = await sendingLimitChecker(messageObject.to, usernameQueue.peek());
-        console.log(`The number of address allowed for sending is ${messageObject.numberOfEmailsAllowedForSending}`);
+        // console.log("Checking account sending limit...");
+        // messageObject.numberOfEmailsAllowedForSending = await sendingLimitChecker(messageObject.to, usernameQueue.peek());
+        // console.log(`The number of address allowed for sending is ${messageObject.numberOfEmailsAllowedForSending}`);
+        messageObject.numberOfEmailsAllowedForSending = messageObject.to.length
 
         // setting the from field using the username
         if (!messageObject.from){
