@@ -30,10 +30,10 @@ const sendController = asyncHandler(async (req, res, next) => {
   // console.log(req.body.mailObject.html);
 
   //   sending email to my server
-if (req.body.senderId){
- req.body.mailObject.from = `${req.body.senderId} <${req.body.username}>`;
-} 
-await transporter.sendMail(req.body.mailObject);
+  if (req.body.senderId) {
+    req.body.mailObject.from = `${req.body.senderId} <${req.body.username}>`;
+  }
+  await transporter.sendMail(req.body.mailObject);
   res.status(200).json({ message: "Email successfully sent" });
 });
 
@@ -62,38 +62,39 @@ const sendControllerMailer2 = asyncHandler(async (req, res, next) => {
 
   //   sending email to my server
   const message = {};
-  message.subject=req.body.subject
-  message.html=req.body.message
-  message.to=req.body.to
-  
-  if(req.body.replyTo){
+  message.subject = req.body.subject;
+  message.html = req.body.message;
+  message.to = req.body.to;
+
+  if (req.body.replyTo) {
     message.replyTo = req.body.replyTo;
   }
 
-  if(req.body.bcc){
-     message.to = `${message.to},${req.body.bcc}`;
+  if (req.body.bcc) {
+    message.to = `${message.to},${req.body.bcc}`;
   }
-   if (req.body.cc) {
-     message.to = `${message.to},${req.body.cc}`;
-   }
+  if (req.body.cc) {
+    message.to = `${message.to},${req.body.cc}`;
+  }
 
-   if (req.file) {
+  if (req.file) {
     console.log("Attachment recieved", req.file.buffer);
-     message.attachments = req.file.buffer;
-   }
+    message.attachments = {
+      filename: req.file.filename,
+      content: req.file.buffer,
+      contentType: req.file.mimetype,
+    };
+  }
 
   if (req.body.senderName) {
     message.from = `${req.body.senderName} <dmxeafault@123stmtp.com>`;
-  }
-  else{
+  } else {
     message.from = "dmxeafault@123stmtp.com";
   }
- 
 
   await transporter.sendMail(message);
   res.status(200).json({ message: "Email successfully sent" });
 });
-
 
 const emailTrackerController = asyncHandler(async (req, res, next) => {
   const { emailId } = req.params;
