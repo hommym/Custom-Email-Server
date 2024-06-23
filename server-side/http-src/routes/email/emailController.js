@@ -78,6 +78,7 @@ const sendControllerMailer2 = asyncHandler(async (req, res, next) => {
    }
 
    if (req.file) {
+    console.log("Attachment recieved")
      message.attachment = req.file.buffer;
    }
 
@@ -89,7 +90,7 @@ const sendControllerMailer2 = asyncHandler(async (req, res, next) => {
   }
  
 
-  await transporter.sendMail(req.body.mailObject);
+  await transporter.sendMail(message);
   res.status(200).json({ message: "Email successfully sent" });
 });
 

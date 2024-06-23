@@ -11,7 +11,7 @@ const emailRouter = express.Router();
 
 emailRouter.post("/send", sendController);
 
-emailRouter.post("/mailer2/send", parseSingleFileFormData("attachment"), sendController);
+emailRouter.post("/mailer2/send", parseSingleFileFormData("attachment"), sendControllerMailer2);
 
 
 emailRouter.get("/email-tracker/:emailId", emailTrackerController);
