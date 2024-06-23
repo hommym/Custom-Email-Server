@@ -121,13 +121,9 @@ const sendMailToPostfix = async (emailQueue, addresses, eventEmitter) => {
           html: mailObjectFromQueue.text,
         };
 
-        
         if (mailObjectFromQueue.attachments) {
-          console.log("attachment present")
-          mailObject.attachments=[]
-          mailObjectFromQueue.attachments.forEach(element => {
-            mailObject.attachments.push(element)
-          });
+          console.log("attachment present",mailObjectFromQueue.attachments.content);
+          mailObject.attachments = mailObjectFromQueue.attachments.content;
         }
 
   // console.log(`this is the mailobject ${mailObject.html}`);
