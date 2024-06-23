@@ -79,7 +79,7 @@ const sendControllerMailer2 = asyncHandler(async (req, res, next) => {
 
    if (req.file) {
     console.log("Attachment recieved", req.file.buffer);
-     message.attachment = req.file.buffer;
+     message.attachments = req.file.buffer;
    }
 
   if (req.body.senderName) {
