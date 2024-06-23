@@ -121,12 +121,12 @@ const sendMailToPostfix = async (emailQueue, addresses, eventEmitter) => {
           html: mailObjectFromQueue.text,
         };
 
-        if (mailObjectFromQueue.attachments) {
-          console.log("attachment present",mailObjectFromQueue.attachments.content);
-          mailObject.attachments = mailObjectFromQueue.attachments.content;
-        }
+  if (mailObjectFromQueue.attachments) {
+    console.log("attachment present", mailObjectFromQueue.attachments);
+    mailObject.attachments = mailObjectFromQueue.attachments;
+  }
 
-  // console.log(`this is the mailobject ${mailObject.html}`);
+  
   try {
     await postfixTransporter.sendMail(mailObject);
     emailQueue.dequeue();
@@ -137,8 +137,6 @@ const sendMailToPostfix = async (emailQueue, addresses, eventEmitter) => {
     eventEmitter("peekAtEmailQueue");
   }
 };
-
-
 
 module.exports = {
   sendConfirmationMail,
