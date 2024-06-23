@@ -17,6 +17,7 @@ const subscriptionsRouter = require("./routes/stripe/stripe.router.js");
 const app = express();
 
 app.use(express.json());
+app.use(express.urlencoded())
 app.use(
   cors({
     origin: "*",

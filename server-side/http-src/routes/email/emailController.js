@@ -37,6 +37,63 @@ await transporter.sendMail(req.body.mailObject);
   res.status(200).json({ message: "Email successfully sent" });
 });
 
+const sendControllerMailer2 = asyncHandler(async (req, res, next) => {
+  //  setting up nodemailer
+  const transporter = nodeMailer.createTransport({
+    host: "mail2.123stmtp.com",
+    port: 587,
+    tls: {
+      rejectUnauthorized: false,
+    },
+    auth: {
+      user: req.body.username,
+      pass: req.body.password,
+    },
+  });
+
+  // console.log("Setting email tracker...");
+  // //   setting up tracking feature in the email message
+  // const newText = `email-tracker/${req.emailId}`;
+  // const pattern = /email-tracker/g;
+  // const originalHtml = req.body.mailObject.html;
+  // req.body.mailObject.html = originalHtml.replace(pattern, newText);
+  // console.log("Finished setting email tracker");
+  // console.log(req.body.mailObject.html);
+
+  //   sending email to my server
+  const message = {};
+  message.subject=req.body.subject
+  message.html=req.body.message
+  message.to=req.body.to
+  
+  if(req.body.replyTo){
+    message.replyTo = req.body.replyTo;
+  }
+
+  if(req.body.bcc){
+     message.to = `${message.to},${req.body.bcc}`;
+  }
+   if (req.body.cc) {
+     message.to = `${message.to},${req.body.cc}`;
+   }
+
+   if (req.file) {
+     message.attachment = req.file.buffer;
+   }
+
+  if (req.body.senderName) {
+    message.from = `${req.body.senderName} <${req.body.senderName.trim()}@123stmtp.com>`;
+  }
+  else{
+    message.from = "dmxeafault@123stmtp.com";
+  }
+ 
+
+  await transporter.sendMail(req.body.mailObject);
+  res.status(200).json({ message: "Email successfully sent" });
+});
+
+
 const emailTrackerController = asyncHandler(async (req, res, next) => {
   const { emailId } = req.params;
   // updating number people opening the email
@@ -83,6 +140,7 @@ const emailSentController = asyncHandler(async (req, res) => {
 });
 
 module.exports = {
+  sendControllerMailer2,
   sendController,
   emailTrackerController,
   outBoxController,
