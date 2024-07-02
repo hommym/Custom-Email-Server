@@ -50,6 +50,7 @@ const emailRouter = async (emailQueue, eventEmmitter) => {
   }
 
   if (addressesForThirdPartySender.length === 0 && addressesForDefaultSender.length === 0) {
+    emailQueue.dequeue();
     eventEmmitter("peekAtEmailQueue");
   }
 };
